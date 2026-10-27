@@ -1,0 +1,508 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chapter_01</title>
+    <style>
+      body {
+        font-family:
+          "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+      }
+      .logo {
+        font-family: cursive;
+        font-size: 35px;
+        font-style: italic;
+        background-color: hsl(287, 93%, 65%);
+        font-weight: bold;
+        color: #000000;
+        text-decoration: none;
+        letter-spacing: 2px;
+      }
+
+      .menu {
+        width: 100%;
+        background-color: hsl(287, 93%, 65%);
+        display: flow-root;
+        overflow: visible;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      .menu ul {
+        list-style: none;
+        margin-right: 30px;
+      }
+
+      .menu ul li {
+        font-family:
+          "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+        float: left;
+      }
+
+      .menu ul li a {
+        display: block;
+        padding: 14px 18px;
+        color: rgb(8, 8, 8);
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .menu ul li a:hover {
+        background-color: #520172;
+        color: rgb(251, 249, 249);
+      }
+
+      .dropdown {
+        position: relative;
+      }
+
+      .dropdown details summary {
+        display: block;
+        padding: 14px 18px;
+        color: black;
+        font-weight: bold;
+        cursor: pointer;
+        list-style: none;
+      }
+
+      .dropdown details summary:hover {
+        background-color: #520172;
+        color: #ffff;
+      }
+
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        min-width: 160px;
+        max-height: 300px;
+        overflow-y: auto;
+        background-color: hsl(287, 93%, 65%);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        opacity: 80%;
+        z-index: 1000;
+      }
+
+      .dropdown details[open] .dropdown-content {
+        display: block;
+      }
+
+      .dropdown-content a {
+        display: block;
+        padding: 10px 15px;
+        color: white;
+        text-decoration: none;
+        white-space: nowrap;
+      }
+
+      .dropdown-content a:hover {
+        background-color: #520172;
+        color: #ffffff;
+      }
+      .page {
+        max-width: 1000px;
+        margin: 30px auto;
+        padding: 0 20px;
+      }
+
+      .chapter-heading {
+        text-align: center;
+        padding: 35px 20px;
+        background: #ffffff;
+        border: 1px solid #dce1e8;
+      }
+
+      .chapter-heading .eyebrow {
+        color: #8b5e3c;
+        font-size: 13px;
+        font-weight: bold;
+        letter-spacing: 3px;
+      }
+
+      h1 {
+        margin: 10px 0;
+        color: #243b63;
+        font-size: 30px;
+      }
+
+      .chapter-heading p {
+        color: #657187;
+      }
+
+      .section {
+        margin-top: 25px;
+        padding: 25px;
+        background: #ffffff;
+        border: 1px solid #dce1e8;
+      }
+
+      .section-title {
+        margin: -25px -25px 20px;
+        padding: 12px 20px;
+        background: #e9edf3;
+        color: #243b63;
+        font-size: 19px;
+      }
+
+      .demo {
+        margin-top: 18px;
+        padding: 20px;
+        background: #faf8f5;
+        border-left: 4px solid #b18a67;
+      }
+
+      .demo-label {
+        margin: 0 0 10px;
+        color: #8b5e3c;
+        font-size: 12px;
+        font-weight: bold;
+        letter-spacing: 1px;
+      }
+
+      .result {
+        padding: 16px;
+        background: #ffffff;
+        border: 1px dashed #c6ccd5;
+      }
+
+      .code-note {
+        margin-top: 12px;
+        color: #657187;
+        font-size: 13px;
+      }
+
+      .element-example {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .element-example > div {
+        flex: 1 1 220px;
+        padding: 15px;
+        background: #ffffff;
+        border: 1px solid #dce1e8;
+      }
+
+      .attribute-link {
+        display: inline-block;
+        margin-top: 8px;
+        padding: 9px 15px;
+        color: #ffffff;
+        background: #243b63;
+        border-radius: 4px;
+        text-decoration: none;
+      }
+
+      .attribute-link:hover {
+        background: #8b5e3c;
+      }
+
+      .profile-image {
+        width: 110px;
+        height: 110px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 3px solid #e9edf3;
+      }
+
+      .structure-list li {
+        margin-bottom: 8px;
+      }
+
+      .encoding-demo {
+        font-size: 18px;
+      }
+
+      .favicon-preview {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 14px;
+        border: 1px solid #dce1e8;
+        background: #ffffff;
+      }
+
+      .favicon-symbol {
+        display: inline-grid;
+        place-items: center;
+        width: 30px;
+        height: 30px;
+        color: #ffffff;
+        background: #243b63;
+        border-radius: 7px;
+        font-weight: bold;
+      }
+
+      .comment-demo {
+        padding: 15px;
+        background: #ffffff;
+        border: 1px solid #dce1e8;
+      }
+
+      footer p {
+        font-family:
+          "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+          "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+        text-align: center;
+        background-color: hsl(287, 93%, 65%);
+        color: #000;
+        padding: 12px;
+        margin-top: 40px;
+      }
+
+      @media (max-width: 600px) {
+        .site-header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .navbar {
+          gap: 12px;
+        }
+
+        h1 {
+          font-size: 24px;
+        }
+
+        .section {
+          padding: 18px;
+        }
+
+        .section-title {
+          margin: -18px -18px 18px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="menu">
+      <a href="HomePage.html" class="logo">BIBLUNE</a>
+      <ul>
+        <li><a href="HomePage.html">Home</a></li>
+        <li><a href="#">Books</a></li>
+        <li><a href="#">Categories</a></li>
+        <li class="dropdown">
+          <details>
+            <summary>Chapter ▾</summary>
+            <div class="dropdown-content">
+              <a href="chapter_01.html">01. Getting to Know HTML</a>
+              <a href="chapter_02.html">02. HTML Elements</a>
+              <a href="chapter_03.html">03. HTML Styles</a>
+              <a href="chapter_04.html">04. Semantic HTML</a>
+              <a href="chapter_05.html">05. Web Forms</a>
+              <a href="chapter_06.html">06. HTML Multimedia</a>
+              <a href="chapter_07.html">07. HTML Graphics</a>
+              <a href="chapter_08.html">08. HTML Advanced</a>
+              <a href="chapter_09.html">09. HTML Events</a>
+              <a href="chapter_10.html">10. HTML APIs</a>
+              <a href="chapter_11.html">11. Getting to Know CSS</a>
+              <a href="chapter_12.html">12. CSS Selectors</a>
+              <a href="chapter_13.html">13. CSS Cascading</a>
+              <a href="chapter_14.html">14. CSS Box Model</a>
+              <a href="chapter_15.html">15. CSS Colors</a>
+              <a href="chapter_16.html">16. CSS Text</a>
+              <a href="chapter_17.html">17. CSS Backgrounds</a>
+              <a href="chapter_18.html">18. CSS Display</a>
+              <a href="chapter_19.html">19. CSS Layout</a>
+              <a href="chapter_20.html">20. CSS Transitions and Animations</a>
+              <a href="chapter_21.html">21. Advanced CSS</a>
+              <a href="chapter_22.html">22. Responsive CSS</a>
+            </div>
+          </details>
+        </li>
+        <li><a href="#info">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <main class="page">
+      <section class="chapter-heading">
+        <p class="eyebrow">CHAPTER 01</p>
+        <h1>GETTING TO KNOW HTML</h1>
+        <p>
+          Discover the structure and essential features of an HTML document.
+        </p>
+      </section>
+      <section class="section">
+        <h2 class="section-title">1.1 Two Types of HTML Elements</h2>
+        <p>
+          HTML elements can be understood through two common categories:
+          block-level elements and inline elements.
+        </p>
+        <div class="demo">
+          <p class="demo-label">LIVE EXAMPLE</p>
+          <div class="element-example">
+            <div>
+              <strong>Block-level elements</strong>
+              <p>This paragraph starts on a new line.</p>
+              <p>This paragraph occupies another line.</p>
+            </div>
+            <div>
+              <strong>Inline elements</strong>
+              <p>
+                Read <span style="color: #8b5e3c">this highlighted text</span>
+                inside the same paragraph.
+              </p>
+            </div>
+          </div>
+          <p class="code-note">
+            Block-level elements normally begin on a new line. Inline elements
+            flow within the surrounding text.
+          </p>
+        </div>
+      </section>
+      <section class="section">
+        <h2 class="section-title">1.2 HTML Document Structure</h2>
+        <p>
+          An HTML document has a standard structure that helps browsers
+          understand its content.
+        </p>
+        <div class="demo">
+          <p class="demo-label">DOCUMENT STRUCTURE</p>
+          <ol class="structure-list">
+            <li><strong>DOCTYPE:</strong> Declares the document as HTML5.</li>
+            <li><strong>HTML:</strong> The root element of the page.</li>
+            <li>
+              <strong>Head:</strong> Contains metadata and the page title.
+            </li>
+            <li><strong>Body:</strong> Contains the visible page content.</li>
+          </ol>
+          <div class="result">
+            <h3>Welcome to BIBLUNE</h3>
+            <p>This content belongs to the document body.</p>
+          </div>
+        </div>
+      </section>
+      <section class="section">
+        <h2 class="section-title">1.3 Your First Webpage</h2>
+        <p>
+          A webpage can display headings, paragraphs, images and links. Here is
+          a small bookstore introduction.
+        </p>
+        <div class="demo">
+          <p class="demo-label">FIRST WEBPAGE PREVIEW</p>
+          <div class="result">
+            <h2>Welcome to BIBLUNE Bookstore</h2>
+            <p>A little world of books.</p>
+            <img
+              class="profile-image"
+              src="Images/Moonlit Dark Academia Desk _ Aesthetic Wallpaper.jfif"
+              title="A book from our collection"
+            />
+            <p>Explore stories, knowledge and new adventures.</p>
+            <a class="attribute-link" href="#chapter-list">
+              Explore Chapters
+            </a>
+          </div>
+        </div>
+      </section>
+      <section class="section">
+        <h2 class="section-title">1.4 Character Encoding</h2>
+        <p>
+          Character encoding determines how letters, numbers and symbols are
+          represented. UTF-8 supports a wide range of characters.
+        </p>
+        <div class="demo">
+          <p class="demo-label">UTF-8 EXAMPLE</p>
+
+          <div class="result encoding-demo">
+            <p>English: Welcome to BIBLUNE!</p>
+            <p>Bangla: স্বাগতম, বইয়ের জগতে!</p>
+            <p>Symbols: © ® € ★ ✓</p>
+          </div>
+          <p class="code-note">
+            The UTF-8 character encoding is declared in the document head.
+          </p>
+        </div>
+      </section>
+      <section class="section">
+        <h2 class="section-title">1.5 Element Attributes</h2>
+        <p>
+          Attributes provide additional information about HTML elements. They
+          can specify links, image descriptions, dimensions and more.
+        </p>
+        <div class="demo">
+          <p class="demo-label">LIVE ATTRIBUTE EXAMPLES</p>
+          <div class="result">
+            <p>
+              <strong>Link attribute:</strong>
+              <a
+                href="https://www.wikipedia.org/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Visit Wikipedia
+              </a>
+            </p>
+            <p>
+              <strong>Title attribute:</strong>
+              <span title="This is additional information">
+                Hover over this text
+              </span>
+            </p>
+            <p>
+              <strong>Image attributes:</strong>
+              The book image above uses <em>src</em>, <em>alt</em>,
+              <em>title</em>, <em>width</em> and <em>height</em>-related
+              styling.
+            </p>
+          </div>
+          <p class="code-note">
+            Try hovering over the title example or opening the external link.
+          </p>
+        </div>
+      </section>
+      <section class="section">
+        <h2 class="section-title">1.6 Favorite Icon</h2>
+        <p>
+          A favicon is a small icon associated with a website. It usually
+          appears in the browser tab beside the page title.
+        </p>
+        <div class="demo">
+          <p class="demo-label">FAVICON PREVIEW</p>
+          <div class="favicon-preview">
+            <span class="favicon-symbol">B</span>
+            <span>BIBLUNE | Getting to Know HTML</span>
+          </div>
+          <p class="code-note">
+            The browser tab icon is linked through the document head. Add a
+            favicon.ico file beside this HTML file for the real tab icon.
+          </p>
+        </div>
+      </section>
+      <section class="section">
+        <h2 class="section-title">1.7 Comments</h2>
+        <p>
+          HTML comments help developers explain or organize their code. Browsers
+          do not display comments as normal webpage content.
+        </p>
+        <div class="demo">
+          <p class="demo-label">COMMENT EXAMPLE</p>
+          <div class="comment-demo">
+            <h3>Our Book Collection</h3>
+            <p>Discover books for every curious mind.</p>
+            <p class="code-note">
+              The HTML comment in this section is not visible as page content.
+            </p>
+          </div>
+        </div>
+      </section>
+      <section class="section" id="chapter-list">
+        <h2 class="section-title">Chapter Summary</h2>
+        <p>
+          You have explored HTML elements, document structure, your first
+          webpage, character encoding, attributes, favicons and comments.
+        </p>
+        <a class="attribute-link" href="chapter_02.html">
+          Continue to Chapter 2
+        </a>
+      </section>
+    </main>
+    <footer>
+      <p>BIBLUNE | HTML &amp; CSS Project</p>
+    </footer>
+  </body>
+</html>
