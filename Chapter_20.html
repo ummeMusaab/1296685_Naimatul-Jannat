@@ -1,0 +1,1063 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chapter_20</title>
+    <style>
+      body {
+        font-family:
+          "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+      }
+      .logo {
+        font-family: cursive;
+        font-size: 35px;
+        font-style: italic;
+        background-color: hsl(287, 93%, 65%);
+        font-weight: bold;
+        color: #000000;
+        text-decoration: none;
+        letter-spacing: 2px;
+      }
+
+      .menu {
+        width: 100%;
+        background-color: hsl(287, 93%, 65%);
+        display: flow-root;
+        overflow: visible;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      .menu ul {
+        list-style: none;
+        margin-right: 30px;
+      }
+
+      .menu ul li {
+        font-family:
+          "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+        float: left;
+      }
+
+      .menu ul li a {
+        display: block;
+        padding: 14px 18px;
+        color: rgb(8, 8, 8);
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .menu ul li a:hover {
+        background-color: #520172;
+        color: rgb(251, 249, 249);
+      }
+
+      .dropdown {
+        position: relative;
+      }
+
+      .dropdown details summary {
+        display: block;
+        padding: 14px 18px;
+        color: black;
+        font-weight: bold;
+        cursor: pointer;
+        list-style: none;
+      }
+
+      .dropdown details summary:hover {
+        background-color: #520172;
+        color: #ffff;
+      }
+
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        min-width: 160px;
+        max-height: 300px;
+        overflow-y: auto;
+        background-color: hsl(287, 93%, 65%);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        opacity: 80%;
+        z-index: 1000;
+      }
+
+      .dropdown details[open] .dropdown-content {
+        display: block;
+      }
+
+      .dropdown-content a {
+        display: block;
+        padding: 10px 15px;
+        color: white;
+        text-decoration: none;
+        white-space: nowrap;
+      }
+
+      .dropdown-content a:hover {
+        background-color: #520172;
+        color: #ffffff;
+      }
+
+      footer p {
+        font-family:
+          "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+          "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+        text-align: center;
+        background-color: hsl(287, 93%, 65%);
+        color: #000;
+        padding: 12px;
+        margin-top: 40px;
+      }
+
+      .chapter-heading {
+        text-align: center;
+        padding: 30px 20px;
+        background: #fff;
+        border-bottom: 1px solid #dce1e8;
+      }
+
+      .chapter-heading .eyebrow {
+        color: #8b5e3c;
+        font-size: 13px;
+        font-weight: bold;
+        letter-spacing: 3px;
+      }
+
+      .chapter-heading h1 {
+        margin: 8px 0;
+        color: #243b63;
+        font-size: clamp(25px, 4vw, 38px);
+      }
+
+      .chapter-heading p {
+        color: #657187;
+      }
+
+      .chapter-container {
+        display: grid;
+        grid-template-columns: 250px minmax(0, 1fr);
+        gap: 28px;
+        max-width: 1250px;
+        margin: 35px auto;
+        padding: 0 20px;
+        align-items: start;
+      }
+
+      .chapter-sidebar {
+        position: sticky;
+        top: 100px;
+        max-height: 85vh;
+        overflow-y: auto;
+        background: #fff;
+        border: 1px solid #e1e5ed;
+        border-radius: 12px;
+        padding: 20px;
+      }
+
+      .chapter-sidebar h2 {
+        color: #243b63;
+        font-size: 19px;
+        margin-top: 0;
+      }
+
+      .chapter-toc {
+        padding-left: 20px;
+        margin-bottom: 0;
+      }
+
+      .chapter-toc li {
+        margin: 9px 0;
+        color: #657187;
+      }
+
+      .chapter-toc a {
+        color: #465675;
+        text-decoration: none;
+        font-size: 13px;
+      }
+
+      .chapter-toc a:hover {
+        color: #8b5e3c;
+        text-decoration: underline;
+      }
+
+      .chapter-content {
+        min-width: 0;
+      }
+
+      .chapter-section {
+        background: #fff;
+        border: 1px solid #e1e5ed;
+        border-radius: 12px;
+        padding: 25px;
+        margin-bottom: 25px;
+        scroll-margin-top: 20px;
+      }
+
+      .chapter-section h2 {
+        color: #243b63;
+        font-size: 23px;
+        margin-top: 0;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #e7eaf0;
+      }
+
+      .chapter-section h3 {
+        color: #8b5e3c;
+        font-size: 17px;
+        margin-top: 25px;
+      }
+
+      .chapter-section p {
+        color: #58657b;
+        line-height: 1.7;
+      }
+
+      .demo-box {
+        background: #f7f8fc;
+        border: 1px solid #e0e5ef;
+        border-radius: 9px;
+        padding: 18px;
+        margin: 15px 0;
+        overflow: hidden;
+      }
+
+      .demo-label {
+        color: #657187;
+        font-size: 12px;
+        font-weight: bold;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+      }
+
+      .note-box {
+        background: #fff8ec;
+        border-left: 4px solid #d9a441;
+        border-radius: 5px;
+        padding: 12px 15px;
+        margin-top: 15px;
+        color: #6f5934;
+        line-height: 1.6;
+      }
+
+      .demo-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+        gap: 15px;
+      }
+
+      .demo-card {
+        background: #fff;
+        border: 1px solid #e1e5ed;
+        border-radius: 9px;
+        padding: 15px 10px;
+        text-align: center;
+        min-width: 0;
+      }
+
+      .demo-card h4 {
+        color: #243b63;
+        margin: 5px 0 10px;
+        font-size: 14px;
+      }
+
+      .demo-card p {
+        font-size: 13px;
+        margin-bottom: 0;
+      }
+
+      .transition-button {
+        display: inline-block;
+        padding: 12px 17px;
+        background: #e9eafa;
+        border: 1px solid #cbd0f0;
+        border-radius: 7px;
+        color: #34436c;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .basic-transition {
+        transition:
+          background-color 0.4s ease,
+          color 0.4s ease,
+          transform 0.4s ease;
+      }
+
+      .basic-transition:hover {
+        background: #243b63;
+        color: #fff;
+        transform: translateY(-5px);
+      }
+
+      .delay-transition {
+        transition:
+          background-color 0.4s ease 0.8s,
+          transform 0.4s ease 0.8s;
+      }
+
+      .delay-transition:hover {
+        background: #dff3e8;
+        transform: scale(1.08);
+      }
+
+      .timing-track {
+        background: #fff;
+        border: 1px solid #e1e5ed;
+        border-radius: 7px;
+        padding: 8px;
+        margin: 10px 0;
+      }
+
+      .timing-label {
+        color: #657187;
+        font-size: 12px;
+        margin-bottom: 6px;
+      }
+
+      .timing-ball {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        background: #8b78d2;
+        transition-property: transform;
+        transition-duration: 1.5s;
+      }
+
+      .timing-track:hover .timing-ball {
+        transform: translateX(min(45vw, 300px));
+      }
+
+      .timing-ease {
+        transition-timing-function: ease;
+      }
+
+      .timing-linear {
+        transition-timing-function: linear;
+      }
+
+      .timing-ease-in {
+        transition-timing-function: ease-in;
+      }
+
+      .timing-ease-out {
+        transition-timing-function: ease-out;
+      }
+
+      .timing-ease-in-out {
+        transition-timing-function: ease-in-out;
+      }
+
+      .shorthand-transition {
+        transition: all 0.5s ease-in-out;
+      }
+
+      .shorthand-transition:hover {
+        background: #8b78d2;
+        color: #fff;
+        border-color: #8b78d2;
+        border-radius: 25px;
+        transform: scale(1.06);
+      }
+
+      .animation-stage {
+        min-height: 130px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff;
+        border: 1px dashed #c7ccda;
+        border-radius: 8px;
+        padding: 15px;
+        margin: 12px 0;
+        overflow: hidden;
+      }
+
+      .animation-square {
+        width: 65px;
+        height: 65px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #e9eafa;
+        border: 1px solid #cbd0f0;
+        border-radius: 10px;
+        color: #34436c;
+        font-size: 12px;
+        font-weight: bold;
+        text-align: center;
+      }
+
+      /* 20.2.1 Two-step Keyframes */
+      @keyframes twoStepMove {
+        from {
+          transform: translateX(-70px);
+          background: #e9eafa;
+        }
+
+        to {
+          transform: translateX(70px);
+          background: #dff3e8;
+        }
+      }
+
+      .animation-two-step {
+        animation: twoStepMove 2s ease-in-out infinite alternate;
+      }
+
+      @keyframes multipleMove {
+        0% {
+          transform: translateX(-75px) rotate(0deg);
+          background: #e9eafa;
+        }
+
+        25% {
+          transform: translateY(-25px) rotate(45deg);
+          background: #ffe5c7;
+        }
+
+        50% {
+          transform: translateX(75px) rotate(90deg);
+          background: #dff3e8;
+        }
+
+        75% {
+          transform: translateY(25px) rotate(135deg);
+          background: #f0e4fa;
+        }
+
+        100% {
+          transform: translateX(-75px) rotate(180deg);
+          background: #e9eafa;
+        }
+      }
+
+      .animation-multiple {
+        animation: multipleMove 4s ease-in-out infinite;
+      }
+
+      @keyframes delayPulse {
+        0%,
+        100% {
+          transform: scale(1);
+          background: #e9eafa;
+        }
+
+        50% {
+          transform: scale(1.25);
+          background: #ffe5c7;
+        }
+      }
+
+      .animation-delay {
+        animation: delayPulse 2s ease-in-out 1.5s infinite;
+      }
+
+      @keyframes iterationBounce {
+        0%,
+        100% {
+          transform: translateY(20px);
+        }
+
+        50% {
+          transform: translateY(-25px);
+        }
+      }
+
+      .animation-finite {
+        animation: iterationBounce 1s ease-in-out 3;
+      }
+
+      .animation-infinite {
+        animation: iterationBounce 1s ease-in-out infinite;
+      }
+
+      @keyframes directionMove {
+        from {
+          transform: translateX(-55px);
+          background: #e9eafa;
+        }
+
+        to {
+          transform: translateX(55px);
+          background: #dff3e8;
+        }
+      }
+
+      .direction-normal {
+        animation: directionMove 2s linear infinite normal;
+      }
+
+      .direction-reverse {
+        animation: directionMove 2s linear infinite reverse;
+      }
+
+      .direction-alternate {
+        animation: directionMove 2s linear infinite alternate;
+      }
+
+      .direction-alternate-reverse {
+        animation: directionMove 2s linear infinite alternate-reverse;
+      }
+
+      /* 20.2.6 Animation Timing Function */
+      @keyframes timingMove {
+        from {
+          transform: translateX(-55px);
+        }
+
+        to {
+          transform: translateX(55px);
+        }
+      }
+
+      .animation-timing {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        background: #8b78d2;
+        animation: timingMove 2s infinite alternate;
+      }
+
+      .animation-ease {
+        animation-timing-function: ease;
+      }
+
+      .animation-linear {
+        animation-timing-function: linear;
+      }
+
+      .animation-ease-in {
+        animation-timing-function: ease-in;
+      }
+
+      .animation-ease-out {
+        animation-timing-function: ease-out;
+      }
+
+      .animation-ease-in-out {
+        animation-timing-function: ease-in-out;
+      }
+
+      @keyframes bookFloat {
+        0% {
+          transform: translateY(0) rotate(-5deg);
+        }
+
+        50% {
+          transform: translateY(-18px) rotate(5deg);
+        }
+
+        100% {
+          transform: translateY(0) rotate(-5deg);
+        }
+      }
+
+      .floating-book {
+        font-size: 45px;
+        animation: bookFloat 2s ease-in-out 0.3s infinite alternate;
+      }
+
+      .animation-color-card {
+        animation: colorJourney 4s ease-in-out 0.5s infinite alternate;
+      }
+
+      @keyframes colorJourney {
+        0% {
+          background: #e9eafa;
+          transform: scale(0.9);
+        }
+
+        50% {
+          background: #ffe5c7;
+          transform: scale(1.05);
+        }
+
+        100% {
+          background: #dff3e8;
+          transform: scale(0.9);
+        }
+      }
+
+      @media (max-width: 800px) {
+        .chapter-container {
+          grid-template-columns: 1fr;
+          gap: 20px;
+          margin-top: 20px;
+          padding: 0 14px;
+        }
+
+        .chapter-sidebar {
+          position: static;
+          max-height: 350px;
+        }
+
+        .chapter-section {
+          padding: 18px;
+        }
+
+        .timing-track:hover .timing-ball {
+          transform: translateX(min(35vw, 200px));
+        }
+      }
+
+      @media (max-width: 480px) {
+        .chapter-section h2 {
+          font-size: 20px;
+        }
+
+        .demo-box {
+          padding: 12px;
+        }
+
+        .demo-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .animation-stage {
+          min-height: 115px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .animation-two-step,
+        .animation-multiple,
+        .animation-delay,
+        .animation-finite,
+        .animation-infinite,
+        .direction-normal,
+        .direction-reverse,
+        .direction-alternate,
+        .direction-alternate-reverse,
+        .animation-timing,
+        .floating-book,
+        .animation-color-card {
+          animation: none;
+        }
+
+        .transition-button,
+        .timing-ball {
+          transition: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="menu">
+      <a href="HomePage.html" class="logo">BIBLUNE</a>
+      <ul>
+        <li><a href="HomePage.html">Home</a></li>
+        <li><a href="#">Books</a></li>
+        <li><a href="#">Categories</a></li>
+        <li class="dropdown">
+          <details>
+            <summary>Chapter ▾</summary>
+            <div class="dropdown-content">
+              <a href="chapter_01.html">01. Getting to Know HTML</a>
+              <a href="chapter_02.html">02. HTML Elements</a>
+              <a href="chapter_03.html">03. HTML Styles</a>
+              <a href="chapter_04.html">04. Semantic HTML</a>
+              <a href="chapter_05.html">05. Web Forms</a>
+              <a href="chapter_06.html">06. HTML Multimedia</a>
+              <a href="chapter_07.html">07. HTML Graphics</a>
+              <a href="chapter_08.html">08. HTML Advanced</a>
+              <a href="chapter_09.html">09. HTML Events</a>
+              <a href="chapter_10.html">10. HTML APIs</a>
+              <a href="chapter_11.html">11. Getting to Know CSS</a>
+              <a href="chapter_12.html">12. CSS Selectors</a>
+              <a href="chapter_13.html">13. CSS Cascading</a>
+              <a href="chapter_14.html">14. CSS Box Model</a>
+              <a href="chapter_15.html">15. CSS Colors</a>
+              <a href="chapter_16.html">16. CSS Text</a>
+              <a href="chapter_17.html">17. CSS Backgrounds</a>
+              <a href="chapter_18.html">18. CSS Display</a>
+              <a href="chapter_19.html">19. CSS Layout</a>
+              <a href="chapter_20.html">20. CSS Transitions and Animations</a>
+              <a href="chapter_21.html">21. Advanced CSS</a>
+              <a href="chapter_22.html">22. Responsive CSS</a>
+            </div>
+          </details>
+        </li>
+        <li><a href="#info">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <section class="chapter-heading">
+      <p class="eyebrow">CHAPTER 20</p>
+      <h1>CSS TRANSITIONS AND ANIMATIONS</h1>
+      <p>
+        Bring webpages to life with smooth transitions and animated effects.
+      </p>
+    </section>
+
+    <div class="chapter-container">
+      <aside class="chapter-sidebar">
+        <h2>On This Page</h2>
+        <ol class="chapter-toc">
+          <li>
+            <a href="#transitions">CSS Transitions</a>
+            <ol>
+              <li><a href="#basic-transitions">Basic Transitions</a></li>
+              <li><a href="#transition-delay">Transition Delay</a></li>
+              <li>
+                <a href="#transition-timing">Transition Timing Function</a>
+              </li>
+              <li><a href="#transition-shorthand">Shorthand Transition</a></li>
+            </ol>
+          </li>
+
+          <li>
+            <a href="#animations">CSS Animations</a>
+            <ol>
+              <li><a href="#two-step">Two-step Keyframes</a></li>
+              <li><a href="#multiple-keyframes">Multiple Keyframes</a></li>
+              <li><a href="#animation-delay">Animation Delay</a></li>
+              <li><a href="#iteration-count">Iteration Count</a></li>
+              <li><a href="#animation-direction">Animation Direction</a></li>
+              <li><a href="#animation-timing">Animation Timing Function</a></li>
+              <li><a href="#animation-shorthand">Shorthand Animation</a></li>
+            </ol>
+          </li>
+        </ol>
+      </aside>
+
+      <main class="chapter-content">
+        <section class="chapter-section" id="transitions">
+          <h2>20.1 CSS Transitions</h2>
+
+          <p>
+            CSS transitions make changes in CSS properties happen gradually
+            instead of instantly. Hover over the examples to see the effects.
+          </p>
+
+          <h3 id="basic-transitions">20.1.1 Basic Transitions</h3>
+
+          <p>
+            Basic transitions smoothly change properties such as background
+            color, text color, and position when an element is hovered over.
+          </p>
+
+          <div class="demo-box">
+            <div class="demo-label">Hover over the button</div>
+
+            <button class="transition-button basic-transition" type="button">
+              Discover Books
+            </button>
+          </div>
+
+          <div class="note-box">
+            <strong>What to notice:</strong> The button changes color and moves
+            slightly upward instead of changing instantly.
+          </div>
+          <h3 id="transition-delay">20.1.2 Transition Delay</h3>
+
+          <p>
+            Transition-delay specifies how long the browser waits before
+            beginning a transition.
+          </p>
+
+          <div class="demo-box">
+            <div class="demo-label">Hover and wait briefly</div>
+
+            <button class="transition-button delay-transition" type="button">
+              Wait for the Effect
+            </button>
+          </div>
+
+          <p>
+            This transition has a short delay, so the color and size change
+            begins after you hover over the button.
+          </p>
+
+          <h3 id="transition-timing">20.1.3 Transition Timing Function</h3>
+
+          <p>
+            The transition-timing-function controls how the speed of a
+            transition changes over time. Hover over each track to compare.
+          </p>
+
+          <div class="demo-box">
+            <div class="timing-track">
+              <div class="timing-label">Ease</div>
+              <div class="timing-ball timing-ease"></div>
+            </div>
+
+            <div class="timing-track">
+              <div class="timing-label">Linear</div>
+              <div class="timing-ball timing-linear"></div>
+            </div>
+
+            <div class="timing-track">
+              <div class="timing-label">Ease-In</div>
+              <div class="timing-ball timing-ease-in"></div>
+            </div>
+
+            <div class="timing-track">
+              <div class="timing-label">Ease-Out</div>
+              <div class="timing-ball timing-ease-out"></div>
+            </div>
+
+            <div class="timing-track">
+              <div class="timing-label">Ease-In-Out</div>
+              <div class="timing-ball timing-ease-in-out"></div>
+            </div>
+          </div>
+
+          <div class="note-box">
+            <strong>Remember:</strong> Linear keeps a constant speed. Ease-in
+            starts slowly, while ease-out finishes slowly. Ease-in-out starts
+            and ends slowly.
+          </div>
+
+          <h3 id="transition-shorthand">
+            20.1.4 Shorthand Transition Property
+          </h3>
+
+          <p>
+            The transition shorthand combines the property, duration, timing
+            function, and optional delay in one declaration.
+          </p>
+
+          <div class="demo-box">
+            <div class="demo-label">Hover over the card</div>
+
+            <button
+              class="transition-button shorthand-transition"
+              type="button"
+            >
+              Magical Transition
+            </button>
+          </div>
+
+          <p>
+            The background, border shape, color, and size change together
+            through a shorthand transition.
+          </p>
+        </section>
+
+        <section class="chapter-section" id="animations">
+          <h2>20.2 CSS Animations</h2>
+
+          <p>
+            CSS animations use keyframes to define how an element changes at
+            different points in time. Unlike transitions, animations can run
+            automatically without a hover action.
+          </p>
+          <h3 id="two-step">20.2.1 Two-step Keyframes</h3>
+
+          <p>
+            A simple animation can use from and to keyframes to describe its
+            starting and ending states.
+          </p>
+
+          <div class="demo-box">
+            <div class="demo-label">Automatic two-step animation</div>
+
+            <div class="animation-stage">
+              <div class="animation-square animation-two-step">Moving</div>
+            </div>
+          </div>
+
+          <h3 id="multiple-keyframes">20.2.2 Multiple Keyframes</h3>
+
+          <p>
+            Multiple keyframes let an animation change its position, rotation,
+            or color at several points during its timeline.
+          </p>
+
+          <div class="demo-box">
+            <div class="demo-label">Multiple keyframe animation</div>
+
+            <div class="animation-stage">
+              <div class="animation-square animation-multiple">Journey</div>
+            </div>
+          </div>
+
+          <h3 id="animation-delay">20.2.3 Animation Delay</h3>
+
+          <p>
+            Animation-delay specifies how long to wait before the animation
+            begins. This example starts after a short delay.
+          </p>
+
+          <div class="demo-box">
+            <div class="demo-label">Watch the square before it starts</div>
+
+            <div class="animation-stage">
+              <div class="animation-square animation-delay">Delayed</div>
+            </div>
+          </div>
+          <h3 id="iteration-count">20.2.4 Animation Iteration Count</h3>
+
+          <p>
+            Animation-iteration-count determines how many times an animation
+            runs. It can use a number or the value infinite.
+          </p>
+
+          <div class="demo-box">
+            <div class="demo-grid">
+              <div class="demo-card">
+                <h4>Three Times</h4>
+
+                <div class="animation-stage">
+                  <div class="animation-square animation-finite">3 Times</div>
+                </div>
+
+                <p>This animation stops after three repetitions.</p>
+              </div>
+
+              <div class="demo-card">
+                <h4>Infinite</h4>
+
+                <div class="animation-stage">
+                  <div class="animation-square animation-infinite">Repeat</div>
+                </div>
+
+                <p>This animation continues repeating.</p>
+              </div>
+            </div>
+          </div>
+
+          <h3 id="animation-direction">20.2.5 Animation Direction</h3>
+
+          <p>
+            Animation-direction determines whether keyframes play forward,
+            backward, or alternate between the two directions.
+          </p>
+
+          <div class="demo-box">
+            <div class="demo-grid">
+              <div class="demo-card">
+                <h4>Normal</h4>
+
+                <div class="animation-stage">
+                  <div class="animation-square direction-normal">Normal</div>
+                </div>
+
+                <p>Plays from the first keyframe to the last.</p>
+              </div>
+
+              <div class="demo-card">
+                <h4>Reverse</h4>
+
+                <div class="animation-stage">
+                  <div class="animation-square direction-reverse">Reverse</div>
+                </div>
+
+                <p>Plays from the last keyframe to the first.</p>
+              </div>
+
+              <div class="demo-card">
+                <h4>Alternate</h4>
+
+                <div class="animation-stage">
+                  <div class="animation-square direction-alternate">
+                    Alternate
+                  </div>
+                </div>
+
+                <p>Alternates forward and backward.</p>
+              </div>
+
+              <div class="demo-card">
+                <h4>Alternate-Reverse</h4>
+
+                <div class="animation-stage">
+                  <div class="animation-square direction-alternate-reverse">
+                    Alternate
+                  </div>
+                </div>
+
+                <p>Starts backward, then alternates directions.</p>
+              </div>
+            </div>
+          </div>
+
+          <h3 id="animation-timing">20.2.6 Animation Timing Function</h3>
+
+          <p>
+            Animation-timing-function controls the speed curve of an animation.
+            Compare these moving circles.
+          </p>
+
+          <div class="demo-box">
+            <div class="timing-track">
+              <div class="timing-label">Ease</div>
+              <div class="animation-timing animation-ease"></div>
+            </div>
+
+            <div class="timing-track">
+              <div class="timing-label">Linear</div>
+              <div class="animation-timing animation-linear"></div>
+            </div>
+
+            <div class="timing-track">
+              <div class="timing-label">Ease-In</div>
+              <div class="animation-timing animation-ease-in"></div>
+            </div>
+
+            <div class="timing-track">
+              <div class="timing-label">Ease-Out</div>
+              <div class="animation-timing animation-ease-out"></div>
+            </div>
+
+            <div class="timing-track">
+              <div class="timing-label">Ease-In-Out</div>
+              <div class="animation-timing animation-ease-in-out"></div>
+            </div>
+          </div>
+
+          <h3 id="animation-shorthand">20.2.7 Shorthand Animation Property</h3>
+
+          <p>
+            The animation shorthand combines several animation settings,
+            including its name, duration, timing function, delay, iteration
+            count, and direction.
+          </p>
+
+          <div class="demo-box">
+            <div class="demo-grid">
+              <div class="demo-card">
+                <h4>Floating Book</h4>
+
+                <div class="animation-stage">
+                  <div class="floating-book">📚</div>
+                </div>
+
+                <p>A book gently floats and tilts.</p>
+              </div>
+
+              <div class="demo-card">
+                <h4>Color Journey</h4>
+
+                <div class="animation-stage">
+                  <div class="animation-square animation-color-card">
+                    Explore
+                  </div>
+                </div>
+
+                <p>The background color and size change over time.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="note-box">
+            <strong>Chapter Complete!</strong>
+            You've explored basic transitions, delays, timing functions,
+            keyframes, iteration counts, animation directions, and shorthand
+            transition and animation properties.
+          </div>
+        </section>
+      </main>
+    </div>
+    <footer>
+      <p>BIBLUNE | HTML &amp; CSS Project</p>
+    </footer>
+  </body>
+</html>

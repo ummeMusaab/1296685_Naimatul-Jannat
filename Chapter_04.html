@@ -1,0 +1,770 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chapter_04</title>
+    <style>
+      .logo {
+        font-family: cursive;
+        font-size: 35px;
+        font-style: italic;
+        background-color: hsl(287, 93%, 65%);
+        font-weight: bold;
+        color: #000000;
+        text-decoration: none;
+        letter-spacing: 2px;
+      }
+
+      .menu {
+        width: 100%;
+        background-color: hsl(287, 93%, 65%);
+        display: flow-root;
+        overflow: visible;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      .menu ul {
+        list-style: none;
+        margin-right: 30px;
+      }
+
+      .menu ul li {
+        font-family:
+          "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+        float: left;
+      }
+
+      .menu ul li a {
+        display: block;
+        padding: 14px 18px;
+        color: rgb(8, 8, 8);
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .menu ul li a:hover {
+        background-color: #520172;
+        color: rgb(251, 249, 249);
+      }
+
+      .dropdown {
+        position: relative;
+      }
+
+      .dropdown details summary {
+        display: block;
+        padding: 14px 18px;
+        color: black;
+        font-weight: bold;
+        cursor: pointer;
+        list-style: none;
+      }
+
+      .dropdown details summary:hover {
+        background-color: #520172;
+        color: #ffff;
+      }
+
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        min-width: 160px;
+        max-height: 300px;
+        overflow-y: auto;
+        background-color: hsl(287, 93%, 65%);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        opacity: 80%;
+        z-index: 1000;
+      }
+
+      .dropdown details[open] .dropdown-content {
+        display: block;
+      }
+
+      .dropdown-content a {
+        display: block;
+        padding: 10px 15px;
+        color: white;
+        text-decoration: none;
+        white-space: nowrap;
+      }
+
+      .dropdown-content a:hover {
+        background-color: #520172;
+        color: #ffffff;
+      }
+
+      .chapter-heading {
+        text-align: center;
+        padding: 30px 20px;
+        background: #fff;
+        border-bottom: 1px solid #dce1e8;
+      }
+
+      .chapter-heading .eyebrow {
+        color: #8b5e3c;
+        font-size: 13px;
+        font-weight: bold;
+        letter-spacing: 3px;
+      }
+
+      .chapter-heading h1 {
+        margin: 8px 0;
+        color: #243b63;
+        font-size: clamp(27px, 4vw, 38px);
+      }
+
+      .chapter-heading p {
+        color: #657187;
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: 260px minmax(0, 1fr);
+        gap: 22px;
+        max-width: 1400px;
+        margin: 25px auto;
+        padding: 0 20px;
+        align-items: start;
+      }
+
+      .toc {
+        position: sticky;
+        top: 100px;
+        max-height: calc(100vh - 30px);
+        overflow-y: auto;
+        padding: 18px;
+        background: #fff;
+        border: 1px solid #dce1e8;
+      }
+
+      .toc h2 {
+        margin-top: 0;
+        color: #243b63;
+        font-size: 21px;
+      }
+
+      .toc ol {
+        padding-left: 22px;
+        margin-bottom: 0;
+      }
+
+      .toc li {
+        padding: 4px 0;
+        font-size: 13px;
+      }
+
+      .toc a {
+        color: #35445c;
+        text-decoration: none;
+      }
+
+      .toc a:hover {
+        color: #8b5e3c;
+        text-decoration: underline;
+      }
+
+      .toc ol ol {
+        padding-left: 20px;
+        list-style-type: lower-alpha;
+      }
+
+      .content {
+        min-width: 0;
+        padding: 24px;
+        background: #fff;
+        border: 1px solid #dce1e8;
+      }
+
+      .content > h2 {
+        margin-top: 0;
+        color: #243b63;
+        font-size: 30px;
+      }
+
+      .topic {
+        padding: 22px 0;
+        border-bottom: 1px solid #d7dce3;
+        scroll-margin-top: 15px;
+      }
+
+      .topic:last-child {
+        border-bottom: 0;
+      }
+
+      .topic h3 {
+        margin: 0 0 12px;
+        color: #243b63;
+        font-size: 23px;
+      }
+
+      .topic h4 {
+        margin: 18px 0 8px;
+        color: #35445c;
+        font-size: 18px;
+      }
+
+      .demo {
+        margin-top: 15px;
+        padding: 18px;
+        background: #faf8f5;
+        border-left: 4px solid #b18a67;
+        overflow-wrap: anywhere;
+      }
+
+      .demo-label {
+        margin-top: 0;
+        color: #8b5e3c;
+        font-size: 11px;
+        font-weight: bold;
+        letter-spacing: 1.5px;
+      }
+
+      .output {
+        padding: 16px;
+        background: #fff;
+        border: 1px solid #dce1e8;
+      }
+
+      .note {
+        color: #657187;
+        font-size: 13px;
+      }
+
+      .book-image {
+        display: block;
+        width: 100%;
+        max-width: 260px;
+        height: auto;
+        margin: 10px 0;
+        border-radius: 5px;
+      }
+
+      .sample-link {
+        display: inline-block;
+        padding: 8px 13px;
+        color: white;
+        background: #243b63;
+        text-decoration: none;
+        border-radius: 4px;
+      }
+
+      .sample-link:hover {
+        background: #8b5e3c;
+      }
+
+      .list-samples {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 15px;
+      }
+
+      .list-samples > div {
+        padding: 12px;
+        background: #fff;
+        border: 1px solid #dce1e8;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+      }
+
+      caption {
+        padding: 10px;
+        font-weight: bold;
+        color: #243b63;
+      }
+
+      th,
+      td {
+        padding: 10px;
+        border: 1px solid #cbd2dc;
+        text-align: left;
+      }
+
+      th {
+        background: #e9edf3;
+      }
+
+      .progress-row {
+        margin: 15px 0;
+      }
+
+      progress,
+      meter {
+        width: 100%;
+        height: 22px;
+      }
+
+      pre {
+        max-width: 100%;
+        padding: 14px;
+        overflow-x: auto;
+        background: #202938;
+        color: #fff;
+        border-radius: 5px;
+      }
+
+      code,
+      kbd,
+      samp {
+        overflow-wrap: anywhere;
+      }
+
+      .entity-samples {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .entity-samples span {
+        padding: 10px 14px;
+        background: #fff;
+        border: 1px solid #dce1e8;
+      }
+
+      .mini-map {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+        max-width: 360px;
+      }
+
+      .mini-map a {
+        display: block;
+        padding: 25px 10px;
+        text-align: center;
+        color: #243b63;
+        background: #e9edf3;
+        border: 1px solid #cbd2dc;
+      }
+
+      .mini-map a:hover {
+        background: #d7e9e9;
+      }
+
+      @media (max-width: 850px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+        .toc {
+          position: static;
+          max-height: none;
+        }
+        .toc > ol {
+          columns: 2;
+          column-gap: 25px;
+        }
+        .content {
+          padding: 18px;
+        }
+      }
+
+      @media (max-width: 500px) {
+        .site-header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .toc > ol {
+          columns: 1;
+        }
+        .content > h2 {
+          font-size: 25px;
+        }
+        th,
+        td {
+          padding: 7px;
+          font-size: 13px;
+        }
+      }
+
+      footer p {
+        font-family:
+          "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+          "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+        text-align: center;
+        background-color: hsl(287, 93%, 65%);
+        color: #000;
+        padding: 12px;
+        margin-top: 40px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="menu">
+      <a href="HomePage.html" class="logo">BIBLUNE</a>
+      <ul>
+        <li><a href="HomePage.html">Home</a></li>
+        <li><a href="#">Books</a></li>
+        <li><a href="#">Categories</a></li>
+        <li class="dropdown">
+          <details>
+            <summary>Chapter ▾</summary>
+            <div class="dropdown-content">
+              <a href="chapter_01.html">01. Getting to Know HTML</a>
+              <a href="chapter_02.html">02. HTML Elements</a>
+              <a href="chapter_03.html">03. HTML Styles</a>
+              <a href="chapter_04.html">04. Semantic HTML</a>
+              <a href="chapter_05.html">05. Web Forms</a>
+              <a href="chapter_06.html">06. HTML Multimedia</a>
+              <a href="chapter_07.html">07. HTML Graphics</a>
+              <a href="chapter_08.html">08. HTML Advanced</a>
+              <a href="chapter_09.html">09. HTML Events</a>
+              <a href="chapter_10.html">10. HTML APIs</a>
+              <a href="chapter_11.html">11. Getting to Know CSS</a>
+              <a href="chapter_12.html">12. CSS Selectors</a>
+              <a href="chapter_13.html">13. CSS Cascading</a>
+              <a href="chapter_14.html">14. CSS Box Model</a>
+              <a href="chapter_15.html">15. CSS Colors</a>
+              <a href="chapter_16.html">16. CSS Text</a>
+              <a href="chapter_17.html">17. CSS Backgrounds</a>
+              <a href="chapter_18.html">18. CSS Display</a>
+              <a href="chapter_19.html">19. CSS Layout</a>
+              <a href="chapter_20.html">20. CSS Transitions and Animations</a>
+              <a href="chapter_21.html">21. Advanced CSS</a>
+              <a href="chapter_22.html">22. Responsive CSS</a>
+            </div>
+          </details>
+        </li>
+        <li><a href="#info">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <section class="chapter-heading">
+      <p class="eyebrow">CHAPTER 04</p>
+      <h1>SEMANTIC HTML</h1>
+      <p>
+        Give meaning and structure to a webpage with semantic HTML elements.
+      </p>
+    </section>
+    <main class="layout">
+      <aside class="toc">
+        <h2>Table of Contents</h2>
+        <ol>
+          <li>
+            <a href="#semantic-elements">Semantic Elements</a>
+            <ol>
+              <li><a href="#blockquote">&lt;blockquote&gt;</a></li>
+              <li><a href="#address">&lt;address&gt;</a></li>
+              <li>
+                <a href="#details">&lt;details&gt; and &lt;summary&gt;</a>
+              </li>
+              <li>
+                <a href="#figure">&lt;figure&gt; and &lt;figcaption&gt;</a>
+              </li>
+            </ol>
+          </li>
+          <li><a href="#semantic-layout">Semantic Layout Elements</a></li>
+          <li>
+            <a href="#semantic-formatting">Semantic Formatting Elements</a>
+            <ol>
+              <li><a href="#strong">&lt;strong&gt;</a></li>
+              <li><a href="#em">&lt;em&gt;</a></li>
+            </ol>
+          </li>
+        </ol>
+      </aside>
+      <article class="content">
+        <h2>Welcome to Semantic HTML!</h2>
+        <p>
+          Semantic HTML uses elements that describe the meaning of their
+          content. This helps browsers, search engines and assistive
+          technologies understand a webpage's structure.
+        </p>
+        <section class="topic" id="semantic-elements">
+          <h3>4.1 Semantic Elements</h3>
+          <p>
+            Semantic elements explain what a piece of content represents instead
+            of only describing how it looks.
+          </p>
+          <div class="demo">
+            <p class="demo-label">Example</p>
+            <div class="output">
+              <article>
+                <h4>Book of the Week</h4>
+                <p>
+                  This article introduces a featured book from the BIBLUNE
+                  collection.
+                </p>
+              </article>
+              <p class="note">
+                The article element identifies a self-contained piece of
+                content.
+              </p>
+            </div>
+          </div>
+        </section>
+        <section class="topic" id="blockquote">
+          <h3>4.1.1 &lt;blockquote&gt;</h3>
+          <p>
+            The <code>&lt;blockquote&gt;</code> element marks a longer quotation
+            taken from another source. The <code>cite</code> attribute can
+            provide the source URL.
+          </p>
+          <div class="demo">
+            <p class="demo-label">Live Example</p>
+            <div class="output">
+              <blockquote cite="https://example.com/reading">
+                <p>
+                  “A book is a doorway to new ideas, places and possibilities.”
+                </p>
+              </blockquote>
+              <p class="note">
+                A blockquote is normally displayed as an indented quotation.
+              </p>
+            </div>
+          </div>
+        </section>
+        <section class="topic" id="address">
+          <h3>4.1.2 &lt;address&gt;</h3>
+          <p>
+            The <code>&lt;address&gt;</code> element provides contact
+            information for the nearest article or the whole page.
+          </p>
+          <div class="demo">
+            <p class="demo-label">Live Example</p>
+            <div class="output">
+              <address>
+                BIBLUNE Bookstore<br />
+                24 Readers' Lane, Dhaka, Bangladesh<br />
+                Email:
+                <a href="mailto:hello@biblune.example">hello@biblune.example</a>
+              </address>
+            </div>
+          </div>
+          <p class="note">
+            Use real contact details for a real website. The details above are
+            examples.
+          </p>
+        </section>
+        <section class="topic" id="details">
+          <h3>4.1.3 &lt;details&gt; and &lt;summary&gt;</h3>
+          <p>
+            The <code>&lt;details&gt;</code> element creates a disclosure widget
+            that users can open or close. Its first child should usually be a
+            <code>&lt;summary&gt;</code> element that acts as the visible label.
+          </p>
+          <div class="demo">
+            <p class="demo-label">Try It — Click the Summary</p>
+            <div class="output">
+              <details>
+                <summary>What makes BIBLUNE special?</summary>
+                <p>
+                  BIBLUNE brings fiction, science and classic books together in
+                  one welcoming online bookstore.
+                </p>
+              </details>
+              <details>
+                <summary>How can I find a book?</summary>
+                <p>
+                  Browse by category or use the search feature on the main
+                  bookstore page.
+                </p>
+              </details>
+            </div>
+          </div>
+        </section>
+        <section class="topic" id="figure">
+          <h3>4.1.4 &lt;figure&gt; and &lt;figcaption&gt;</h3>
+          <p>
+            The <code>&lt;figure&gt;</code> element groups self-contained
+            content, such as an image or illustration. The
+            <code>&lt;figcaption&gt;</code> element provides its caption.
+          </p>
+          <div class="demo">
+            <p class="demo-label">Live Example</p>
+            <div class="output">
+              <figure>
+                <img
+                  class="book-image"
+                  src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=500"
+                  alt="A book displayed on a neutral background"
+                />
+                <figcaption>
+                  Figure 4.1 — A featured book from the BIBLUNE collection.
+                </figcaption>
+              </figure>
+            </div>
+          </div>
+        </section>
+        <section class="topic" id="semantic-layout">
+          <h3>4.2 Semantic Layout Elements</h3>
+          <p>
+            Semantic layout elements describe the main regions of a webpage and
+            make its structure easier to understand.
+          </p>
+          <div class="demo">
+            <p class="demo-label">Layout Example</p>
+            <div class="output">
+              <header
+                style="
+                  padding: 12px;
+                  background: #e9edf3;
+                  border: 1px solid #cbd2dc;
+                "
+              >
+                <strong>header</strong> — Logo and introductory content
+              </header>
+              <nav
+                aria-label="Book categories"
+                style="
+                  padding: 12px;
+                  background: #f3eee8;
+                  border: 1px solid #cbd2dc;
+                "
+              >
+                <strong>nav</strong> — <a href="#figure">Fiction</a> |
+                <a href="#figure">Science</a> | <a href="#figure">Classics</a>
+              </nav>
+              <main
+                style="
+                  padding: 12px;
+                  background: #fff;
+                  border: 1px solid #cbd2dc;
+                "
+              >
+                <strong>main</strong> — The page's primary content
+                <section
+                  style="margin-top: 8px; padding: 10px; background: #faf8f5"
+                >
+                  <strong>section</strong> — A group of related books
+                  <article
+                    style="
+                      margin-top: 8px;
+                      padding: 10px;
+                      background: #fff;
+                      border: 1px solid #dce1e8;
+                    "
+                  >
+                    <strong>article</strong> — One book review or story
+                  </article>
+                </section>
+                <aside
+                  style="margin-top: 8px; padding: 10px; background: #f3eee8"
+                >
+                  <strong>aside</strong> — Related recommendations
+                </aside>
+              </main>
+              <footer
+                style="
+                  padding: 12px;
+                  background: #e9edf3;
+                  border: 1px solid #cbd2dc;
+                "
+              >
+                <strong>footer</strong> — Copyright and contact links
+              </footer>
+            </div>
+          </div>
+          <h4>Common Semantic Layout Tags</h4>
+          <table>
+            <caption>
+              Purpose of Each Element
+            </caption>
+            <tr>
+              <th>Element</th>
+              <th>Purpose</th>
+            </tr>
+            <tr>
+              <td><code>&lt;header&gt;</code></td>
+              <td>Introductory content or a page/section header</td>
+            </tr>
+            <tr>
+              <td><code>&lt;nav&gt;</code></td>
+              <td>A group of navigation links</td>
+            </tr>
+            <tr>
+              <td><code>&lt;main&gt;</code></td>
+              <td>The page's main content</td>
+            </tr>
+            <tr>
+              <td><code>&lt;section&gt;</code></td>
+              <td>A themed group of related content</td>
+            </tr>
+            <tr>
+              <td><code>&lt;article&gt;</code></td>
+              <td>Self-contained content, such as a review</td>
+            </tr>
+            <tr>
+              <td><code>&lt;aside&gt;</code></td>
+              <td>Related or supplementary content</td>
+            </tr>
+            <tr>
+              <td><code>&lt;footer&gt;</code></td>
+              <td>Footer information for a page or section</td>
+            </tr>
+          </table>
+          <p class="note">
+            The example layout is shown inside the demo area; a real webpage
+            should not nest a second main element inside the page's main
+            content.
+          </p>
+        </section>
+        <section class="topic" id="semantic-formatting">
+          <h3>4.3 Semantic Formatting Elements</h3>
+          <p>
+            Semantic formatting elements give text meaning or emphasis. They are
+            not just visual styling choices.
+          </p>
+          <div class="demo">
+            <p class="demo-label">Quick Comparison</p>
+            <div class="output">
+              <p>
+                <strong>Important:</strong> Keep your account details private.
+              </p>
+              <p><em>Emphasis:</em> I really recommend this book.</p>
+            </div>
+          </div>
+        </section>
+        <section class="topic" id="strong">
+          <h3>4.3.1 &lt;strong&gt;</h3>
+          <p>
+            The <code>&lt;strong&gt;</code> element marks text as having strong
+            importance, seriousness or urgency. Browsers commonly display it in
+            bold.
+          </p>
+          <div class="demo">
+            <p class="demo-label">Live Example</p>
+            <div class="output">
+              <p>
+                <strong>Important:</strong> Please check the book edition before
+                placing your order.
+              </p>
+              <p>Normal text: Orders are processed during business hours.</p>
+            </div>
+          </div>
+        </section>
+        <section class="topic" id="em">
+          <h3>4.3.2 &lt;em&gt;</h3>
+          <p>
+            The <code>&lt;em&gt;</code> element adds stress emphasis to text.
+            Browsers commonly display emphasized text in italics. You can nest
+            it to express stronger emphasis.
+          </p>
+          <div class="demo">
+            <p class="demo-label">Live Example</p>
+            <div class="output">
+              <p>You should <em>definitely</em> read this novel.</p>
+              <p>I said, read the <em>first</em> chapter, not the last one.</p>
+            </div>
+          </div>
+          <p class="note">
+            Use <code>&lt;strong&gt;</code> for importance and
+            <code>&lt;em&gt;</code> for stress emphasis. For appearance alone,
+            CSS is usually more appropriate.
+          </p>
+        </section>
+      </article>
+    </main>
+    <footer>
+      <p>BIBLUNE | HTML &amp; CSS Project</p>
+    </footer>
+  </body>
+</html>

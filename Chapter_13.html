@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chapter_13</title>
+    <style>
+      .logo {
+        font-family: cursive;
+        font-size: 35px;
+        font-style: italic;
+        background-color: hsl(287, 93%, 65%);
+        font-weight: bold;
+        color: #000000;
+        text-decoration: none;
+        letter-spacing: 2px;
+      }
+
+      .menu {
+        width: 100%;
+        background-color: hsl(287, 93%, 65%);
+        display: flow-root;
+        overflow: visible;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      .menu ul {
+        list-style: none;
+        margin-right: 30px;
+      }
+
+      .menu ul li {
+        font-family:
+          "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+        float: left;
+      }
+
+      .menu ul li a {
+        display: block;
+        padding: 14px 18px;
+        color: rgb(8, 8, 8);
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .menu ul li a:hover {
+        background-color: #520172;
+        color: rgb(251, 249, 249);
+      }
+
+      .dropdown {
+        position: relative;
+      }
+
+      .dropdown details summary {
+        display: block;
+        padding: 14px 18px;
+        color: black;
+        font-weight: bold;
+        cursor: pointer;
+        list-style: none;
+      }
+
+      .dropdown details summary:hover {
+        background-color: #520172;
+        color: #ffff;
+      }
+
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        min-width: 160px;
+        max-height: 300px;
+        overflow-y: auto;
+        background-color: hsl(287, 93%, 65%);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        opacity: 80%;
+        z-index: 1000;
+      }
+
+      .dropdown details[open] .dropdown-content {
+        display: block;
+      }
+
+      .dropdown-content a {
+        display: block;
+        padding: 10px 15px;
+        color: white;
+        text-decoration: none;
+        white-space: nowrap;
+      }
+
+      .dropdown-content a:hover {
+        background-color: #520172;
+        color: #ffffff;
+      }
+
+      footer p {
+        font-family:
+          "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+          "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+        text-align: center;
+        background-color: hsl(287, 93%, 65%);
+        color: #000;
+        padding: 12px;
+        margin-top: 40px;
+      }
+
+      .chapter-heading {
+        padding: 30px 20px;
+        text-align: center;
+        background: #ffffff;
+        border-bottom: 1px solid #dce1e8;
+      }
+
+      .chapter-heading .eyebrow {
+        color: #8b5e3c;
+        font-size: 13px;
+        font-weight: bold;
+        letter-spacing: 3px;
+      }
+
+      .chapter-heading h1 {
+        margin: 8px 0;
+        color: #243b63;
+        font-size: clamp(27px, 4vw, 38px);
+      }
+
+      .chapter-heading p {
+        color: #657187;
+      }
+
+      .container {
+        display: flex;
+        gap: 25px;
+        padding: 25px;
+        align-items: flex-start;
+      }
+
+      .toc {
+        width: 200px;
+        min-width: 150px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 12px;
+        position: sticky;
+        top: 100px;
+      }
+
+      .toc h2 {
+        color: #6b3fa0;
+        font-size: 20px;
+      }
+
+      .toc a {
+        display: block;
+        color: #333;
+        text-decoration: none;
+        padding: 8px 0;
+      }
+
+      .toc a:hover {
+        color: #8a2be2;
+      }
+
+      main {
+        flex: 1;
+        min-width: 0;
+      }
+
+      section {
+        background-color: white;
+        padding: 25px;
+        margin-bottom: 25px;
+        border-radius: 12px;
+        box-shadow: 0 3px 10px #ddd;
+      }
+
+      h2,
+      h3 {
+        color: #6b3fa0;
+      }
+
+      .demo {
+        background-color: #f4f0fa;
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 15px;
+      }
+
+      .demo-card {
+        background-color: white;
+        border: 1px solid #ddd;
+        padding: 15px;
+        margin: 12px 0;
+        border-radius: 8px;
+      }
+
+      .result {
+        background-color: #fff;
+        padding: 15px;
+        margin-top: 12px;
+        border-left: 5px solid #8a2be2;
+        border-radius: 6px;
+      }
+
+      .label {
+        font-weight: bold;
+        color: #6b3fa0;
+      }
+
+      #last-demo .sample {
+        color: #287a55;
+      }
+
+      #last-demo .sample {
+        color: #8a2be2;
+      }
+
+      #specificity-demo p {
+        color: #287a55;
+      }
+
+      #specificity-demo .highlight {
+        color: #b05b20;
+      }
+
+      #specificity-demo #specific-book {
+        color: #8a2be2;
+      }
+
+      #inline-demo p {
+        color: #287a55;
+      }
+
+      #important-demo .important-book {
+        color: #8a2be2 !important;
+      }
+
+      #important-demo p {
+        color: #287a55;
+      }
+
+      #inheritance-demo .parent {
+        color: #8a2be2;
+        font-size: 20px;
+        border: 2px solid #bdb0d8;
+        padding: 15px;
+        border-radius: 8px;
+      }
+
+      #inheritance-demo .own-color {
+        color: #287a55;
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          flex-direction: column;
+          padding: 12px;
+        }
+
+        .toc {
+          position: static;
+          width: auto;
+        }
+
+        nav a {
+          display: inline-block;
+          margin: 6px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="menu">
+      <a href="HomePage.html" class="logo">BIBLUNE</a>
+      <ul>
+        <li><a href="HomePage.html">Home</a></li>
+        <li><a href="#">Books</a></li>
+        <li><a href="#">Categories</a></li>
+        <li class="dropdown">
+          <details>
+            <summary>Chapter ▾</summary>
+            <div class="dropdown-content">
+              <a href="chapter_01.html">01. Getting to Know HTML</a>
+              <a href="chapter_02.html">02. HTML Elements</a>
+              <a href="chapter_03.html">03. HTML Styles</a>
+              <a href="chapter_04.html">04. Semantic HTML</a>
+              <a href="chapter_05.html">05. Web Forms</a>
+              <a href="chapter_06.html">06. HTML Multimedia</a>
+              <a href="chapter_07.html">07. HTML Graphics</a>
+              <a href="chapter_08.html">08. HTML Advanced</a>
+              <a href="chapter_09.html">09. HTML Events</a>
+              <a href="chapter_10.html">10. HTML APIs</a>
+              <a href="chapter_11.html">11. Getting to Know CSS</a>
+              <a href="chapter_12.html">12. CSS Selectors</a>
+              <a href="chapter_13.html">13. CSS Cascading</a>
+              <a href="chapter_14.html">14. CSS Box Model</a>
+              <a href="chapter_15.html">15. CSS Colors</a>
+              <a href="chapter_16.html">16. CSS Text</a>
+              <a href="chapter_17.html">17. CSS Backgrounds</a>
+              <a href="chapter_18.html">18. CSS Display</a>
+              <a href="chapter_19.html">19. CSS Layout</a>
+              <a href="chapter_20.html">20. CSS Transitions and Animations</a>
+              <a href="chapter_21.html">21. Advanced CSS</a>
+              <a href="chapter_22.html">22. Responsive CSS</a>
+            </div>
+          </details>
+        </li>
+        <li><a href="#info">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <section class="chapter-heading">
+      <p class="eyebrow">CHAPTER 13</p>
+      <h1>CSS Cascading</h1>
+    </section>
+    <div class="container">
+      <aside class="toc">
+        <h2>Table of Contents</h2>
+        <a href="#last">13.1 The Last Declaration Will Win</a>
+        <a href="#specificity">13.2 The More Specific Declaration</a>
+        <a href="#inline">13.3 Inline Style</a>
+        <a href="#important">13.4 !important Declaration</a>
+        <a href="#inheritance">13.5 Inheritance</a>
+      </aside>
+      <main>
+        <section id="last">
+          <h2>13.1 Rule 1: The Last Declaration Will Win</h2>
+          <p>
+            When two declarations have the same importance and specificity, the
+            declaration that comes later in the CSS wins.
+          </p>
+          <div class="demo" id="last-demo">
+            <div class="demo-card">
+              <p class="sample">The final color is purple.</p>
+            </div>
+            <div class="result">
+              <span class="label">Result:</span>
+              The second matching rule changes the text color to purple because
+              it appears later.
+            </div>
+          </div>
+        </section>
+        <section id="specificity">
+          <h2>13.2 Rule 2: The More Specific Declaration Will Win</h2>
+          <p>
+            When declarations compete at the same cascade priority, the selector
+            with higher specificity wins.
+          </p>
+          <div class="demo" id="specificity-demo">
+            <div class="demo-card">
+              <p>A paragraph selected by its tag.</p>
+              <p class="highlight">A paragraph selected by its class.</p>
+              <p class="highlight" id="specific-book">
+                A paragraph selected by its ID.
+              </p>
+            </div>
+            <div class="result">
+              <span class="label">Result:</span>
+              The ID selector has higher specificity than the class and type
+              selectors.
+            </div>
+          </div>
+        </section>
+        <section id="inline">
+          <h2>
+            13.3 Rule 3: Inline Style Is Preferred to Both Internal and External
+            Styles
+          </h2>
+          <p>
+            For ordinary author declarations, inline styles generally take
+            precedence over matching internal and external stylesheet rules.
+          </p>
+          <div class="demo" id="inline-demo">
+            <div class="demo-card">
+              <p style="color: #8a2be2">This text uses inline styling.</p>
+            </div>
+            <div class="result">
+              <span class="label">Result:</span>
+              The inline color is purple, even though a stylesheet rule sets the
+              paragraph color to green.
+            </div>
+          </div>
+        </section>
+        <section id="important">
+          <h2>
+            13.4 Rule 4: The "!important" Declaration Is the Strongest Rule
+          </h2>
+          <p>
+            The !important annotation gives a declaration higher priority within
+            the cascade.
+          </p>
+          <div class="demo" id="important-demo">
+            <div class="demo-card">
+              <p class="important-book">The important rule wins!</p>
+            </div>
+            <div class="result">
+              <span class="label">Result:</span>
+              The text is purple because its color declaration uses !important,
+              overriding the ordinary rule.
+            </div>
+          </div>
+          <p>
+            Note: !important does not always beat every possible CSS
+            declaration. Cascade origin, importance, layers, and other rules can
+            affect the final result.
+          </p>
+        </section>
+        <section id="inheritance">
+          <h2>13.5 Inheritance</h2>
+          <p>
+            Inheritance allows some CSS properties to pass from a parent element
+            to its child elements.
+          </p>
+          <div class="demo" id="inheritance-demo">
+            <div class="parent">
+              Parent Element
+              <p>This child inherits the parent's text color and font size.</p>
+              <p class="own-color">This child has its own text color.</p>
+            </div>
+            <div class="result">
+              <span class="label">Result:</span>
+              Text color and font size are inherited here, but the parent's
+              border is not automatically inherited by its children.
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+    <footer>
+      <p>BIBLUNE | HTML &amp; CSS Project</p>
+    </footer>
+  </body>
+</html>

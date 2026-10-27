@@ -1,0 +1,850 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chapter_09</title>
+    <style>
+      .logo {
+        font-family: cursive;
+        font-size: 35px;
+        font-style: italic;
+        background-color: hsl(287, 93%, 65%);
+        font-weight: bold;
+        color: #000000;
+        text-decoration: none;
+        letter-spacing: 2px;
+      }
+
+      .menu {
+        width: 100%;
+        background-color: hsl(287, 93%, 65%);
+        display: flow-root;
+        overflow: visible;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      .menu ul {
+        list-style: none;
+        margin-right: 30px;
+      }
+
+      .menu ul li {
+        font-family:
+          "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+        float: left;
+      }
+
+      .menu ul li a {
+        display: block;
+        padding: 14px 18px;
+        color: rgb(8, 8, 8);
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .menu ul li a:hover {
+        background-color: #520172;
+        color: rgb(251, 249, 249);
+      }
+
+      .dropdown {
+        position: relative;
+      }
+
+      .dropdown details summary {
+        display: block;
+        padding: 14px 18px;
+        color: black;
+        font-weight: bold;
+        cursor: pointer;
+        list-style: none;
+      }
+
+      .dropdown details summary:hover {
+        background-color: #520172;
+        color: #ffff;
+      }
+
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        min-width: 160px;
+        max-height: 300px;
+        overflow-y: auto;
+        background-color: hsl(287, 93%, 65%);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        opacity: 80%;
+        z-index: 1000;
+      }
+
+      .dropdown details[open] .dropdown-content {
+        display: block;
+      }
+
+      .dropdown-content a {
+        display: block;
+        padding: 10px 15px;
+        color: white;
+        text-decoration: none;
+        white-space: nowrap;
+      }
+
+      .dropdown-content a:hover {
+        background-color: #520172;
+        color: #ffffff;
+      }
+
+      footer p {
+        font-family:
+          "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+          "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+        text-align: center;
+        background-color: hsl(287, 93%, 65%);
+        color: #000;
+        padding: 12px;
+        margin-top: 40px;
+      }
+
+      .chapter-heading {
+        padding: 30px 20px;
+        text-align: center;
+        background: #ffffff;
+        border-bottom: 1px solid #dce1e8;
+      }
+
+      .chapter-heading .eyebrow {
+        color: #8b5e3c;
+        font-size: 13px;
+        font-weight: bold;
+        letter-spacing: 3px;
+      }
+
+      .chapter-heading h1 {
+        margin: 8px 0;
+        color: #243b63;
+        font-size: clamp(27px, 4vw, 38px);
+      }
+
+      .chapter-heading p {
+        color: #657187;
+      }
+
+      .page-layout {
+        display: grid;
+        grid-template-columns: 235px minmax(0, 1fr);
+        gap: 25px;
+        max-width: 1200px;
+        margin: 30px auto;
+        padding: 0 20px;
+        align-items: start;
+      }
+
+      .toc,
+      .content-card {
+        background: white;
+        border-radius: 15px;
+        padding: 23px;
+        box-shadow: 0 5px 18px #29234412;
+      }
+
+      .toc {
+        position: sticky;
+        top: 100px;
+      }
+
+      .toc h2 {
+        font-size: 20px;
+        margin-top: 0;
+        color: #6840a0;
+      }
+
+      .toc a {
+        display: block;
+        color: #51466c;
+        text-decoration: none;
+        padding: 7px 0;
+        border-bottom: 1px solid #f0ebfa;
+      }
+
+      .toc a:hover {
+        color: #a34bd5;
+      }
+
+      h2,
+      h3 {
+        color: #6840a0;
+      }
+
+      .chapter-title {
+        margin-top: 0;
+        font-size: 30px;
+      }
+
+      .intro {
+        background: #f4edff;
+        border-left: 5px solid #a66bd4;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 25px;
+      }
+
+      .demo-section {
+        padding: 20px 0;
+        border-bottom: 1px solid #eee8f7;
+        scroll-margin-top: 20px;
+      }
+
+      .demo-section:last-child {
+        border-bottom: none;
+      }
+
+      .demo-box {
+        background: #fcfaff;
+        border: 1px solid #e7ddf5;
+        border-radius: 12px;
+        padding: 20px;
+        margin-top: 15px;
+      }
+
+      .demo-box.center {
+        text-align: center;
+      }
+
+      .demo-button {
+        border: none;
+        border-radius: 8px;
+        padding: 10px 18px;
+        margin: 5px;
+        background: #6840a0;
+        color: white;
+        font: inherit;
+        cursor: pointer;
+      }
+
+      .demo-button:hover {
+        background: #8b42c5;
+      }
+
+      .demo-input,
+      .demo-select,
+      .demo-textarea {
+        display: block;
+        width: 100%;
+        max-width: 500px;
+        padding: 11px;
+        margin: 10px 0;
+        border: 1px solid #cfc2e5;
+        border-radius: 7px;
+        font: inherit;
+        background: white;
+        color: #28243a;
+      }
+
+      .demo-input:focus,
+      .demo-textarea:focus,
+      .demo-select:focus {
+        outline: 2px solid #a66bd4;
+        border-color: #6840a0;
+      }
+
+      .event-output {
+        background: #eee5ff;
+        color: #4e3479;
+        border-radius: 8px;
+        padding: 12px;
+        margin-top: 12px;
+        min-height: 45px;
+        overflow-wrap: anywhere;
+      }
+
+      .event-area {
+        min-height: 140px;
+        border: 2px dashed #b49bdd;
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+        background: #f7f1ff;
+        cursor: pointer;
+        user-select: text;
+      }
+
+      .event-area.active {
+        background: #e2f5ec;
+        border-color: #8bc9a9;
+      }
+
+      .event-area.pressed {
+        background: #fff2c7;
+        border-color: #e5c76d;
+      }
+
+      .note {
+        color: #655b78;
+        font-size: 14px;
+      }
+
+      .event-label {
+        display: inline-block;
+        background: #eee3ff;
+        color: #6840a0;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: bold;
+      }
+
+      @media (max-width: 780px) {
+        .page-layout {
+          grid-template-columns: 1fr;
+          margin: 15px auto;
+          padding: 0 12px;
+        }
+
+        .toc {
+          position: static;
+        }
+
+        header h1 {
+          font-size: 29px;
+        }
+
+        .content-card,
+        .toc {
+          padding: 18px;
+        }
+
+        nav {
+          gap: 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="menu">
+      <a href="HomePage.html" class="logo">BIBLUNE</a>
+      <ul>
+        <li><a href="HomePage.html">Home</a></li>
+        <li><a href="#">Books</a></li>
+        <li><a href="#">Categories</a></li>
+        <li class="dropdown">
+          <details>
+            <summary>Chapter ▾</summary>
+            <div class="dropdown-content">
+              <a href="chapter_01.html">01. Getting to Know HTML</a>
+              <a href="chapter_02.html">02. HTML Elements</a>
+              <a href="chapter_03.html">03. HTML Styles</a>
+              <a href="chapter_04.html">04. Semantic HTML</a>
+              <a href="chapter_05.html">05. Web Forms</a>
+              <a href="chapter_06.html">06. HTML Multimedia</a>
+              <a href="chapter_07.html">07. HTML Graphics</a>
+              <a href="chapter_08.html">08. HTML Advanced</a>
+              <a href="chapter_09.html">09. HTML Events</a>
+              <a href="chapter_10.html">10. HTML APIs</a>
+              <a href="chapter_11.html">11. Getting to Know CSS</a>
+              <a href="chapter_12.html">12. CSS Selectors</a>
+              <a href="chapter_13.html">13. CSS Cascading</a>
+              <a href="chapter_14.html">14. CSS Box Model</a>
+              <a href="chapter_15.html">15. CSS Colors</a>
+              <a href="chapter_16.html">16. CSS Text</a>
+              <a href="chapter_17.html">17. CSS Backgrounds</a>
+              <a href="chapter_18.html">18. CSS Display</a>
+              <a href="chapter_19.html">19. CSS Layout</a>
+              <a href="chapter_20.html">20. CSS Transitions and Animations</a>
+              <a href="chapter_21.html">21. Advanced CSS</a>
+              <a href="chapter_22.html">22. Responsive CSS</a>
+            </div>
+          </details>
+        </li>
+        <li><a href="#info">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <div class="page-layout">
+      <aside class="toc">
+        <h2>Chapter 9</h2>
+        <a href="#overview">Overview</a>
+        <a href="#window-events">9.1 Window Events</a>
+        <a href="#onload">9.1.1 onload</a>
+        <a href="#onresize">9.1.2 onresize</a>
+        <a href="#form-events">9.2 Form Events</a>
+        <a href="#onfocus">9.2.1 onfocus</a>
+        <a href="#onblur">9.2.2 onblur</a>
+        <a href="#onchange">9.2.3 onchange</a>
+        <a href="#oninput">9.2.4 oninput</a>
+        <a href="#keyboard-events">9.3 Keyboard Events</a>
+        <a href="#onkeydown">9.3.1 onkeydown</a>
+        <a href="#onkeyup">9.3.2 onkeyup</a>
+        <a href="#onkeypress">9.3.3 onkeypress</a>
+        <a href="#mouse-events">9.4 Mouse Events</a>
+        <a href="#onclick">9.4.1 onclick</a>
+        <a href="#ondblclick">9.4.2 ondblclick</a>
+        <a href="#onmousemove">9.4.3 onmousemove</a>
+        <a href="#onmousedown">9.4.4 onmousedown / onmouseup</a>
+        <a href="#onmouseover">9.4.5 onmouseover / onmouseout</a>
+        <a href="#clipboard-events">9.5 Clipboard Events</a>
+        <a href="#oncopy">9.5.1 oncopy</a>
+        <a href="#oncut">9.5.2 oncut</a>
+        <a href="#onpaste">9.5.3 onpaste</a>
+      </aside>
+      <main class="content-card">
+        <section class="chapter-heading">
+          <p class="eyebrow">CHAPTER 09</p>
+          <h1>HTML Events</h1>
+          <p>
+            Events are commonly handled using JavaScript to make webpages
+            interactive.
+          </p>
+        </section>
+        <section id="window-events" class="demo-section">
+          <h2>9.1 Window Events</h2>
+          <p>
+            Window events occur when something happens to the browser window,
+            such as loading a page or changing its size.
+          </p>
+        </section>
+        <section id="onload" class="demo-section">
+          <h3>9.1.1 onload</h3>
+          <p>
+            The onload event occurs when the page and its required resources
+            have finished loading.
+          </p>
+          <div class="demo-box">
+            <h3>Page Load Status</h3>
+            <p>This message is displayed after the page has loaded.</p>
+            <div id="loadOutput" class="event-output">
+              Waiting for page load...
+            </div>
+          </div>
+        </section>
+        <section id="onresize" class="demo-section">
+          <h3>9.1.2 onresize</h3>
+          <p>The onresize event occurs when the browser window is resized.</p>
+          <div class="demo-box">
+            <h3>Resize the Browser</h3>
+            <p>
+              Change the width of the browser window to see the current
+              dimensions.
+            </p>
+            <div id="resizeOutput" class="event-output">
+              Window size will appear here.
+            </div>
+          </div>
+        </section>
+        <section id="form-events" class="demo-section">
+          <h2>9.2 Form Events</h2>
+          <p>
+            Form events occur when users interact with input fields, text areas,
+            and selection controls.
+          </p>
+        </section>
+        <section id="onfocus" class="demo-section">
+          <h3>9.2.1 onfocus</h3>
+          <p>The onfocus event occurs when an input field receives focus.</p>
+          <div class="demo-box">
+            <label for="focusInput"> Click inside the input: </label>
+            <input
+              type="text"
+              id="focusInput"
+              class="demo-input"
+              placeholder="Click here"
+            />
+            <div id="focusOutput" class="event-output">
+              The input is not focused.
+            </div>
+          </div>
+        </section>
+        <section id="onblur" class="demo-section">
+          <h3>9.2.2 onblur</h3>
+          <p>The onblur event occurs when an input field loses focus.</p>
+          <div class="demo-box">
+            <label for="blurInput"> Enter something and click outside: </label>
+            <input
+              type="text"
+              id="blurInput"
+              class="demo-input"
+              placeholder="Type your name"
+            />
+            <div id="blurOutput" class="event-output">
+              Waiting for the input to lose focus.
+            </div>
+          </div>
+        </section>
+        <section id="onchange" class="demo-section">
+          <h3>9.2.3 onchange</h3>
+          <p>
+            The onchange event occurs when the value of a form control changes
+            and the change is committed.
+          </p>
+          <div class="demo-box">
+            <label for="bookSelect"> Choose a book category: </label>
+            <select id="bookSelect" class="demo-select">
+              <option value="">Select a category</option>
+              <option value="Fiction">Fiction</option>
+              <option value="Poetry">Poetry</option>
+              <option value="Science">Science</option>
+              <option value="History">History</option>
+            </select>
+            <div id="changeOutput" class="event-output">
+              Your selection will appear here.
+            </div>
+          </div>
+        </section>
+        <section id="oninput" class="demo-section">
+          <h3>9.2.4 oninput</h3>
+          <p>
+            The oninput event occurs whenever the value of an input field
+            changes.
+          </p>
+          <div class="demo-box">
+            <label for="inputDemo"> Type something: </label>
+            <input
+              type="text"
+              id="inputDemo"
+              class="demo-input"
+              placeholder="Start typing..."
+            />
+            <div id="inputOutput" class="event-output">
+              Your typed text will appear here.
+            </div>
+          </div>
+        </section>
+        <section id="keyboard-events" class="demo-section">
+          <h2>9.3 Keyboard Events</h2>
+          <p>
+            Keyboard events occur when a user presses or releases a keyboard
+            key.
+          </p>
+        </section>
+        <section id="onkeydown" class="demo-section">
+          <h3>9.3.1 onkeydown</h3>
+          <p>The onkeydown event occurs when a keyboard key is pressed down.</p>
+          <div class="demo-box">
+            <label for="keydownInput"> Press a key inside this field: </label>
+            <input
+              type="text"
+              id="keydownInput"
+              class="demo-input"
+              placeholder="Press any key"
+            />
+            <div id="keydownOutput" class="event-output">
+              No key pressed yet.
+            </div>
+          </div>
+        </section>
+        <section id="onkeyup" class="demo-section">
+          <h3>9.3.2 onkeyup</h3>
+          <p>
+            The onkeyup event occurs when a pressed keyboard key is released.
+          </p>
+          <div class="demo-box">
+            <label for="keyupInput"> Press and release a key: </label>
+            <input
+              type="text"
+              id="keyupInput"
+              class="demo-input"
+              placeholder="Release a key"
+            />
+            <div id="keyupOutput" class="event-output">
+              No key released yet.
+            </div>
+          </div>
+        </section>
+        <section id="onkeypress" class="demo-section">
+          <h3>9.3.3 onkeypress</h3>
+          <p>
+            The onkeypress event was used for character-producing key presses.
+            It is deprecated in modern browsers.
+          </p>
+          <div class="demo-box">
+            <label for="keypressInput"> Type a character: </label>
+            <input
+              type="text"
+              id="keypressInput"
+              class="demo-input"
+              placeholder="Type a character"
+            />
+            <div id="keypressOutput" class="event-output">
+              Character information will appear here.
+            </div>
+            <p class="note">
+              Modern applications generally use keydown or input instead of
+              keypress.
+            </p>
+          </div>
+        </section>
+        <section id="mouse-events" class="demo-section">
+          <h2>9.4 Mouse Events</h2>
+          <p>
+            Mouse events occur when a user clicks, moves, presses, or releases a
+            mouse button.
+          </p>
+        </section>
+        <section id="onclick" class="demo-section">
+          <h3>9.4.1 onclick</h3>
+          <p>The onclick event occurs when an element is clicked.</p>
+          <div class="demo-box center">
+            <button type="button" id="clickButton" class="demo-button">
+              Click Me
+            </button>
+            <div id="clickOutput" class="event-output">
+              Button has not been clicked.
+            </div>
+          </div>
+        </section>
+        <section id="ondblclick" class="demo-section">
+          <h3>9.4.2 ondblclick</h3>
+          <p>The ondblclick event occurs when an element is double-clicked.</p>
+          <div class="demo-box center">
+            <button type="button" id="doubleClickButton" class="demo-button">
+              Double Click Me
+            </button>
+            <div id="doubleClickOutput" class="event-output">
+              Double-click the button.
+            </div>
+          </div>
+        </section>
+        <section id="onmousemove" class="demo-section">
+          <h3>9.4.3 onmousemove</h3>
+          <p>
+            The onmousemove event occurs whenever the mouse pointer moves over
+            an element.
+          </p>
+          <div class="demo-box">
+            <div id="mouseMoveArea" class="event-area">
+              <h3>Move Your Mouse Here</h3>
+              <p>Move the pointer inside this area.</p>
+            </div>
+            <div id="mouseMoveOutput" class="event-output">
+              Mouse coordinates will appear here.
+            </div>
+          </div>
+        </section>
+        <section id="onmousedown" class="demo-section">
+          <h3>9.4.4 onmousedown and onmouseup</h3>
+          <p>
+            The onmousedown event occurs when a mouse button is pressed down.
+            The onmouseup event occurs when the button is released.
+          </p>
+          <div class="demo-box">
+            <div id="mousePressArea" class="event-area">
+              <h3>Press and Release</h3>
+              <p>Press and release your mouse button inside this area.</p>
+            </div>
+            <div id="mousePressOutput" class="event-output">
+              Waiting for mouse action.
+            </div>
+          </div>
+        </section>
+        <section id="onmouseover" class="demo-section">
+          <h3>9.4.5 onmouseover and onmouseout</h3>
+          <p>
+            The onmouseover event occurs when the pointer enters an element. The
+            onmouseout event occurs when the pointer leaves it.
+          </p>
+          <div class="demo-box">
+            <div id="mouseOverArea" class="event-area">
+              <h3>Move the Pointer Here</h3>
+              <p>Move in and out of this area.</p>
+            </div>
+            <div id="mouseOverOutput" class="event-output">
+              Pointer is outside the area.
+            </div>
+          </div>
+        </section>
+        <section id="clipboard-events" class="demo-section">
+          <h2>9.5 Clipboard Events</h2>
+          <p>Clipboard events occur when users copy, cut, or paste content.</p>
+          <p class="note">
+            Clipboard operations may be restricted by browser security rules.
+            Use the browser's normal keyboard shortcuts or context menu.
+          </p>
+        </section>
+        <section id="oncopy" class="demo-section">
+          <h3>9.5.1 oncopy</h3>
+          <p>The oncopy event occurs when content is copied from an element.</p>
+          <div class="demo-box">
+            <label for="copyText"> Select and copy this text: </label>
+            <textarea id="copyText" class="demo-textarea" rows="4">
+Welcome to BIBLUNE, a little world of books.</textarea
+            >
+            <div id="copyOutput" class="event-output">
+              Copy some text to see the event.
+            </div>
+          </div>
+        </section>
+        <section id="oncut" class="demo-section">
+          <h3>9.5.2 oncut</h3>
+          <p>
+            The oncut event occurs when selected content is cut from an editable
+            element.
+          </p>
+          <div class="demo-box">
+            <label for="cutText"> Select text and cut it: </label>
+            <textarea id="cutText" class="demo-textarea" rows="4">
+Books are a source of knowledge and imagination.</textarea
+            >
+            <div id="cutOutput" class="event-output">
+              Cut some text to see the event.
+            </div>
+          </div>
+        </section>
+        <section id="onpaste" class="demo-section">
+          <h3>9.5.3 onpaste</h3>
+          <p>
+            The onpaste event occurs when content is pasted into an editable
+            element.
+          </p>
+
+          <div class="demo-box">
+            <label for="pasteText"> Paste text into this field: </label>
+            <textarea
+              id="pasteText"
+              class="demo-textarea"
+              rows="4"
+              placeholder="Paste text here..."
+            ></textarea>
+            <div id="pasteOutput" class="event-output">
+              Paste some text to see the event.
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+    <footer>
+      <p>BIBLUNE | HTML &amp; CSS Project</p>
+    </footer>
+
+    <script>
+      window.onload = function () {
+        document.getElementById("loadOutput").textContent =
+          "The page has successfully loaded!";
+      };
+
+      function showWindowSize() {
+        document.getElementById("resizeOutput").textContent =
+          "Width: " +
+          window.innerWidth +
+          "px | Height: " +
+          window.innerHeight +
+          "px";
+      }
+
+      window.addEventListener("resize", showWindowSize);
+      showWindowSize();
+
+      const focusInput = document.getElementById("focusInput");
+      focusInput.addEventListener("focus", function () {
+        document.getElementById("focusOutput").textContent =
+          "The input field is focused.";
+      });
+
+      const blurInput = document.getElementById("blurInput");
+      blurInput.addEventListener("blur", function () {
+        document.getElementById("blurOutput").textContent =
+          "The input lost focus. Value: " + blurInput.value;
+      });
+
+      const bookSelect = document.getElementById("bookSelect");
+      bookSelect.addEventListener("change", function () {
+        document.getElementById("changeOutput").textContent =
+          "Selected category: " + bookSelect.value;
+      });
+
+      const inputDemo = document.getElementById("inputDemo");
+      inputDemo.addEventListener("input", function () {
+        document.getElementById("inputOutput").textContent =
+          "You typed: " + inputDemo.value;
+      });
+
+      const keydownInput = document.getElementById("keydownInput");
+      keydownInput.addEventListener("keydown", function (event) {
+        document.getElementById("keydownOutput").textContent =
+          "Key pressed: " + event.key;
+      });
+
+      const keyupInput = document.getElementById("keyupInput");
+      keyupInput.addEventListener("keyup", function (event) {
+        document.getElementById("keyupOutput").textContent =
+          "Key released: " + event.key;
+      });
+
+      const keypressInput = document.getElementById("keypressInput");
+      keypressInput.addEventListener("keypress", function (event) {
+        document.getElementById("keypressOutput").textContent =
+          "Character pressed: " + event.key;
+      });
+
+      let clickCount = 0;
+      document
+        .getElementById("clickButton")
+        .addEventListener("click", function () {
+          clickCount++;
+          document.getElementById("clickOutput").textContent =
+            "Button clicked " + clickCount + " time(s).";
+        });
+
+      document
+        .getElementById("doubleClickButton")
+        .addEventListener("dblclick", function () {
+          document.getElementById("doubleClickOutput").textContent =
+            "The button was double-clicked!";
+        });
+
+      const mouseMoveArea = document.getElementById("mouseMoveArea");
+      mouseMoveArea.addEventListener("mousemove", function (event) {
+        const rect = mouseMoveArea.getBoundingClientRect();
+        const x = Math.round(event.clientX - rect.left);
+        const y = Math.round(event.clientY - rect.top);
+        document.getElementById("mouseMoveOutput").textContent =
+          "Mouse position — X: " + x + "px, Y: " + y + "px";
+      });
+
+      const mousePressArea = document.getElementById("mousePressArea");
+      const mousePressOutput = document.getElementById("mousePressOutput");
+      mousePressArea.addEventListener("mousedown", function () {
+        mousePressArea.classList.add("pressed");
+        mousePressOutput.textContent = "Mouse button is pressed down.";
+      });
+
+      mousePressArea.addEventListener("mouseup", function () {
+        mousePressArea.classList.remove("pressed");
+        mousePressOutput.textContent = "Mouse button has been released.";
+      });
+
+      const mouseOverArea = document.getElementById("mouseOverArea");
+      const mouseOverOutput = document.getElementById("mouseOverOutput");
+
+      mouseOverArea.addEventListener("mouseover", function () {
+        mouseOverArea.classList.add("active");
+        mouseOverOutput.textContent = "Mouse pointer entered the area.";
+      });
+
+      mouseOverArea.addEventListener("mouseout", function () {
+        mouseOverArea.classList.remove("active");
+        mouseOverOutput.textContent = "Mouse pointer left the area.";
+      });
+
+      const copyText = document.getElementById("copyText");
+      copyText.addEventListener("copy", function () {
+        document.getElementById("copyOutput").textContent = "Text copied!";
+      });
+
+      const cutText = document.getElementById("cutText");
+      cutText.addEventListener("cut", function () {
+        document.getElementById("cutOutput").textContent =
+          "Selected text was cut.";
+      });
+
+      const pasteText = document.getElementById("pasteText");
+      pasteText.addEventListener("paste", function () {
+        document.getElementById("pasteOutput").textContent =
+          "Paste event detected!";
+      });
+    </script>
+  </body>
+</html>

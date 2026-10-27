@@ -1,0 +1,372 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
+  font-size: 16px;
+  color: #222;
+  background-image: url("Images/Moonlit_Gothic\ Study\ Wallpaper.jfif");
+  background-size: cover;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.menu {
+  width: 100%;
+  background-color: hsl(287, 93%, 65%);
+  display: flow-root;
+  overflow: visible;
+}
+
+.menu ul {
+  list-style: none;
+  margin-right: 30px;
+}
+
+.menu ul li {
+  float: left;
+}
+
+.menu ul li a {
+  display: block;
+  padding: 14px 18px;
+  color: rgb(8, 8, 8);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.menu ul li a:hover {
+  background-color: #520172;
+  color: rgb(251, 249, 249);
+  margin: 5px;
+  border-radius: 7px;
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown details summary {
+  display: block;
+  padding: 14px 18px;
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+  list-style: none;
+}
+
+.dropdown details summary:hover {
+  background-color: #520172;
+  color: #ffff;
+  margin: 5px;
+  border-radius: 7px;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 160px;
+  max-height: 300px;
+  overflow-y: auto;
+  background-color: hsl(287, 93%, 65%);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  opacity: 80%;
+  z-index: 1000;
+}
+
+.dropdown details[open] .dropdown-content {
+  display: block;
+}
+
+.dropdown-content a {
+  display: block;
+  padding: 10px 15px;
+  color: white;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.dropdown-content a:hover {
+  background-color: #520172;
+  color: #ffffff;
+}
+
+.heading {
+  text-align: right;
+  padding: 10px;
+  color: #9c02c6;
+}
+
+.heading h1 {
+  font-family: cursive;
+  font-size: 5em;
+  letter-spacing: 3px;
+  font-weight: 900;
+  font-style: italic;
+  -webkit-text-stroke: 1.5px #0b0b0b;
+}
+
+.heading p {
+  margin-top: 6px;
+  font-size: 2em;
+  margin: 0;
+  padding: 0 10px;
+}
+
+#info {
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  font-weight: bold;
+  text-align: center;
+  font-size: 2em;
+  line-height: 1.8;
+  margin: -50px;
+}
+
+.project-info {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 50px;
+  width: calc(100% - 412px);
+  margin: 30px 0 0 206px;
+  align-items: stretch;
+}
+
+.info-box {
+  box-sizing: border-box;
+  min-width: 0;
+  border: 1px solid #66ccff;
+  text-align: center;
+  margin: 80px 0 0;
+  padding: 0 10px 25px;
+  background-color: rgba(255, 255, 255, 0.35);
+}
+
+.info-box h2 {
+  color: #d65acb;
+  text-decoration: underline;
+  font-size: 38px;
+  font-weight: normal;
+  margin: 0 0 5px;
+}
+
+.info-box p {
+  font-family: "Times New Roman", serif;
+  font-size: 36px;
+  line-height: 1.35;
+  margin: 0;
+  color: #000;
+}
+
+.info-box h2 {
+  color: #d65acb;
+  text-decoration: underline;
+  font-size: 38px;
+  font-weight: normal;
+  margin: 0 0 5px;
+}
+
+.info-box p {
+  font-family: "Times New Roman", serif;
+  font-size: 36px;
+  line-height: 1.35;
+  margin: 0;
+  color: #000;
+}
+
+footer p {
+  font-family:
+    "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  text-align: center;
+  background-color: hsl(287, 93%, 65%);
+  color: #000;
+  padding: 12px;
+  margin-top: 40px;
+  font-weight: bold;
+}
+
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+@media (max-width: 600px) {
+  .project-info {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    width: 94%;
+    margin: 20px auto;
+  }
+
+  .heading {
+    text-align: center;
+    padding: 10px 12px;
+    margin: 0;
+  }
+
+  .heading h1 {
+    font-size: clamp(2.2rem, 10vw, 3.5rem);
+    letter-spacing: 1px;
+    line-height: 1.2;
+    margin: 0 0 8px;
+  }
+
+  .heading p {
+    font-size: clamp(1rem, 4.5vw, 1.5rem);
+    line-height: 1.4;
+    padding: 0;
+    margin: 0;
+  }
+
+  #info {
+    margin: 20px 0;
+    font-size: 1.25rem;
+    line-height: 1.5;
+  }
+}
+
+.heading {
+  text-align: right;
+  padding: 20px 35px;
+}
+
+.heading h1 {
+  font-size: clamp(3rem, 7vw, 5em);
+  letter-spacing: 3px;
+}
+
+.heading p {
+  font-size: clamp(1.2rem, 3vw, 2em);
+}
+
+#info {
+  margin: 15px 0 25px;
+  font-size: clamp(1.2rem, 3vw, 2em);
+  line-height: 1.6;
+  color: #fff;
+  text-shadow: 1px 1px 3px #333;
+}
+
+#info span {
+  color: #f3c5ff !important;
+}
+
+.project-info {
+  grid-template-columns: 1.3fr 1fr;
+  gap: 25px;
+  width: 80%;
+  max-width: 1000px;
+  margin: 30px auto;
+}
+
+.info-box {
+  margin: 0;
+  padding: 20px 15px;
+  background-color: rgba(255, 255, 255, 0.72);
+  border: 1px solid #d9a5ed;
+  border-radius: 8px;
+}
+
+.info-box h2 {
+  color: #8b239f;
+  font-size: 30px;
+  text-decoration: none;
+  margin-bottom: 12px;
+}
+
+.info-box p {
+  font-family: "Gill Sans", Calibri, sans-serif;
+  font-size: 21px;
+  line-height: 1.5;
+  margin: 5px 0;
+}
+
+.menu ul li a,
+.dropdown details summary {
+  transition: background-color 0.2s ease;
+}
+
+footer p {
+  margin-top: 25px;
+  padding: 12px;
+  font-weight: bold;
+}
+
+@media (max-width: 600px) {
+  .heading {
+    text-align: center;
+    padding: 25px 12px 15px;
+  }
+
+  .heading h1 {
+    font-size: clamp(2.5rem, 12vw, 3.5rem);
+    letter-spacing: 2px;
+  }
+
+  #info {
+    margin: 15px 0;
+    padding: 0 12px;
+    font-size: 1.2rem;
+  }
+
+  .project-info {
+    grid-template-columns: 1fr;
+    width: 92%;
+    gap: 18px;
+    margin: 20px auto;
+  }
+
+  .info-box {
+    padding: 18px 12px;
+  }
+
+  .info-box h2 {
+    font-size: 26px;
+  }
+
+  .info-box p {
+    font-size: 18px;
+  }
+}
+
+.heading h1 {
+  color: #f5dfad;
+  -webkit-text-stroke: 0;
+  text-shadow: 2px 2px 4px #000;
+}
+
+.heading p {
+  color: #fff0d0;
+  text-shadow: 1px 1px 3px #000;
+}
+
+#info {
+  color: #fff8e8;
+  text-shadow: 1px 1px 3px #000;
+}
+
+#info span {
+  color: #f5c978 !important;
+}
+
+.info-box {
+  background-color: rgba(255, 248, 232, 0.86);
+  border-color: #c9a66b;
+}
+
+.info-box h2 {
+  color: #75502e;
+  text-decoration: underline;
+}
+
+.info-box p {
+  color: #30241b;
+  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}

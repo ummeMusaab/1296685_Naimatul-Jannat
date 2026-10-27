@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BIBLUNE | A little world of books</title>
+    <link rel="stylesheet" href="BookishStyle.css" />
+  </head>
+  <body>
+    <main class="main">
+      <div class="menu">
+        <ul>
+          <li><a href="HomePage.html">Home</a></li>
+          <li><a href="#">Books</a></li>
+          <li><a href="#">Categories</a></li>
+          <li class="dropdown">
+            <details>
+              <summary>Chapter ▾</summary>
+              <div class="dropdown-content">
+                <a href="chapter_01.html">01. Getting to Know HTML</a>
+                <a href="chapter_02.html">02. HTML Elements</a>
+                <a href="chapter_03.html">03. HTML Styles</a>
+                <a href="chapter_04.html">04. Semantic HTML</a>
+                <a href="chapter_05.html">05. Web Forms</a>
+                <a href="chapter_06.html">06. HTML Multimedia</a>
+                <a href="chapter_07.html">07. HTML Graphics</a>
+                <a href="chapter_08.html">08. HTML Advanced</a>
+                <a href="chapter_09.html">09. HTML Events</a>
+                <a href="chapter_10.html">10. HTML APIs</a>
+                <a href="chapter_11.html">11. Getting to Know CSS</a>
+                <a href="chapter_12.html">12. CSS Selectors</a>
+                <a href="chapter_13.html">13. CSS Cascading</a>
+                <a href="chapter_14.html">14. CSS Box Model</a>
+                <a href="chapter_15.html">15. CSS Colors</a>
+                <a href="chapter_16.html">16. CSS Text</a>
+                <a href="chapter_17.html">17. CSS Backgrounds</a>
+                <a href="chapter_18.html">18. CSS Display</a>
+                <a href="chapter_19.html">19. CSS Layout</a>
+                <a href="chapter_20.html">20. CSS Transitions and Animations</a>
+                <a href="chapter_21.html">21. Advanced CSS</a>
+                <a href="chapter_22.html">22. Responsive CSS</a>
+              </div>
+            </details>
+          </li>
+          <li><a href="#info">About</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div class="heading">
+        <h1>BIBLUNE</h1>
+        <p>A little world of books.</p>
+      </div>
+
+      <div id="info">
+        <p>
+          Welcome to
+          <span style="font-style: italic; color: #c604fc">BIBLUNE</span><br />
+          Project: HTML & CSS
+        </p>
+      </div>
+
+      <div class="project-info">
+        <div class="info-box">
+          <h2>Submitted to</h2>
+          <p>Mohammad Moshaidul Islam</p>
+          <p>Consultant</p>
+          <p>Show &amp; Tell Consulting Ltd.</p>
+          <p>IsDB-BISEW IT Scholarship Programme</p>
+        </div>
+        <div class="info-box by-box">
+          <h2>Submitted by</h2>
+          <p>Naimatul Jannat</p>
+          <p>Trainee ID: 1296685</p>
+          <p>Batch: CS/PNTL-M/72/01</p>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <p>BIBLUNE | HTML &amp; CSS Project</p>
+    </footer>
+
+    <script>
+      const dropdown = document.querySelector(".dropdown details");
+      document.addEventListener("click", function (event) {
+        if (!dropdown.contains(event.target)) {
+          dropdown.open = false;
+        }
+      });
+    </script>
+  </body>
+</html>

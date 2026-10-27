@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chapter_06</title>
+    <style>
+      .logo {
+        font-family: cursive;
+        font-size: 35px;
+        font-style: italic;
+        background-color: hsl(287, 93%, 65%);
+        font-weight: bold;
+        color: #000000;
+        text-decoration: none;
+        letter-spacing: 2px;
+      }
+
+      .menu {
+        width: 100%;
+        background-color: hsl(287, 93%, 65%);
+        display: flow-root;
+        overflow: visible;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      .menu ul {
+        list-style: none;
+        margin-right: 30px;
+      }
+
+      .menu ul li {
+        font-family:
+          "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+        float: left;
+      }
+
+      .menu ul li a {
+        display: block;
+        padding: 14px 18px;
+        color: rgb(8, 8, 8);
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .menu ul li a:hover {
+        background-color: #520172;
+        color: rgb(251, 249, 249);
+      }
+
+      .dropdown {
+        position: relative;
+      }
+
+      .dropdown details summary {
+        display: block;
+        padding: 14px 18px;
+        color: black;
+        font-weight: bold;
+        cursor: pointer;
+        list-style: none;
+      }
+
+      .dropdown details summary:hover {
+        background-color: #520172;
+        color: #ffff;
+      }
+
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        min-width: 160px;
+        max-height: 300px;
+        overflow-y: auto;
+        background-color: hsl(287, 93%, 65%);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        opacity: 80%;
+        z-index: 1000;
+      }
+
+      .dropdown details[open] .dropdown-content {
+        display: block;
+      }
+
+      .dropdown-content a {
+        display: block;
+        padding: 10px 15px;
+        color: white;
+        text-decoration: none;
+        white-space: nowrap;
+      }
+
+      .dropdown-content a:hover {
+        background-color: #520172;
+        color: #ffffff;
+      }
+
+      .chapter-heading {
+        padding: 30px 20px;
+        text-align: center;
+        background: #ffffff;
+        border-bottom: 1px solid #dce1e8;
+      }
+
+      .chapter-heading .eyebrow {
+        color: #8b5e3c;
+        font-size: 13px;
+        font-weight: bold;
+        letter-spacing: 3px;
+      }
+
+      .chapter-heading h1 {
+        margin: 8px 0;
+        color: #243b63;
+        font-size: clamp(27px, 4vw, 38px);
+      }
+
+      .chapter-heading p {
+        color: #657187;
+      }
+
+      .page-layout {
+        display: grid;
+        grid-template-columns: 235px minmax(0, 1fr);
+        gap: 25px;
+        max-width: 1200px;
+        margin: 30px auto;
+        padding: 0 20px;
+        align-items: start;
+      }
+
+      .toc,
+      .content-card {
+        background: white;
+        border-radius: 15px;
+        padding: 23px;
+        box-shadow: 0 5px 18px #29234412;
+      }
+
+      .toc {
+        position: sticky;
+        top: 100px;
+      }
+
+      .toc h2 {
+        font-size: 20px;
+        margin-top: 0;
+        color: #6840a0;
+      }
+
+      .toc a {
+        display: block;
+        color: #51466c;
+        text-decoration: none;
+        padding: 7px 0;
+        border-bottom: 1px solid #f0ebfa;
+      }
+
+      .toc a:hover {
+        color: #a34bd5;
+      }
+
+      h2,
+      h3 {
+        color: #6840a0;
+      }
+
+      .chapter-title {
+        margin-top: 0;
+        font-size: 30px;
+      }
+
+      .intro {
+        background: #f4edff;
+        border-left: 5px solid #a66bd4;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 25px;
+      }
+
+      .demo-section {
+        padding: 20px 0;
+        border-bottom: 1px solid #eee8f7;
+        scroll-margin-top: 20px;
+      }
+
+      .demo-section:last-child {
+        border-bottom: none;
+      }
+
+      .demo-box {
+        background: #fcfaff;
+        border: 1px solid #e7ddf5;
+        border-radius: 12px;
+        padding: 20px;
+        margin-top: 15px;
+        text-align: center;
+      }
+
+      audio,
+      video {
+        display: block;
+        width: 100%;
+        max-width: 600px;
+        margin: 15px auto;
+      }
+
+      video {
+        background: #211c35;
+        border-radius: 8px;
+      }
+
+      .note {
+        color: #655b78;
+        font-size: 14px;
+      }
+
+      .media-icon {
+        font-size: 42px;
+        margin-bottom: 5px;
+      }
+
+      .media-label {
+        display: inline-block;
+        background: #eee3ff;
+        color: #6840a0;
+        padding: 5px 13px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: bold;
+      }
+
+      @media (max-width: 780px) {
+        .page-layout {
+          grid-template-columns: 1fr;
+          margin: 15px auto;
+          padding: 0 12px;
+        }
+
+        .toc {
+          position: static;
+        }
+
+        header h1 {
+          font-size: 29px;
+        }
+
+        .content-card,
+        .toc {
+          padding: 18px;
+        }
+
+        nav {
+          gap: 12px;
+        }
+      }
+
+      footer p {
+        font-family:
+          "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+          "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+        text-align: center;
+        background-color: hsl(287, 93%, 65%);
+        color: #000;
+        padding: 12px;
+        margin-top: 40px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="menu">
+      <a href="HomePage.html" class="logo">BIBLUNE</a>
+      <ul>
+        <li><a href="HomePage.html">Home</a></li>
+        <li><a href="#">Books</a></li>
+        <li><a href="#">Categories</a></li>
+        <li class="dropdown">
+          <details>
+            <summary>Chapter ▾</summary>
+            <div class="dropdown-content">
+              <a href="chapter_01.html">01. Getting to Know HTML</a>
+              <a href="chapter_02.html">02. HTML Elements</a>
+              <a href="chapter_03.html">03. HTML Styles</a>
+              <a href="chapter_04.html">04. Semantic HTML</a>
+              <a href="chapter_05.html">05. Web Forms</a>
+              <a href="chapter_06.html">06. HTML Multimedia</a>
+              <a href="chapter_07.html">07. HTML Graphics</a>
+              <a href="chapter_08.html">08. HTML Advanced</a>
+              <a href="chapter_09.html">09. HTML Events</a>
+              <a href="chapter_10.html">10. HTML APIs</a>
+              <a href="chapter_11.html">11. Getting to Know CSS</a>
+              <a href="chapter_12.html">12. CSS Selectors</a>
+              <a href="chapter_13.html">13. CSS Cascading</a>
+              <a href="chapter_14.html">14. CSS Box Model</a>
+              <a href="chapter_15.html">15. CSS Colors</a>
+              <a href="chapter_16.html">16. CSS Text</a>
+              <a href="chapter_17.html">17. CSS Backgrounds</a>
+              <a href="chapter_18.html">18. CSS Display</a>
+              <a href="chapter_19.html">19. CSS Layout</a>
+              <a href="chapter_20.html">20. CSS Transitions and Animations</a>
+              <a href="chapter_21.html">21. Advanced CSS</a>
+              <a href="chapter_22.html">22. Responsive CSS</a>
+            </div>
+          </details>
+        </li>
+        <li><a href="#info">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <div class="page-layout">
+      <aside class="toc">
+        <h2>Chapter 6</h2>
+        <a href="#overview">Overview</a>
+        <a href="#audio">6.1 Audio</a>
+        <a href="#audio-controls">Audio Controls</a>
+        <a href="#audio-loop">Loop Audio</a>
+        <a href="#video">6.2 Video</a>
+        <a href="#video-controls">Video Controls</a>
+        <a href="#video-poster">Video Poster</a>
+        <a href="#video-muted">Muted Video</a>
+        <a href="#summary">Chapter Summary</a>
+      </aside>
+      <main class="content-card">
+        <section class="chapter-heading">
+          <p class="eyebrow">CHAPTER 06</p>
+          <h1>HTML Multimedia</h1>
+          <p>Allows us to add audio and video content to a webpage.</p>
+        </section>
+        <section id="audio" class="demo-section">
+          <h2>6.1 Audio</h2>
+          <p>
+            The HTML audio element is used to play sound files on a webpage. The
+            controls attribute provides buttons such as play, pause, and volume.
+          </p>
+          <div class="demo-box">
+            <div class="media-icon">♫</div>
+            <h3>Listen to Audio</h3>
+            <span class="media-label">Audio Player</span>
+            <audio controls>
+              <source src="Audio/Haq se jo wada kia tha.mp4" type="audio/mpeg" />
+
+              Your browser does not support audio.
+            </audio>
+            <p class="note">
+              Replace the sample audio files with your own MP3 or OGG file.
+            </p>
+          </div>
+        </section>
+        <section id="audio-controls" class="demo-section">
+          <h3>Audio Controls</h3>
+          <p>
+            The controls attribute displays the browser's built-in audio player.
+            Users can play or pause the audio, adjust the volume, and seek
+            through the recording when supported.
+          </p>
+          <div class="demo-box">
+            <h3>Audio with Controls</h3>
+            <audio controls preload="metadata">
+              <source src="Audio/Aye mere deen ke.mp4" type="audio/mpeg" />
+              Your browser does not support audio.
+            </audio>
+            <p class="note">
+              The player appears even before the audio starts playing.
+            </p>
+          </div>
+        </section>
+        <section id="audio-loop" class="demo-section">
+          <h3>Loop Audio</h3>
+          <p>
+            The loop attribute makes the audio start again automatically after
+            it reaches the end.
+          </p>
+          <div class="demo-box">
+            <h3>Repeat Audio</h3>
+            <audio controls loop>
+              <source src="Audio/Akho khulo.mp4" type="audio/mpeg" />
+              Your browser does not support audio.
+            </audio>
+            <p class="note">
+              Play the audio to hear it repeat when it reaches the end.
+            </p>
+          </div>
+        </section>
+        <section id="video" class="demo-section">
+          <h2>6.2 Video</h2>
+          <p>
+            The HTML video element embeds a video file into a webpage. It can
+            display playback controls, a preview image, and other video
+            features.
+          </p>
+          <div class="demo-box">
+            <div class="media-icon">▶</div>
+            <h3>Watch a Video</h3>
+            <span class="media-label">Video Player</span>
+            <video controls preload="metadata">
+              <source src="Vedio/كنت_ميتا┇_আমি_মৃত_ছিলাম.mp4" type="video/mp4" />
+              Your browser does not support video.
+            </video>
+            <p class="note">
+              Replace the sample video with your own MP4 or WebM file.
+            </p>
+          </div>
+        </section>
+        <section id="video-controls" class="demo-section">
+          <h3>Video Controls</h3>
+          <p>
+            The controls attribute displays buttons to play, pause, change the
+            volume, and control playback. Available controls may vary by
+            browser.
+          </p>
+          <div class="demo-box">
+            <h3>Video with Controls</h3>
+            <video controls width="100%" preload="metadata">
+              <source src="Vedio/Ami phire ashchi.mp4" type="video/mp4" />
+              Your browser does not support video.
+            </video>
+            <p class="note">
+              Use the player controls to start or pause the video.
+            </p>
+          </div>
+        </section>
+        <section id="video-poster" class="demo-section">
+          <h3>Video Poster</h3>
+          <p>
+            The poster attribute specifies an image that appears before the
+            video starts playing.
+          </p>
+          <div class="demo-box">
+            <h3>Video Preview Image</h3>
+            <video controls preload="metadata" poster="Vedio/Edited.mp4">
+              <source src="Vedio/training_in_this_people_the_special_force_Commando_Badri_313.mp4" type="video/mp4" />
+              Your browser does not support video.
+            </video>
+            <p class="note">
+              Add a preview image named video-poster.jpg to your Images folder.
+            </p>
+          </div>
+        </section>
+        <section id="video-muted" class="demo-section">
+          <h3>Muted Video</h3>
+          <p>
+            The muted attribute makes the video start without sound. Muted
+            playback is often used for decorative or background videos.
+          </p>
+          <div class="demo-box">
+            <h3>Muted Video Player</h3>
+            <video controls muted loop preload="metadata">
+              <source src="Vedio/Edited.mp4" />
+              Your browser does not support video.
+            </video>
+            <p class="note">
+              This video is muted and set to repeat. Use the player controls to
+              manage playback.
+            </p>
+          </div>
+        </section>
+        <section class="demo-section">
+          <h3>Autoplay</h3>
+          <p>
+            The autoplay attribute asks the browser to start playing media
+            automatically. However, browsers commonly block autoplay when sound
+            is enabled.
+          </p>
+          <div class="demo-box">
+            <h3>Muted Autoplay Video</h3>
+            <video controls autoplay muted loop playsinline preload="metadata">
+              <source src="Vedio/Zulm_Ki_Raat.mp4" type="video/mp4" />
+              Your browser does not support video.
+            </video>
+            <p class="note">
+              Autoplay behavior depends on browser settings and policies. The
+              video is muted to improve autoplay compatibility.
+            </p>
+          </div>
+        </section>
+        <section id="summary" class="intro">
+          <h2>Chapter Summary</h2>
+          <p>
+            HTML multimedia makes webpages more engaging by adding audio and
+            video. The audio element plays sound files, while the video element
+            displays video content.
+          </p>
+          <p>
+            Important attributes include controls, loop, muted, autoplay,
+            poster, and preload.
+          </p>
+        </section>
+      </main>
+    </div>
+    <footer>
+      <p>BIBLUNE | HTML &amp; CSS Project</p>
+    </footer>
+  </body>
+</html>

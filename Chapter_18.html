@@ -1,0 +1,1202 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chapter_18</title>
+    <style>
+      body {
+        font-family:
+          "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+      }
+      .logo {
+        font-family: cursive;
+        font-size: 35px;
+        font-style: italic;
+        background-color: hsl(287, 93%, 65%);
+        font-weight: bold;
+        color: #000000;
+        text-decoration: none;
+        letter-spacing: 2px;
+      }
+
+      .menu {
+        width: 100%;
+        background-color: hsl(287, 93%, 65%);
+        display: flow-root;
+        overflow: visible;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      .menu ul {
+        list-style: none;
+        margin-right: 30px;
+      }
+
+      .menu ul li {
+        font-family:
+          "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+        float: left;
+      }
+
+      .menu ul li a {
+        display: block;
+        padding: 14px 18px;
+        color: rgb(8, 8, 8);
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .menu ul li a:hover {
+        background-color: #520172;
+        color: rgb(251, 249, 249);
+      }
+
+      .dropdown {
+        position: relative;
+      }
+
+      .dropdown details summary {
+        display: block;
+        padding: 14px 18px;
+        color: black;
+        font-weight: bold;
+        cursor: pointer;
+        list-style: none;
+      }
+
+      .dropdown details summary:hover {
+        background-color: #520172;
+        color: #ffff;
+      }
+
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        min-width: 160px;
+        max-height: 300px;
+        overflow-y: auto;
+        background-color: hsl(287, 93%, 65%);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        opacity: 80%;
+        z-index: 1000;
+      }
+
+      .dropdown details[open] .dropdown-content {
+        display: block;
+      }
+
+      .dropdown-content a {
+        display: block;
+        padding: 10px 15px;
+        color: white;
+        text-decoration: none;
+        white-space: nowrap;
+      }
+
+      .dropdown-content a:hover {
+        background-color: #520172;
+        color: #ffffff;
+      }
+
+      footer p {
+        font-family:
+          "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+          "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+        text-align: center;
+        background-color: hsl(287, 93%, 65%);
+        color: #000;
+        padding: 12px;
+        margin-top: 40px;
+      }
+
+      .chapter-heading {
+        text-align: center;
+        padding: 30px 20px;
+        background: #fff;
+        border-bottom: 1px solid #dce1e8;
+      }
+
+      .chapter-heading .eyebrow {
+        color: #8b5e3c;
+        font-size: 13px;
+        font-weight: bold;
+        letter-spacing: 3px;
+      }
+
+      .chapter-heading h1 {
+        margin: 8px 0;
+        color: #243b63;
+        font-size: clamp(27px, 4vw, 38px);
+      }
+
+      .chapter-heading p {
+        color: #657187;
+      }
+
+      .chapter-container {
+        display: grid;
+        grid-template-columns: 250px minmax(0, 1fr);
+        gap: 28px;
+        max-width: 1250px;
+        margin: 35px auto;
+        padding: 0 20px;
+        align-items: start;
+      }
+
+      .chapter-sidebar {
+        position: sticky;
+        top: 100px;
+        background: #fff;
+        border: 1px solid #e1e5ed;
+        border-radius: 12px;
+        padding: 20px;
+      }
+
+      .chapter-sidebar h2 {
+        color: #243b63;
+        font-size: 19px;
+        margin-top: 0;
+      }
+
+      .chapter-toc {
+        padding-left: 20px;
+        margin-bottom: 0;
+      }
+
+      .chapter-toc li {
+        margin: 10px 0;
+        color: #657187;
+      }
+
+      .chapter-toc a {
+        color: #465675;
+        text-decoration: none;
+        font-size: 14px;
+      }
+
+      .chapter-toc a:hover {
+        color: #8b5e3c;
+        text-decoration: underline;
+      }
+
+      .chapter-content {
+        min-width: 0;
+      }
+
+      .chapter-section {
+        background: #fff;
+        border: 1px solid #e1e5ed;
+        border-radius: 12px;
+        padding: 25px;
+        margin-bottom: 25px;
+        scroll-margin-top: 20px;
+      }
+
+      .chapter-section h2 {
+        color: #243b63;
+        font-size: 23px;
+        margin-top: 0;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #e7eaf0;
+      }
+
+      .chapter-section h3 {
+        color: #8b5e3c;
+        font-size: 17px;
+        margin-top: 25px;
+      }
+
+      .chapter-section p {
+        color: #58657b;
+        line-height: 1.7;
+      }
+
+      .demo-box {
+        background: #f7f8fc;
+        border: 1px solid #e0e5ef;
+        border-radius: 9px;
+        padding: 18px;
+        margin: 15px 0;
+        overflow: hidden;
+      }
+
+      .demo-label {
+        color: #657187;
+        font-size: 12px;
+        font-weight: bold;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+      }
+
+      .note-box {
+        background: #fff8ec;
+        border-left: 4px solid #d9a441;
+        border-radius: 5px;
+        padding: 12px 15px;
+        margin-top: 15px;
+        color: #6f5934;
+        line-height: 1.6;
+      }
+
+      .demo-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+        gap: 12px;
+      }
+
+      .demo-tile {
+        background: #e9eafa;
+        border: 1px solid #d2d5f1;
+        border-radius: 8px;
+        padding: 15px 10px;
+        text-align: center;
+        color: #34436c;
+      }
+
+      .sample-image {
+        display: block;
+        width: 100%;
+        max-width: 450px;
+        height: 180px;
+        margin: 0 auto;
+        border-radius: 8px;
+        background: #e7e9f2;
+        object-fit: cover;
+      }
+
+      .chapter-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 12px;
+      }
+
+      .chapter-table th,
+      .chapter-table td {
+        border: 1px solid #dce1e8;
+        padding: 11px;
+      }
+
+      .chapter-table th {
+        background: #e9eafa;
+        color: #243b63;
+      }
+
+      .display-block {
+        display: block;
+        background: #e2e8ff;
+        padding: 8px;
+        margin: 5px 0;
+      }
+
+      .display-inline {
+        display: inline;
+        background: #ffe5c7;
+        padding: 5px;
+      }
+
+      .display-inline-block {
+        display: inline-block;
+        background: #d8f4e5;
+        padding: 12px;
+        margin: 5px;
+        width: 100px;
+      }
+
+      .display-none {
+        display: none;
+      }
+
+      .visibility-hidden {
+        visibility: hidden;
+      }
+
+      .fit-gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+        gap: 12px;
+      }
+
+      .fit-card {
+        text-align: center;
+      }
+
+      .fit-image {
+        width: 100%;
+        height: 110px;
+        border: 2px solid #dce1e8;
+        border-radius: 7px;
+        background: #e9eafa;
+        object-fit: cover;
+      }
+
+      .fit-fill {
+        object-fit: fill;
+      }
+
+      .fit-contain {
+        object-fit: contain;
+      }
+
+      .fit-cover {
+        object-fit: cover;
+      }
+
+      .fit-none {
+        object-fit: none;
+      }
+
+      .fit-scale-down {
+        object-fit: scale-down;
+      }
+
+      .cursor-demo {
+        background: #fff;
+        border: 1px solid #dce1e8;
+        border-radius: 7px;
+        padding: 15px 8px;
+        text-align: center;
+      }
+
+      .cursor-pointer {
+        cursor: pointer;
+      }
+      .cursor-wait {
+        cursor: wait;
+      }
+      .cursor-help {
+        cursor: help;
+      }
+      .cursor-not-allowed {
+        cursor: not-allowed;
+      }
+      .cursor-crosshair {
+        cursor: crosshair;
+      }
+      .cursor-grab {
+        cursor: grab;
+      }
+      .cursor-text {
+        cursor: text;
+      }
+      .cursor-move {
+        cursor: move;
+      }
+
+      .overflow-demo {
+        height: 95px;
+        width: 100%;
+        max-width: 280px;
+        border: 2px solid #8a92bd;
+        background: #fff;
+        padding: 10px;
+        line-height: 1.5;
+      }
+
+      .overflow-visible {
+        overflow: visible;
+      }
+      .overflow-hidden {
+        overflow: hidden;
+      }
+      .overflow-scroll {
+        overflow: scroll;
+      }
+      .overflow-auto {
+        overflow: auto;
+      }
+
+      .overflow-wrapper {
+        padding-bottom: 8px;
+      }
+
+      .opacity-tile {
+        background: #7665c9;
+        color: #fff;
+        padding: 18px 8px;
+        border-radius: 8px;
+        text-align: center;
+      }
+
+      .opacity-100 {
+        opacity: 1;
+      }
+      .opacity-75 {
+        opacity: 0.75;
+      }
+      .opacity-50 {
+        opacity: 0.5;
+      }
+      .opacity-25 {
+        opacity: 0.25;
+      }
+
+      .shadow-text {
+        color: #243b63;
+        font-size: 25px;
+        font-weight: bold;
+        text-shadow: 2px 3px 4px #aaa;
+      }
+
+      .shadow-card {
+        background: #fff;
+        border-radius: 8px;
+        padding: 25px 15px;
+        text-align: center;
+        box-shadow: 4px 5px 12px #c6c9d3;
+      }
+
+      .shadow-inset {
+        box-shadow: inset 0 0 12px #b8bdd0;
+      }
+
+      .fixed-columns {
+        column-count: 3;
+        column-gap: 25px;
+        column-rule: 1px solid #cbd1e0;
+      }
+
+      .responsive-columns {
+        columns: 180px 3;
+        column-gap: 20px;
+      }
+
+      .column-content {
+        line-height: 1.7;
+        color: #58657b;
+      }
+
+      .span-all {
+        column-span: all;
+        color: #243b63;
+        background: #e9eafa;
+        padding: 10px;
+        text-align: center;
+      }
+
+      .table-fixed {
+        table-layout: fixed;
+      }
+
+      .table-fixed th,
+      .table-fixed td {
+        overflow-wrap: anywhere;
+      }
+
+      .table-center td {
+        text-align: center;
+      }
+
+      .table-right td:last-child {
+        text-align: right;
+      }
+
+      .table-stripes tbody tr:nth-child(even) {
+        background: #f0f1fa;
+      }
+
+      .table-hover tbody tr:hover {
+        background: #fff0d8;
+      }
+
+      .list-disc {
+        list-style-type: disc;
+      }
+
+      .list-circle {
+        list-style-type: circle;
+      }
+
+      .list-square {
+        list-style-type: square;
+      }
+
+      .list-roman {
+        list-style-type: upper-roman;
+      }
+
+      .list-alpha {
+        list-style-type: lower-alpha;
+      }
+
+      .list-inside {
+        list-style-position: inside;
+      }
+
+      .list-outside {
+        list-style-position: outside;
+      }
+
+      .transform-stage {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+        gap: 22px;
+        padding: 20px 5px;
+      }
+
+      .transform-item {
+        min-height: 115px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #e9eafa;
+        border: 1px solid #d2d5f1;
+        border-radius: 8px;
+        color: #34436c;
+        text-align: center;
+        font-weight: bold;
+      }
+
+      .transform-translate {
+        transform: translate(8px, -5px);
+      }
+
+      .transform-scale {
+        transform: scale(0.85);
+      }
+
+      .transform-rotate {
+        transform: rotate(8deg);
+      }
+
+      .transform-skew {
+        transform: skew(-8deg);
+      }
+
+      @media (max-width: 800px) {
+        .chapter-container {
+          grid-template-columns: 1fr;
+          gap: 20px;
+          margin-top: 20px;
+          padding: 0 14px;
+        }
+
+        .chapter-sidebar {
+          position: static;
+        }
+
+        .chapter-section {
+          padding: 18px;
+        }
+
+        .fixed-columns {
+          column-count: 2;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .fixed-columns {
+          column-count: 1;
+        }
+
+        .chapter-table th,
+        .chapter-table td {
+          padding: 8px 6px;
+          font-size: 13px;
+        }
+
+        .chapter-section h2 {
+          font-size: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="menu">
+      <a href="HomePage.html" class="logo">BIBLUNE</a>
+      <ul>
+        <li><a href="HomePage.html">Home</a></li>
+        <li><a href="#">Books</a></li>
+        <li><a href="#">Categories</a></li>
+        <li class="dropdown">
+          <details>
+            <summary>Chapter ▾</summary>
+            <div class="dropdown-content">
+              <a href="chapter_01.html">01. Getting to Know HTML</a>
+              <a href="chapter_02.html">02. HTML Elements</a>
+              <a href="chapter_03.html">03. HTML Styles</a>
+              <a href="chapter_04.html">04. Semantic HTML</a>
+              <a href="chapter_05.html">05. Web Forms</a>
+              <a href="chapter_06.html">06. HTML Multimedia</a>
+              <a href="chapter_07.html">07. HTML Graphics</a>
+              <a href="chapter_08.html">08. HTML Advanced</a>
+              <a href="chapter_09.html">09. HTML Events</a>
+              <a href="chapter_10.html">10. HTML APIs</a>
+              <a href="chapter_11.html">11. Getting to Know CSS</a>
+              <a href="chapter_12.html">12. CSS Selectors</a>
+              <a href="chapter_13.html">13. CSS Cascading</a>
+              <a href="chapter_14.html">14. CSS Box Model</a>
+              <a href="chapter_15.html">15. CSS Colors</a>
+              <a href="chapter_16.html">16. CSS Text</a>
+              <a href="chapter_17.html">17. CSS Backgrounds</a>
+              <a href="chapter_18.html">18. CSS Display</a>
+              <a href="chapter_19.html">19. CSS Layout</a>
+              <a href="chapter_20.html">20. CSS Transitions and Animations</a>
+              <a href="chapter_21.html">21. Advanced CSS</a>
+              <a href="chapter_22.html">22. Responsive CSS</a>
+            </div>
+          </details>
+        </li>
+        <li><a href="#info">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <section class="chapter-heading">
+      <p class="eyebrow">CHAPTER 18</p>
+      <h1>CSS DISPLAY</h1>
+      <p>
+        Explore how elements appear, align, overflow, and transform on a
+        webpage.
+      </p>
+    </section>
+
+    <div class="chapter-container">
+      <aside class="chapter-sidebar">
+        <h2>On This Page</h2>
+
+        <ol class="chapter-toc">
+          <li><a href="#display-visibility">Display vs. Visibility</a></li>
+          <li><a href="#object-fit">CSS Object-Fit</a></li>
+          <li><a href="#cursor">Cursor</a></li>
+          <li><a href="#overflow">CSS Overflow</a></li>
+          <li><a href="#opacity">CSS Opacity</a></li>
+          <li><a href="#shadows">CSS Shadows</a></li>
+          <li><a href="#columns">CSS Multiple Columns</a></li>
+          <li><a href="#tables">CSS Tables</a></li>
+          <li><a href="#lists">CSS Lists</a></li>
+          <li><a href="#transforms">CSS Transforms</a></li>
+        </ol>
+      </aside>
+      <main class="chapter-content">
+        <section class="chapter-section" id="display-visibility">
+          <h2>18.1 Display vs. Visibility</h2>
+          <p>
+            The display property controls how an element participates in the
+            page layout. The visibility property controls whether the element
+            can be seen.
+          </p>
+
+          <h3>18.1.1 Display</h3>
+          <p>
+            Block elements start on a new line, inline elements share a line,
+            and inline-block elements can have a width and height while staying
+            inline.
+          </p>
+
+          <div class="demo-box">
+            <div class="demo-label">Display: Block</div>
+            <span class="display-block">First block element</span>
+            <span class="display-block">Second block element</span>
+          </div>
+
+          <div class="demo-box">
+            <div class="demo-label">Display: Inline</div>
+            <span class="display-inline">Inline One</span>
+            <span class="display-inline">Inline Two</span>
+            <span class="display-inline">Inline Three</span>
+          </div>
+
+          <div class="demo-box">
+            <div class="demo-label">Display: Inline-Block</div>
+            <span class="display-inline-block">Book One</span>
+            <span class="display-inline-block">Book Two</span>
+            <span class="display-inline-block">Book Three</span>
+          </div>
+
+          <div class="demo-box">
+            <div class="demo-label">Display: None</div>
+            <p>First item</p>
+            <p class="display-none">This item is not displayed.</p>
+            <p>Second item — the hidden item takes up no space.</p>
+          </div>
+
+          <h3>18.1.2 Visibility</h3>
+          <p>
+            With visibility: hidden, an element becomes invisible but still
+            occupies its original space.
+          </p>
+
+          <div class="demo-box">
+            <div class="demo-label">Visibility: Hidden</div>
+            <span class="display-inline">First item</span>
+            <span class="display-inline visibility-hidden">Hidden item</span>
+            <span class="display-inline">Third item</span>
+            <p>The space for the hidden item is still reserved.</p>
+          </div>
+
+          <div class="note-box">
+            <strong>Remember:</strong> display: none removes the element from
+            the layout. visibility: hidden hides it but keeps its space.
+          </div>
+        </section>
+        <section class="chapter-section" id="object-fit">
+          <h2>18.2 CSS Object-Fit</h2>
+          <p>
+            The object-fit property controls how an image or video fits inside
+            its container when their dimensions do not match.
+          </p>
+
+          <div class="demo-box">
+            <div class="fit-gallery">
+              <div class="fit-card">
+                <img
+                  class="fit-image fit-fill"
+                  src="Images/header eunha 1.jfif"
+                  alt="Book collection"
+                />
+                <p><strong>fill</strong></p>
+                <p>Fills the box; may distort the image.</p>
+              </div>
+
+              <div class="fit-card">
+                <img
+                  class="fit-image fit-contain"
+                  src="Images/header eunha 1.jfif"
+                  alt="Book collection"
+                />
+                <p><strong>contain</strong></p>
+                <p>Shows the entire image.</p>
+              </div>
+
+              <div class="fit-card">
+                <img
+                  class="fit-image fit-cover"
+                  src="Images/header eunha 1.jfif"
+                  alt="Book collection"
+                />
+                <p><strong>cover</strong></p>
+                <p>Fills the box; may crop the image.</p>
+              </div>
+
+              <div class="fit-card">
+                <img
+                  class="fit-image fit-none"
+                  src="Images/header eunha 1.jfif"
+                  alt="Book collection"
+                />
+                <p><strong>none</strong></p>
+                <p>Uses the image's original size.</p>
+              </div>
+
+              <div class="fit-card">
+                <img
+                  class="fit-image fit-scale-down"
+                  src="Images/header eunha 1.jfif"
+                  alt="Book collection"
+                />
+                <p><strong>scale-down</strong></p>
+                <p>Uses contain or none, whichever makes it smaller.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="note-box">
+            <strong>Tip:</strong> object-fit: cover is useful for book covers,
+            product cards, and image galleries with equal-sized images.
+          </div>
+        </section>
+
+        <section class="chapter-section" id="cursor">
+          <h2>18.3 Cursor</h2>
+          <p>
+            The cursor property changes the mouse pointer when it moves over an
+            element. Hover over each example to see the pointer change.
+          </p>
+
+          <div class="demo-box">
+            <div class="demo-grid">
+              <div class="cursor-demo cursor-pointer">pointer</div>
+              <div class="cursor-demo cursor-wait">wait</div>
+              <div class="cursor-demo cursor-help">help</div>
+              <div class="cursor-demo cursor-not-allowed">not-allowed</div>
+              <div class="cursor-demo cursor-crosshair">crosshair</div>
+              <div class="cursor-demo cursor-grab">grab</div>
+              <div class="cursor-demo cursor-text">text</div>
+              <div class="cursor-demo cursor-move">move</div>
+            </div>
+          </div>
+
+          <div class="note-box">
+            <strong>Tip:</strong> cursor: pointer is commonly used for clickable
+            buttons and links. The cursor only changes the pointer appearance;
+            it does not make an element functional by itself.
+          </div>
+        </section>
+
+        <section class="chapter-section" id="overflow">
+          <h2>18.4 CSS Overflow</h2>
+          <p>
+            The overflow property determines what happens when content is larger
+            than its container.
+          </p>
+
+          <div class="demo-box">
+            <h3>18.4.1 overflow: visible</h3>
+            <p>The extra content can appear outside the container.</p>
+            <div class="overflow-wrapper">
+              <div class="overflow-demo overflow-visible">
+                This is extra text inside a small box. The content continues
+                outside the bottom edge because overflow is set to visible.
+              </div>
+            </div>
+          </div>
+
+          <div class="demo-box">
+            <h3>18.4.2 overflow: hidden</h3>
+            <p>
+              The extra content is clipped and cannot be seen outside the box.
+            </p>
+            <div class="overflow-demo overflow-hidden">
+              This is extra text inside a small box. The remaining content is
+              clipped because overflow is set to hidden.
+            </div>
+          </div>
+
+          <div class="demo-box">
+            <h3>18.4.3 overflow: scroll</h3>
+            <p>Scrollbars are provided so the extra content can be accessed.</p>
+            <div class="overflow-demo overflow-scroll">
+              This is extra text inside a small box. Scroll inside this box to
+              read the remaining content. Scrollbars are provided even when they
+              may not be needed.
+            </div>
+          </div>
+
+          <div class="demo-box">
+            <h3>18.4.4 overflow: auto</h3>
+            <p>Scrollbars appear when the content needs them.</p>
+            <div class="overflow-demo overflow-auto">
+              This is extra text inside a small box. Scroll inside this box to
+              read the remaining content. The browser provides scrolling when
+              necessary.
+            </div>
+          </div>
+        </section>
+        <section class="chapter-section" id="opacity">
+          <h2>18.5 CSS Opacity</h2>
+          <p>
+            Opacity controls the transparency of an element. A value of 1 is
+            fully opaque, while 0 is fully transparent.
+          </p>
+
+          <div class="demo-box">
+            <div class="demo-grid">
+              <div class="opacity-tile opacity-100">100%<br />Opacity: 1</div>
+              <div class="opacity-tile opacity-75">75%<br />Opacity: 0.75</div>
+              <div class="opacity-tile opacity-50">50%<br />Opacity: 0.5</div>
+              <div class="opacity-tile opacity-25">25%<br />Opacity: 0.25</div>
+            </div>
+          </div>
+
+          <div class="note-box">
+            <strong>Remember:</strong> opacity affects the entire element,
+            including its text and child elements.
+          </div>
+        </section>
+        <section class="chapter-section" id="shadows">
+          <h2>18.6 CSS Shadows</h2>
+          <p>
+            Shadows add depth to text and boxes, making elements stand out
+            visually.
+          </p>
+
+          <h3>18.6.1 text-shadow</h3>
+          <p>The text-shadow property adds a shadow behind text.</p>
+
+          <div class="demo-box" style="text-align: center">
+            <p class="shadow-text">A Little World of Books</p>
+          </div>
+
+          <h3>18.6.2 box-shadow</h3>
+          <p>The box-shadow property adds a shadow around an element's box.</p>
+
+          <div class="demo-box">
+            <div class="demo-grid">
+              <div class="shadow-card">Soft Shadow</div>
+              <div class="shadow-card shadow-inset">Inset Shadow</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="chapter-section" id="columns">
+          <h2>18.7 CSS Multiple Columns</h2>
+          <p>
+            CSS columns arrange text into newspaper-style columns. The content
+            flows from one column into the next.
+          </p>
+
+          <h3>18.7.1 Fixed Columns</h3>
+          <p>The column-count property specifies the number of columns.</p>
+
+          <div class="demo-box">
+            <div class="fixed-columns column-content">
+              BIBLUNE is a little world of books. Every book opens a door to new
+              ideas, places, and possibilities. Reading helps us learn about
+              people, cultures, science, and the world around us. A quiet
+              reading corner can become a place for imagination. Discovering a
+              new author can also introduce a fresh point of view.
+            </div>
+          </div>
+
+          <h3>18.7.2 Responsive Columns</h3>
+          <p>
+            The columns shorthand can specify a preferred column width and a
+            maximum number of columns. The browser adjusts the layout to the
+            available space.
+          </p>
+
+          <div class="demo-box">
+            <div class="responsive-columns column-content">
+              Reading can be a relaxing daily habit. Short stories are a great
+              place to start. Novels can take readers on long journeys.
+              Non-fiction books explain real events and ideas. Poetry uses
+              carefully chosen words to express feelings. Each kind of book
+              offers a different reading experience.
+            </div>
+          </div>
+
+          <h3>18.7.3 Column Span</h3>
+          <p>
+            The column-span property allows a heading or other element to
+            stretch across multiple columns.
+          </p>
+
+          <div class="demo-box">
+            <div class="responsive-columns column-content">
+              Books can inspire curiosity and creativity. Reading regularly can
+              introduce new vocabulary and ideas.
+              <h3 class="span-all">Find Your Next Favourite Book</h3>
+              Explore different genres and authors. Choose a book that matches
+              your interests, or try something completely new. A few pages each
+              day can make reading part of your routine.
+            </div>
+          </div>
+        </section>
+
+        <section class="chapter-section" id="tables">
+          <h2>18.8 CSS Tables</h2>
+          <p>
+            CSS can control table dimensions, cell alignment, borders, and the
+            appearance of rows and columns.
+          </p>
+
+          <h3>18.8.1 Table Sizing</h3>
+          <p>
+            table-layout: fixed distributes columns according to the table's
+            width instead of basing their widths on cell content.
+          </p>
+
+          <div class="demo-box">
+            <table class="chapter-table table-fixed">
+              <thead>
+                <tr>
+                  <th>Book</th>
+                  <th>Category</th>
+                  <th>Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>The Little Prince</td>
+                  <td>Fiction</td>
+                  <td>৳350</td>
+                </tr>
+                <tr>
+                  <td>Stories of Imagination</td>
+                  <td>Short Stories</td>
+                  <td>৳280</td>
+                </tr>
+                <tr>
+                  <td>A World of Knowledge</td>
+                  <td>Education</td>
+                  <td>৳420</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>18.8.2 Text Alignment in Table Cells</h3>
+          <p>
+            The text-align property controls horizontal text alignment inside
+            table cells.
+          </p>
+
+          <div class="demo-box">
+            <table class="chapter-table table-center table-stripes table-hover">
+              <thead>
+                <tr>
+                  <th>Book</th>
+                  <th>Category</th>
+                  <th>Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Moonlight Tales</td>
+                  <td>Fiction</td>
+                  <td>৳300</td>
+                </tr>
+                <tr>
+                  <td>Little Discoveries</td>
+                  <td>Education</td>
+                  <td>৳450</td>
+                </tr>
+                <tr>
+                  <td>Poetry Corner</td>
+                  <td>Poetry</td>
+                  <td>৳250</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+        <section class="chapter-section" id="lists">
+          <h2>18.9 CSS Lists</h2>
+          <p>
+            CSS list properties control the markers and the position of list
+            markers.
+          </p>
+
+          <h3>18.9.1 List Item Markers</h3>
+          <p>The list-style-type property changes the marker style.</p>
+
+          <div class="demo-box">
+            <div class="demo-grid">
+              <div class="demo-tile">
+                <strong>Disc</strong>
+                <ul class="list-disc">
+                  <li>Fiction</li>
+                  <li>Poetry</li>
+                </ul>
+              </div>
+
+              <div class="demo-tile">
+                <strong>Circle</strong>
+                <ul class="list-circle">
+                  <li>Fiction</li>
+                  <li>Poetry</li>
+                </ul>
+              </div>
+
+              <div class="demo-tile">
+                <strong>Square</strong>
+                <ul class="list-square">
+                  <li>Fiction</li>
+                  <li>Poetry</li>
+                </ul>
+              </div>
+
+              <div class="demo-tile">
+                <strong>Upper Roman</strong>
+                <ol class="list-roman">
+                  <li>Fiction</li>
+                  <li>Poetry</li>
+                </ol>
+              </div>
+
+              <div class="demo-tile">
+                <strong>Lower Alpha</strong>
+                <ol class="list-alpha">
+                  <li>Fiction</li>
+                  <li>Poetry</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+
+          <h3>18.9.2 Position the List Item Markers</h3>
+          <p>
+            list-style-position: inside places the marker inside the list item's
+            content area. outside places it outside the content area.
+          </p>
+
+          <div class="demo-box">
+            <div class="demo-grid">
+              <div>
+                <strong>Outside</strong>
+                <ul class="list-outside">
+                  <li>A fascinating book with a longer description.</li>
+                  <li>Another interesting story.</li>
+                </ul>
+              </div>
+
+              <div>
+                <strong>Inside</strong>
+                <ul class="list-inside">
+                  <li>A fascinating book with a longer description.</li>
+                  <li>Another interesting story.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="chapter-section" id="transforms">
+          <h2>18.10 CSS Transforms</h2>
+          <p>
+            The transform property changes an element's position, size,
+            rotation, or shape without changing the normal document flow.
+          </p>
+
+          <h3>18.10.1 Moves an Element</h3>
+          <p>translate() moves an element horizontally and vertically.</p>
+
+          <div class="demo-box">
+            <div class="transform-stage">
+              <div class="transform-item">Original</div>
+              <div class="transform-item transform-translate">Translated</div>
+            </div>
+          </div>
+
+          <h3>18.10.2 Scales an Element</h3>
+          <p>
+            scale() changes the size of an element. A value below 1 makes it
+            smaller; a value above 1 makes it larger.
+          </p>
+
+          <div class="demo-box">
+            <div class="transform-stage">
+              <div class="transform-item">Original</div>
+              <div class="transform-item transform-scale">Scaled</div>
+            </div>
+          </div>
+
+          <h3>18.10.3 Rotates an Element</h3>
+          <p>rotate() turns an element around its transform origin.</p>
+
+          <div class="demo-box">
+            <div class="transform-stage">
+              <div class="transform-item">Original</div>
+              <div class="transform-item transform-rotate">Rotated</div>
+            </div>
+          </div>
+
+          <h3>18.10.4 Skews an Element</h3>
+          <p>skew() slants an element along one or both axes.</p>
+
+          <div class="demo-box">
+            <div class="transform-stage">
+              <div class="transform-item">Original</div>
+              <div class="transform-item transform-skew">Skewed</div>
+            </div>
+          </div>
+
+          <div class="note-box">
+            <strong>Chapter Complete!</strong>
+            You've explored display, visibility, object-fit, cursor, overflow,
+            opacity, shadows, multiple columns, tables, lists, and transforms.
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <footer>
+      <p>BIBLUNE | HTML &amp; CSS Project</p>
+    </footer>
+  </body>
+</html>

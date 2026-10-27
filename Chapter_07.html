@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter_07</title>
+    <style>
+        :root {
+            --navy: #25233f;
+            --purple: #a855f7;
+            --lavender: #eee8ff;
+            --cream: #fffaf0;
+            --ink: #302d40;
+            --muted: #716d80;
+            --border: #e5def2;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        .logo {
+            font-family:cursive;
+            font-size: 35px;
+            font-style: italic;
+            background-color: hsl(287, 93%, 65%);
+            font-weight: bold;
+            color: #000000;
+            text-decoration: none;
+            letter-spacing: 2px;
+        }
+
+        .menu {
+            width: 100%;
+            background-color: hsl(287, 93%, 65%);
+            display: flow-root;
+            overflow: visible;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .menu ul {
+            list-style: none;
+            margin-right: 30px;
+        }
+
+        .menu ul li {
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            float:left;
+        }
+
+        .menu ul li a {
+            display: block;
+            padding: 14px 18px;
+            color: rgb(8, 8, 8);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .menu ul li a:hover{
+            background-color: #520172;
+            color: rgb(251, 249, 249);
+        }
+
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown details summary {
+            display: block;
+            padding: 14px 18px;
+            color: black;
+            font-weight: bold;
+            cursor: pointer;
+            list-style: none;
+        }
+
+        .dropdown details summary:hover {
+            background-color: #520172;
+            color: #ffff;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            min-width: 160px;
+            max-height: 300px;
+            overflow-y: auto;
+            background-color: hsl(287, 93%, 65%);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            opacity: 80%;
+            z-index: 1000;
+        }
+
+        .dropdown details[open] .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            display: block;
+            padding: 10px 15px;
+            color: white;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #520172;
+            color: #ffffff;
+        }
+
+        footer p {
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            text-align: center;
+            background-color: hsl(287, 93%, 65%);
+            color: #000;
+            padding: 12px;
+            margin-top: 40px;
+        }
+
+        .page-layout {
+            max-width: 1180px;
+            margin: 30px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 245px minmax(0, 1fr);
+            gap: 24px;
+            align-items: start;
+        }
+
+        .chapter-heading {
+        padding: 30px 20px;
+        text-align: center;
+        background: #ffffff;
+        border-bottom: 1px solid #dce1e8;
+      }
+
+      .chapter-heading .eyebrow {
+        color: #8b5e3c;
+        font-size: 13px;
+        font-weight: bold;
+        letter-spacing: 3px;
+      }
+
+      .chapter-heading h1 {
+        margin: 8px 0;
+        color: #243b63;
+        font-size: clamp(27px, 4vw, 38px);
+      }
+
+      .chapter-heading p {
+        color: #657187;
+      }
+
+        .toc,
+        .content-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(37, 35, 63, 0.06);
+        }
+
+        .toc {
+            padding: 20px;
+            position: sticky;
+            top: 100px;
+        }
+
+        .toc h2 {
+            margin-top: 0;
+            font-size: 1.1rem;
+            color: var(--navy);
+        }
+
+        .toc a {
+            display: block;
+            padding: 5px 0;
+            color: var(--ink);
+            font-size: 0.94rem;
+            text-decoration: none;
+        }
+
+        .toc a:hover,
+        .toc a:focus {
+            color: #7040b5;
+            text-decoration: underline;
+        }
+
+        .content-card {
+            min-width: 0;
+            padding: clamp(20px, 4vw, 38px);
+        }
+
+        .chapter-label {
+            margin: 0 0 8px;
+            color: #8150b9;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: var(--navy);
+            line-height: 1.25;
+        }
+
+        h1 {
+            margin-top: 0;
+            font-size: clamp(2rem, 5vw, 3rem);
+        }
+
+        h2 {
+            margin-top: 38px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--lavender);
+        }
+
+        .intro {
+            color: var(--muted);
+            font-size: 1.08rem;
+        }
+
+        .note {
+            background: #f5efff;
+            border-left: 4px solid var(--purple);
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin: 18px 0;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+            margin: 18px 0 26px;
+        }
+
+        .demo-card {
+            min-width: 0;
+            padding: 16px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: white;
+        }
+
+        .demo-card h3 {
+            margin: 0 0 10px;
+            font-size: 1.05rem;
+        }
+
+        .demo-stage {
+            min-height: 145px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-radius: 8px;
+            background: #faf7ff;
+            padding: 10px;
+        }
+
+        .demo-stage svg {
+            display: block;
+            width: 100%;
+            max-width: 330px;
+            height: auto;
+        }
+
+        .demo-card p {
+            margin-bottom: 0;
+            color: var(--muted);
+            font-size: 0.93rem;
+        }
+
+        .demo-list {
+            padding-left: 22px;
+        }
+
+        .demo-list li {
+            margin: 7px 0;
+        }
+
+        @media (max-width: 780px) {
+            .page-layout {
+                grid-template-columns: 1fr;
+                margin-top: 18px;
+            }
+
+            .toc {
+                position: static;
+            }
+
+            .demo-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .site-nav {
+                gap: 10px 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="menu">
+        <a href="HomePage.html" class="logo">BIBLUNE</a>
+        <ul>
+            <li><a href="HomePage.html">Home</a></li>
+            <li><a href="#">Books</a></li>
+            <li><a href="#">Categories</a></li>
+            <li class="dropdown">
+                <details>
+                    <summary>Chapter ▾</summary>
+                    <div class="dropdown-content">
+                        <a href="chapter_01.html">01. Getting to Know HTML</a>
+                        <a href="chapter_02.html">02. HTML Elements</a>
+                        <a href="chapter_03.html">03. HTML Styles</a>
+                        <a href="chapter_04.html">04. Semantic HTML</a>
+                        <a href="chapter_05.html">05. Web Forms</a>
+                        <a href="chapter_06.html">06. HTML Multimedia</a>
+                        <a href="chapter_07.html">07. HTML Graphics</a>
+                        <a href="chapter_08.html">08. HTML Advanced</a>
+                        <a href="chapter_09.html">09. HTML Events</a>
+                        <a href="chapter_10.html">10. HTML APIs</a>
+                        <a href="chapter_11.html">11. Getting to Know CSS</a>
+                        <a href="chapter_12.html">12. CSS Selectors</a>
+                        <a href="chapter_13.html">13. CSS Cascading</a>
+                        <a href="chapter_14.html">14. CSS Box Model</a>
+                        <a href="chapter_15.html">15. CSS Colors</a>
+                        <a href="chapter_16.html">16. CSS Text</a>
+                        <a href="chapter_17.html">17. CSS Backgrounds</a>
+                        <a href="chapter_18.html">18. CSS Display</a>
+                        <a href="chapter_19.html">19. CSS Layout</a>
+                        <a href="chapter_20.html">20. CSS Transitions and Animations</a>
+                        <a href="chapter_21.html">21. Advanced CSS</a>
+                        <a href="chapter_22.html">22. Responsive CSS</a>
+                    </div>
+                </details>
+            </li>
+            <li><a href="#info">About</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </div>
+    <div class="page-layout">
+        <aside class="toc">
+            <h2>Chapter 7 Contents</h2>
+            <a href="#svg-graphics">7.1 SVG Graphics</a>
+            <a href="#rectangle">7.1.1 SVG Rectangle</a>
+            <a href="#circle">7.1.2 SVG Circle</a>
+            <a href="#ellipse">7.1.3 SVG Ellipse</a>
+            <a href="#line">7.1.4 SVG Line</a>
+            <a href="#polyline">7.1.5 SVG Polyline</a>
+            <a href="#polygon">7.1.6 SVG Polygon</a>
+            <a href="#path">7.1.7 SVG Path</a>
+            <a href="#svg-text">7.1.8 SVG Text</a>
+            <a href="#svg-link">7.1.9 SVG Link</a>
+            <a href="#stroke">7.1.10 SVG Stroke</a>
+            <a href="#gradients">7.1.11 SVG Gradients</a>
+            <a href="#filters">7.1.12 SVG Filters</a>
+            <a href="#canvas">7.2 Canvas</a>
+            <a href="#canvas-text">7.2.1 Draw Text</a>
+            <a href="#canvas-lines">7.2.2 Draw Lines</a>
+            <a href="#canvas-circles">7.2.3 Draw Circles</a>
+            <a href="#canvas-rectangles">7.2.4 Draw Rectangles</a>
+            <a href="#canvas-gradients">7.2.5 Draw Gradients</a>
+            <a href="#canvas-images">7.2.6 Draw Images</a>
+        </aside>
+        <main class="content-card">
+            <section class="chapter-heading">
+                <p class="eyebrow">CHAPTER 07</p>
+                <h1>HTML Graphics</h1>
+                <p>Explore two ways to create graphics on a webpage:
+                SVG for scalable vector shapes and Canvas for drawing areas.</p>
+            </section>
+            <div class="note">
+                This chapter displays visual demonstrations rather than source-code examples.
+                SVG works directly in HTML. Canvas drawing normally requires JavaScript,
+                so the Canvas section uses static SVG illustrations to stay within the
+                HTML and CSS project requirements.
+            </div>
+            <section id="svg-graphics">
+                <h2>7.1 SVG Graphics</h2>
+                <p>
+                    SVG stands for Scalable Vector Graphics. SVG images remain sharp
+                    when resized and are useful for icons, diagrams, logos, and illustrations.
+                </p>
+                <div class="demo-grid">
+                    <article class="demo-card" id="rectangle">
+                        <h3>7.1.1 SVG Rectangle</h3>
+                        <div class="demo-stage">
+                            <svg viewBox="0 0 300 130" role="img"
+                                aria-label="Purple rectangle">
+                                <rect x="35" y="25" width="230" height="80"
+                                    rx="8" fill="#a855f7" />
+                            </svg>
+                        </div>
+                        <p>
+                            A rectangle uses a width and height.
+                            Rounded corners are optional.
+                        </p>
+                    </article>
+                    <article class="demo-card" id="circle">
+                        <h3>7.1.2 SVG Circle</h3>
+                        <div class="demo-stage">
+                            <svg viewBox="0 0 300 130" role="img"
+                                aria-label="Blue circle">
+                                <circle cx="150" cy="65" r="48" fill="#7c83fd" />
+                            </svg>
+                        </div>
+                        <p>A circle uses a centre point and a radius.</p>
+                    </article>
+                    <article class="demo-card" id="ellipse">
+                        <h3>7.1.3 SVG Ellipse</h3>
+                        <div class="demo-stage">
+                            <svg viewBox="0 0 300 130" role="img"
+                                aria-label="Pink ellipse">
+                                <ellipse cx="150" cy="65" rx="105" ry="43"
+                                    fill="#f28ab2" />
+                            </svg>
+                        </div>
+                        <p>An ellipse has separate horizontal and vertical radii.</p>
+                    </article>
+                    <article class="demo-card" id="line">
+                        <h3>7.1.4 SVG Line</h3>
+                        <div class="demo-stage">
+                            <svg viewBox="0 0 300 130" role="img"
+                                aria-label="Diagonal green line">
+                                <line x1="35" y1="105" x2="265" y2="25"
+                                    stroke="#2f9e75" stroke-width="8" />
+                            </svg>
+                        </div>
+                        <p>A line connects two points and uses a stroke for its appearance.</p>
+                    </article>
+                    <article class="demo-card" id="polyline">
+                        <h3>7.1.5 SVG Polyline</h3>
+                        <div class="demo-stage">
+                            <svg viewBox="0 0 300 130" role="img"
+                                aria-label="Zigzag polyline">
+                                <polyline
+                                    points="20,100 75,25 130,100 185,25 240,100 280,45"
+                                    fill="none"
+                                    stroke="#e49b28"
+                                    stroke-width="7"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                        </div>
+                        <p>
+                            A polyline connects several points with straight segments
+                            without closing the shape.
+                        </p>
+                    <article class="demo-card" id="polygon">
+                        <h3>7.1.6 SVG Polygon</h3>
+                        <div class="demo-stage">
+                            <svg viewBox="0 0 300 130" role="img"
+                                aria-label="Teal hexagon">
+                                <polygon
+                                    points="80,20 220,20 270,65 220,110 80,110 30,65"
+                                    fill="#48b6ad"
+                                    stroke="#267b77"
+                                    stroke-width="4" />
+                            </svg>
+                        </div>
+                        <p>A polygon connects multiple points and closes the shape automatically.</p>
+                    </article>
+                    <article class="demo-card" id="path">
+                        <h3>7.1.7 SVG Path</h3>
+                        <div class="demo-stage">
+                            <svg viewBox="0 0 300 130" role="img"
+                                aria-label="Purple curved path">
+                                <path
+                                    d="M 25 95 C 65 5, 115 5, 150 65 S 235 125, 275 25"
+                                    fill="none"
+                                    stroke="#9b5de5"
+                                    stroke-width="8"
+                                    stroke-linecap="round" />
+                            </svg>
+                        </div>
+                        <p>A path can draw complex lines and curves.</p>
+                    </article>
+                    <article class="demo-card" id="svg-text">
+                        <h3>7.1.8 SVG Text</h3>
+                        <div class="demo-stage">
+                            <svg viewBox="0 0 300 130" role="img"
+                                aria-label="BIBLUNE SVG text">
+                                <text x="150" y="72"
+                                    text-anchor="middle"
+                                    font-size="34"
+                                    font-weight="700"
+                                    letter-spacing="3"
+                                    fill="#7040b5">BIBLUNE</text>
+                                <text x="150" y="98"
+                                    text-anchor="middle"
+                                    font-size="12"
+                                    fill="#716d80">
+                                    A little world of books
+                                </text>
+                            </svg>
+                        </div>
+                        <p>SVG text can be positioned and styled like other SVG shapes.</p>
+                    </article>
+                    <article class="demo-card" id="svg-link">
+                        <h3>7.1.9 SVG Link</h3>
+                        <div class="demo-stage">
+                            <svg viewBox="0 0 300 130" role="img"
+                                aria-label="Clickable book illustration">
+                                <a href="#canvas" aria-label="Go to the Canvas section">
+                                    <rect x="75" y="22" width="150" height="86"
+                                        rx="12"
+                                        fill="#eee8ff"
+                                        stroke="#7040b5"
+                                        stroke-width="3" />
+                                    <path
+                                        d="M150 35 V96 M95 42 Q120 32 145 45 V92 Q120 80 95 90 Z"
+                                        fill="#ffffff"
+                                        stroke="#7040b5"
+                                        stroke-width="3" />
+                                    <path
+                                        d="M155 45 Q180 32 205 42 V90 Q180 80 155 92 Z"
+                                        fill="#ffffff"
+                                        stroke="#7040b5"
+                                        stroke-width="3" />
+                                </a>
+                            </svg>
+                        </div>
+                        <p>Click the book illustration to jump to the Canvas section.</p>
+                    </article>
+                    <article class="demo-card" id="stroke">
+                        <h3>7.1.10 SVG Stroke</h3>
+                        <div class="demo-stage">
+                            <svg viewBox="0 0 300 145" role="img"
+                                aria-label="SVG stroke styling examples">
+                                <line x1="20" y1="28" x2="280" y2="28"
+                                    stroke="#7040b5" stroke-width="4" />
+                                <line x1="20" y1="65" x2="280" y2="65"
+                                    stroke="#e49b28" stroke-width="10" />
+                                <line x1="20" y1="105" x2="280" y2="105"
+                                    stroke="#2f9e75"
+                                    stroke-width="6"
+                                    stroke-linecap="round"
+                                    stroke-dasharray="12 8" />
+                            </svg>
+                        </div>
+                        <p>
+                            Stroke properties control outline colour, thickness,
+                            line endings, and dash patterns.
+                        </p>
+                        <ul class="demo-list">
+                            <li>
+                                <strong>7.1.10.1 Stroke Color:</strong>
+                                changes the outline colour.
+                            </li>
+                            <li>
+                                <strong>7.1.10.2 Stroke Width:</strong>
+                                changes outline thickness.
+                            </li>
+                            <li>
+                                <strong>7.1.10.3 Stroke Ending:</strong>
+                                line caps can be butt, round, or square.
+                            </li>
+                            <li>
+                                <strong>7.1.10.4 Dash Stroke:</strong>
+                                creates dashed or dotted lines.
+                            </li>
+                        </ul>
+                    </article>
+                    <article class="demo-card" id="gradients">
+                        <h3>7.1.11 SVG Gradients</h3>
+                        <div class="demo-stage">
+                            <svg viewBox="0 0 300 145" role="img"
+                                aria-label="Linear and radial SVG gradients">
+                                <defs>
+                                    <linearGradient id="linearShade"
+                                        x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" stop-color="#7c83fd" />
+                                        <stop offset="100%" stop-color="#f28ab2" />
+                                    </linearGradient>
+                                    <radialGradient id="radialShade">
+                                        <stop offset="0%" stop-color="#fff2a8" />
+                                        <stop offset="100%" stop-color="#e49b28" />
+                                    </radialGradient>
+                                </defs>
+                                <rect x="10" y="20" width="130" height="100"
+                                    rx="10" fill="url(#linearShade)" />
+                                <circle cx="220" cy="70" r="50"
+                                    fill="url(#radialShade)" />
+                            </svg>
+                        </div>
+                        <p>A gradient blends colours smoothly.</p>
+                        <ul class="demo-list">
+                            <li>
+                                <strong>7.1.11.1 Linear Gradient:</strong>
+                                colours blend along a straight direction.
+                            </li>
+                            <li>
+                                <strong>7.1.11.2 Radial Gradient:</strong>
+                                colours blend outward from a central point.
+                            </li>
+                        </ul>
+                    </article>
+                    <article class="demo-card" id="filters">
+                        <h3>7.1.12 SVG Filters</h3>
+                        <div class="demo-stage">
+                            <svg viewBox="0 0 300 130" role="img"
+                                aria-label="Soft shadow filter example">
+                                <defs>
+                                    <filter id="softShadow"
+                                        x="-30%" y="-30%"
+                                        width="160%" height="170%">
+                                        <feDropShadow
+                                            dx="5"
+                                            dy="7"
+                                            stdDeviation="4"
+                                            flood-color="#4b376a"
+                                            flood-opacity="0.45" />
+                                    </filter>
+                                </defs>
+                                <rect x="55" y="25" width="190" height="78"
+                                    rx="12"
+                                    fill="#c3bcfc"
+                                    filter="url(#softShadow)" />
+                                <text x="150" y="72"
+                                    text-anchor="middle"
+                                    font-size="20"
+                                    font-weight="700"
+                                    fill="#25233f">Soft Shadow</text>
+                            </svg>
+                        </div>
+                        <p>SVG filters can add effects such as blur and drop shadows.</p>
+                    </article>
+                </div>
+            </section>
+            <section id="canvas">
+                <h2>7.2 Canvas</h2>
+                <p>
+                    The HTML canvas element provides a rectangular drawing area.
+                    JavaScript is normally used to draw on it. The following examples
+                    illustrate common Canvas results without using JavaScript.
+                </p>
+                <div class="note">
+                    These are static illustrations, not drawings generated by an actual
+                    Canvas context. JavaScript is needed to make Canvas draw text, lines,
+                    circles, rectangles, gradients, or images.
+                </div>
+                <div class="demo-grid">
+                    <article class="demo-card" id="canvas-text">
+                        <h3>7.2.1 Draw Text</h3>
+                        <div class="demo-stage">
+                            <svg viewBox="0 0 300 130" role="img"
+                                aria-label="Canvas text illustration">
+                                <rect x="8" y="8" width="284" height="114"
+                                    rx="8" fill="white" stroke="#d7c9ec" />
+                                <text x="150" y="58"
+                                    text-anchor="middle"
+                                    font-size="25"
+                                    font-weight="700"
+                                    fill="#7040b5">Hello Canvas!</text>
+                                <text x="150" y="84"
+                                    text-anchor="middle"
+                                    font-size="13"
+                                    fill="#716d80">
+                                    Text on a drawing area
+                                </text>
+                            </svg>
+                        </div>
+                        <p>Canvas can display filled or outlined text.</p>
+                    </article>
+                    <article class="demo-card" id="canvas-lines">
+                        <h3>7.2.2 Draw Lines</h3>
+                        <div class="demo-stage">
+                            <svg viewBox="0 0 300 130" role="img"
+                                aria-label="Canvas line illustration">
+                                <rect x="8" y="8" width="284" height="114" rx="8" fill="white" stroke="#d7c9ec" />
+                                <path d="M35 95 L95 30 L155 95 L215 30 L270 95"
+                                    fill="none"
+                                    stroke="#2f9e75"
+                                    stroke-width="5"
+                                    stroke-linejoin="round" />
+                            </svg>
+                        </div>
+                        <p>Lines can connect points to form patterns or diagrams.</p>
+                    </article>
+                    <article class="demo-card" id="canvas-circles">
+                        <h3>7.2.3 Draw Circles</h3>
+                        <div class="demo-stage">
+                            <svg viewBox="0 0 300 130" role="img"
+                                aria-label="Canvas circles illustration">
+                                <rect x="8" y="8" width="284" height="114"
+                                    rx="8" fill="white" stroke="#d7c9ec" />
+
+                                <circle cx="90" cy="65" r="34" fill="#c3bcfc" />
+                                <circle cx="150" cy="65" r="34"
+                                    fill="#f28ab2" fill-opacity="0.85" />
+                                <circle cx="210" cy="65" r="34"
+                                    fill="#48b6ad" fill-opacity="0.85" />
+                            </svg>
+                        </div>
+                        <p>Circles can have different positions, radii, and colours.</p>
+                    </article>
+                    <article class="demo-card" id="canvas-rectangles">
+                        <h3>7.2.4 Draw Rectangles</h3>
+                        <div class="demo-stage">
+                            <svg viewBox="0 0 300 130" role="img"
+                                aria-label="Canvas rectangles illustration">
+                                <rect x="8" y="8" width="284" height="114" rx="8" fill="white" stroke="#d7c9ec" />
+                                <rect x="30" y="30" width="75" height="68" fill="#7c83fd" />
+                                <rect x="120" y="30" width="75" height="68" fill="#f28ab2" />
+                                <rect x="210" y="30" width="60" height="68" fill="#48b6ad" />
+                            </svg>
+                        </div>
+                        <p>Rectangles may be filled or drawn as outlines.</p>
+                    </article>
+                    <article class="demo-card" id="canvas-gradients">
+                        <h3>7.2.5 Draw Gradients</h3>
+                        <div class="demo-stage">
+                            <svg viewBox="0 0 300 130" role="img"
+                                aria-label="Canvas gradient illustration">
+                                <defs>
+                                    <linearGradient id="canvasLinear"
+                                        x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" stop-color="#7c83fd" />
+                                        <stop offset="100%" stop-color="#f28ab2" />
+                                    </linearGradient>
+                                    <radialGradient id="canvasRadial">
+                                        <stop offset="0%" stop-color="#fff2a8" />
+                                        <stop offset="100%" stop-color="#e49b28" />
+                                    </radialGradient>
+                                </defs>
+                                <rect x="8" y="8" width="284" height="114"
+                                    rx="8" fill="white" stroke="#d7c9ec" />
+
+                                <rect x="22" y="28" width="120" height="74"
+                                    rx="7" fill="url(#canvasLinear)" />
+
+                                <circle cx="220" cy="65" r="38"
+                                    fill="url(#canvasRadial)" />
+                            </svg>
+                        </div>
+                        <p>Gradients create smooth transitions between colours.</p>
+                        <ul class="demo-list">
+                            <li>
+                                <strong>7.2.5.1 Linear Gradient:</strong>
+                                colour changes in a straight direction.
+                            </li>
+                            <li>
+                                <strong>7.2.5.2 Radial Gradient:</strong>
+                                colour changes outward from a centre point.
+                            </li>
+                        </ul>
+                    </article>
+                    <article class="demo-card" id="canvas-images">
+                        <h3>7.2.6 Draw Images</h3>
+                        <div class="demo-stage">
+                            <svg viewBox="0 0 300 130" role="img"
+                                aria-label="Landscape illustration representing an image">
+                                <rect x="8" y="8" width="284" height="114" rx="8" fill="#e9f5ff" stroke="#d7c9ec" />
+                                <circle cx="225" cy="38" r="16" fill="#f5c65d" />
+                                <path d="M20 105 L90 38 L150 105 Z"
+                                    fill="#8d9ee8" />
+                                <path d="M95 105 L175 25 L270 105 Z"
+                                    fill="#68b99b" />
+                                <path d="M20 105 Q95 85 150 105 T280 105 V115 H20 Z"
+                                    fill="#4b9fbd" />
+                            </svg>
+                        </div>
+                        <p>
+                            Canvas can display an image inside its drawing area.
+                            JavaScript normally places the image.
+                        </p>
+                    </article>
+                </div>
+            </section>
+            <section id="chapter-summary">
+                <h2>Chapter Summary</h2>
+                <ul class="demo-list">
+                    <li>SVG creates scalable vector graphics directly in HTML.</li>
+                    <li>SVG supports shapes, text, links, strokes, gradients, and filters.</li>
+                    <li>Canvas provides a drawing area for graphics.</li>
+                    <li>JavaScript is normally required to draw on Canvas.</li>
+                </ul>
+            </section>
+        </main>
+    </div>
+    <footer>
+        <p>BIBLUNE | HTML &amp; CSS Project</p>
+    </footer>
+</body>
+</html>

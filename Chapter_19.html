@@ -1,0 +1,1658 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chapter_19</title>
+    <style>
+      body {
+        font-family:
+          "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+      }
+      .logo {
+        font-family: cursive;
+        font-size: 35px;
+        font-style: italic;
+        background-color: hsl(287, 93%, 65%);
+        font-weight: bold;
+        color: #000000;
+        text-decoration: none;
+        letter-spacing: 2px;
+      }
+
+      .menu {
+        width: 100%;
+        background-color: hsl(287, 93%, 65%);
+        display: flow-root;
+        overflow: visible;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      .menu ul {
+        list-style: none;
+        margin-right: 30px;
+      }
+
+      .menu ul li {
+        font-family:
+          "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+        float: left;
+      }
+
+      .menu ul li a {
+        display: block;
+        padding: 14px 18px;
+        color: rgb(8, 8, 8);
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .menu ul li a:hover {
+        background-color: #520172;
+        color: rgb(251, 249, 249);
+      }
+
+      .dropdown {
+        position: relative;
+      }
+
+      .dropdown details summary {
+        display: block;
+        padding: 14px 18px;
+        color: black;
+        font-weight: bold;
+        cursor: pointer;
+        list-style: none;
+      }
+
+      .dropdown details summary:hover {
+        background-color: #520172;
+        color: #ffff;
+      }
+
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        min-width: 160px;
+        max-height: 300px;
+        overflow-y: auto;
+        background-color: hsl(287, 93%, 65%);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        opacity: 80%;
+        z-index: 1000;
+      }
+
+      .dropdown details[open] .dropdown-content {
+        display: block;
+      }
+
+      .dropdown-content a {
+        display: block;
+        padding: 10px 15px;
+        color: white;
+        text-decoration: none;
+        white-space: nowrap;
+      }
+
+      .dropdown-content a:hover {
+        background-color: #520172;
+        color: #ffffff;
+      }
+
+      footer p {
+        font-family:
+          "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+          "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+        text-align: center;
+        background-color: hsl(287, 93%, 65%);
+        color: #000;
+        padding: 12px;
+        margin-top: 40px;
+      }
+
+      .chapter-heading {
+        text-align: center;
+        padding: 30px 20px;
+        background: #fff;
+        border-bottom: 1px solid #dce1e8;
+      }
+
+      .chapter-heading .eyebrow {
+        color: #8b5e3c;
+        font-size: 13px;
+        font-weight: bold;
+        letter-spacing: 3px;
+      }
+
+      .chapter-heading h1 {
+        margin: 8px 0;
+        color: #243b63;
+        font-size: clamp(27px, 4vw, 38px);
+      }
+
+      .chapter-heading p {
+        color: #657187;
+      }
+
+      .chapter-container {
+        display: grid;
+        grid-template-columns: 250px minmax(0, 1fr);
+        gap: 28px;
+        max-width: 1250px;
+        margin: 35px auto;
+        padding: 0 20px;
+        align-items: start;
+      }
+
+      .chapter-sidebar {
+        position: sticky;
+        top: 100px;
+        max-height: 85vh;
+        overflow-y: auto;
+        background: #fff;
+        border: 1px solid #e1e5ed;
+        border-radius: 12px;
+        padding: 20px;
+      }
+
+      .chapter-sidebar h2 {
+        color: #243b63;
+        font-size: 19px;
+        margin-top: 0;
+      }
+
+      .chapter-toc {
+        padding-left: 20px;
+        margin-bottom: 0;
+      }
+
+      .chapter-toc li {
+        margin: 9px 0;
+        color: #657187;
+      }
+
+      .chapter-toc a {
+        color: #465675;
+        text-decoration: none;
+        font-size: 13px;
+      }
+
+      .chapter-toc a:hover {
+        color: #8b5e3c;
+        text-decoration: underline;
+      }
+
+      .chapter-content {
+        min-width: 0;
+      }
+
+      .chapter-section {
+        background: #fff;
+        border: 1px solid #e1e5ed;
+        border-radius: 12px;
+        padding: 25px;
+        margin-bottom: 25px;
+        scroll-margin-top: 20px;
+      }
+
+      .chapter-section h2 {
+        color: #243b63;
+        font-size: 23px;
+        margin-top: 0;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #e7eaf0;
+      }
+
+      .chapter-section h3 {
+        color: #8b5e3c;
+        font-size: 17px;
+        margin-top: 25px;
+      }
+
+      .chapter-section p {
+        color: #58657b;
+        line-height: 1.7;
+      }
+
+      .demo-box {
+        background: #f7f8fc;
+        border: 1px solid #e0e5ef;
+        border-radius: 9px;
+        padding: 18px;
+        margin: 15px 0;
+        min-width: 0;
+      }
+
+      .demo-label {
+        color: #657187;
+        font-size: 12px;
+        font-weight: bold;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+      }
+
+      .note-box {
+        background: #fff8ec;
+        border-left: 4px solid #d9a441;
+        border-radius: 5px;
+        padding: 12px 15px;
+        margin-top: 15px;
+        color: #6f5934;
+        line-height: 1.6;
+      }
+
+      .demo-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+        gap: 12px;
+      }
+
+      .demo-tile {
+        background: #e9eafa;
+        border: 1px solid #d2d5f1;
+        border-radius: 8px;
+        padding: 14px 10px;
+        text-align: center;
+        color: #34436c;
+        min-width: 0;
+      }
+
+      .sample-item {
+        background: #e9eafa;
+        border: 1px solid #cbd0f0;
+        color: #34436c;
+        border-radius: 7px;
+        padding: 12px;
+        text-align: center;
+      }
+
+      .sample-item.alt {
+        background: #ffe8d0;
+        border-color: #f3d0a9;
+        color: #7a4c25;
+      }
+
+      .sample-item.green {
+        background: #dff3e8;
+        border-color: #b6dfc9;
+        color: #286345;
+      }
+
+      .sample-item.purple {
+        background: #f0e4fa;
+        border-color: #dbc5ef;
+        color: #68418a;
+      }
+
+      .position-stage {
+        position: relative;
+        min-height: 180px;
+        background: #fff;
+        border: 1px dashed #c7ccda;
+        border-radius: 8px;
+        padding: 12px;
+      }
+
+      .position-static {
+        position: static;
+      }
+
+      .position-relative {
+        position: relative;
+        left: 20px;
+        top: 8px;
+      }
+
+      .position-absolute-parent {
+        position: relative;
+        height: 150px;
+        background: #e9eafa;
+        border-radius: 7px;
+        padding: 10px;
+      }
+
+      .position-absolute {
+        position: absolute;
+        right: 10px;
+        bottom: 10px;
+        background: #ffe5c7;
+        border: 1px solid #edc99e;
+        padding: 12px;
+        border-radius: 7px;
+      }
+
+      .position-fixed-note {
+        position: static;
+        border: 1px dashed #9a8ad4;
+        background: #f0eafa;
+        border-radius: 7px;
+        padding: 12px;
+      }
+
+      .position-sticky-stage {
+        height: 150px;
+        overflow-y: auto;
+        border: 1px solid #dce1e8;
+        border-radius: 7px;
+        background: #fff;
+      }
+
+      .position-sticky {
+        position: sticky;
+        top: 0;
+        background: #243b63;
+        color: #fff;
+        padding: 12px;
+        z-index: 2;
+      }
+
+      .position-scroll-content {
+        padding: 12px;
+        line-height: 2;
+        color: #58657b;
+      }
+
+      .float-article {
+        background: #fff;
+        padding: 15px;
+        border-radius: 8px;
+        line-height: 1.7;
+        color: #58657b;
+      }
+
+      .float-book {
+        float: left;
+        width: 100px;
+        height: 100px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #e9eafa;
+        color: #34436c;
+        border-radius: 8px;
+        margin: 0 15px 10px 0;
+        font-size: 35px;
+      }
+
+      .float-right {
+        float: right;
+        width: 100px;
+        height: 100px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #ffe5c7;
+        color: #7a4c25;
+        border-radius: 8px;
+        margin: 0 0 10px 15px;
+        font-size: 35px;
+      }
+
+      .clear-box {
+        clear: both;
+        background: #dff3e8;
+        border: 1px solid #b6dfc9;
+        border-radius: 7px;
+        padding: 12px;
+        color: #286345;
+      }
+
+      .zindex-stage {
+        position: relative;
+        height: 190px;
+        background: #fff;
+        border: 1px dashed #c7ccda;
+        border-radius: 8px;
+      }
+
+      .z-box {
+        position: absolute;
+        width: 130px;
+        height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 9px;
+        font-weight: bold;
+      }
+
+      .z-one {
+        background: #c9d5ff;
+        left: 10%;
+        top: 25px;
+        z-index: 1;
+      }
+
+      .z-two {
+        background: #f8d9b5;
+        left: 30%;
+        top: 45px;
+        z-index: 3;
+      }
+
+      .z-three {
+        background: #d4f0df;
+        left: 50%;
+        top: 65px;
+        z-index: 2;
+      }
+
+      .flex-demo {
+        display: flex;
+        background: #fff;
+        border: 1px dashed #c7ccda;
+        border-radius: 8px;
+        padding: 12px;
+        min-height: 100px;
+      }
+
+      .flex-demo .sample-item {
+        min-width: 45px;
+      }
+
+      .flex-gap {
+        gap: 18px;
+      }
+
+      .flex-row {
+        flex-direction: row;
+      }
+
+      .flex-column {
+        flex-direction: column;
+      }
+
+      .flex-row-reverse {
+        flex-direction: row-reverse;
+      }
+
+      .flex-justify {
+        justify-content: space-between;
+      }
+
+      .flex-justify-center {
+        justify-content: center;
+      }
+
+      .flex-justify-around {
+        justify-content: space-around;
+      }
+
+      .flex-align-center {
+        align-items: center;
+        min-height: 150px;
+      }
+
+      .flex-align-start {
+        align-items: flex-start;
+        min-height: 150px;
+      }
+
+      .flex-align-end {
+        align-items: flex-end;
+        min-height: 150px;
+      }
+
+      .flex-wrap {
+        flex-wrap: wrap;
+      }
+
+      .flex-nowrap {
+        flex-wrap: nowrap;
+      }
+
+      .flex-wrap .sample-item {
+        flex: 0 0 110px;
+      }
+
+      .flex-content {
+        flex-wrap: wrap;
+        align-content: space-between;
+        height: 190px;
+      }
+
+      .flex-content .sample-item {
+        width: 27%;
+      }
+
+      .flex-basis .sample-item {
+        flex-basis: 150px;
+      }
+
+      .flex-order-one {
+        order: 3;
+      }
+
+      .flex-order-two {
+        order: 1;
+      }
+
+      .flex-order-three {
+        order: 2;
+      }
+
+      .flex-grow .grow-one {
+        flex-grow: 1;
+      }
+
+      .flex-grow .grow-two {
+        flex-grow: 2;
+      }
+
+      .flex-shrink {
+        overflow: hidden;
+      }
+
+      .flex-shrink .shrink-one {
+        flex-shrink: 1;
+        flex-basis: 180px;
+      }
+
+      .flex-shrink .shrink-two {
+        flex-shrink: 0;
+        flex-basis: 180px;
+      }
+
+      .flex-self {
+        align-items: stretch;
+        min-height: 150px;
+      }
+
+      .flex-self .self-start {
+        align-self: flex-start;
+      }
+
+      .flex-self .self-center {
+        align-self: center;
+      }
+
+      .flex-self .self-end {
+        align-self: flex-end;
+      }
+
+      .flex-shorthand .sample-item {
+        flex: 1 1 100px;
+      }
+
+      .flex-auto-margin .auto-item {
+        margin-left: auto;
+      }
+
+      /* 19.5 Grid */
+      .grid-demo {
+        display: grid;
+        gap: 10px;
+        background: #fff;
+        border: 1px dashed #c7ccda;
+        border-radius: 8px;
+        padding: 12px;
+      }
+
+      .grid-three-columns {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .grid-two-columns {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .grid-rows {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: 60px 100px 60px;
+      }
+
+      .grid-column-gap {
+        column-gap: 25px;
+        row-gap: 8px;
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .grid-row-gap {
+        column-gap: 8px;
+        row-gap: 25px;
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .grid-custom-gap {
+        gap: 20px 8px;
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .grid-justify-items {
+        grid-template-columns: repeat(3, 1fr);
+        justify-items: center;
+      }
+
+      .grid-justify-items .sample-item {
+        width: 65px;
+      }
+
+      .grid-align-items {
+        grid-template-columns: repeat(3, 1fr);
+        align-items: center;
+        height: 150px;
+      }
+
+      .grid-justify-content {
+        grid-template-columns: repeat(3, 80px);
+        justify-content: space-around;
+      }
+
+      .grid-align-content {
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: 35px 35px;
+        align-content: space-between;
+        height: 150px;
+      }
+
+      .grid-column-start .grid-wide {
+        grid-column-start: 2;
+      }
+
+      .grid-column-end .grid-wide {
+        grid-column: 1 / 3;
+      }
+
+      .grid-column-shorthand .grid-wide {
+        grid-column: 1 / span 2;
+      }
+
+      .grid-row-start .grid-tall {
+        grid-row-start: 1;
+      }
+
+      .grid-row-end .grid-tall {
+        grid-row: 1 / 3;
+      }
+
+      .grid-row-shorthand .grid-tall {
+        grid-row: 1 / span 2;
+      }
+
+      .grid-area-item {
+        grid-area: 1 / 1 / 3 / 3;
+      }
+
+      .grid-self {
+        grid-template-columns: repeat(3, 1fr);
+        height: 150px;
+      }
+
+      .grid-self .self-start {
+        justify-self: start;
+        align-self: start;
+      }
+
+      .grid-self .self-center {
+        justify-self: center;
+        align-self: center;
+      }
+
+      .grid-self .self-end {
+        justify-self: end;
+        align-self: end;
+      }
+
+      .grid-template-areas {
+        grid-template-columns: 1fr 2fr;
+        grid-template-areas:
+          "header header"
+          "sidebar main"
+          "footer footer";
+      }
+
+      .area-header {
+        grid-area: header;
+      }
+
+      .area-sidebar {
+        grid-area: sidebar;
+      }
+
+      .area-main {
+        grid-area: main;
+      }
+
+      .area-footer {
+        grid-area: footer;
+      }
+
+      .horizontal-center {
+        text-align: center;
+      }
+
+      .horizontal-right {
+        text-align: right;
+      }
+
+      .vertical-stage {
+        height: 160px;
+        display: table;
+        width: 100%;
+        background: #fff;
+        border: 1px dashed #c7ccda;
+        border-radius: 8px;
+      }
+
+      .vertical-stage p {
+        display: table-cell;
+        vertical-align: middle;
+        text-align: center;
+      }
+
+      .perfect-position-stage {
+        position: relative;
+        height: 180px;
+        background: #fff;
+        border: 1px dashed #c7ccda;
+        border-radius: 8px;
+      }
+
+      .perfect-position-item {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 140px;
+        padding: 18px 10px;
+        background: #e9eafa;
+        border-radius: 8px;
+        text-align: center;
+        color: #34436c;
+      }
+
+      .perfect-flex-stage {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 180px;
+        background: #fff;
+        border: 1px dashed #c7ccda;
+        border-radius: 8px;
+      }
+
+      .perfect-flex-item {
+        padding: 20px;
+        background: #dff3e8;
+        border-radius: 8px;
+        color: #286345;
+        text-align: center;
+      }
+
+      @media (max-width: 800px) {
+        .chapter-container {
+          grid-template-columns: 1fr;
+          gap: 20px;
+          margin-top: 20px;
+          padding: 0 14px;
+        }
+
+        .chapter-sidebar {
+          position: static;
+          max-height: 350px;
+        }
+
+        .chapter-section {
+          padding: 18px;
+        }
+
+        .z-box {
+          width: 100px;
+          height: 85px;
+        }
+
+        .grid-justify-content {
+          grid-template-columns: repeat(3, 65px);
+        }
+      }
+
+      @media (max-width: 480px) {
+        .chapter-section h2 {
+          font-size: 20px;
+        }
+
+        .demo-box {
+          padding: 12px;
+        }
+
+        .z-box {
+          width: 80px;
+          height: 75px;
+          font-size: 12px;
+        }
+
+        .flex-demo {
+          padding: 8px;
+        }
+
+        .flex-basis .sample-item {
+          flex-basis: 100px;
+        }
+
+        .grid-justify-content {
+          grid-template-columns: repeat(3, 55px);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="menu">
+      <a href="HomePage.html" class="logo">BIBLUNE</a>
+      <ul>
+        <li><a href="HomePage.html">Home</a></li>
+        <li><a href="#">Books</a></li>
+        <li><a href="#">Categories</a></li>
+        <li class="dropdown">
+          <details>
+            <summary>Chapter ▾</summary>
+            <div class="dropdown-content">
+              <a href="chapter_01.html">01. Getting to Know HTML</a>
+              <a href="chapter_02.html">02. HTML Elements</a>
+              <a href="chapter_03.html">03. HTML Styles</a>
+              <a href="chapter_04.html">04. Semantic HTML</a>
+              <a href="chapter_05.html">05. Web Forms</a>
+              <a href="chapter_06.html">06. HTML Multimedia</a>
+              <a href="chapter_07.html">07. HTML Graphics</a>
+              <a href="chapter_08.html">08. HTML Advanced</a>
+              <a href="chapter_09.html">09. HTML Events</a>
+              <a href="chapter_10.html">10. HTML APIs</a>
+              <a href="chapter_11.html">11. Getting to Know CSS</a>
+              <a href="chapter_12.html">12. CSS Selectors</a>
+              <a href="chapter_13.html">13. CSS Cascading</a>
+              <a href="chapter_14.html">14. CSS Box Model</a>
+              <a href="chapter_15.html">15. CSS Colors</a>
+              <a href="chapter_16.html">16. CSS Text</a>
+              <a href="chapter_17.html">17. CSS Backgrounds</a>
+              <a href="chapter_18.html">18. CSS Display</a>
+              <a href="chapter_19.html">19. CSS Layout</a>
+              <a href="chapter_20.html">20. CSS Transitions and Animations</a>
+              <a href="chapter_21.html">21. Advanced CSS</a>
+              <a href="chapter_22.html">22. Responsive CSS</a>
+            </div>
+          </details>
+        </li>
+        <li><a href="#info">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <section class="chapter-heading">
+      <p class="eyebrow">CHAPTER 19</p>
+      <h1>CSS LAYOUT</h1>
+      <p>Learn how to position, align, and organize elements on a webpage.</p>
+    </section>
+
+    <div class="chapter-container">
+      <!-- Table of Contents -->
+      <aside class="chapter-sidebar">
+        <h2>On This Page</h2>
+
+        <ol class="chapter-toc">
+          <li><a href="#position">CSS Position</a></li>
+          <li><a href="#float">CSS Float</a></li>
+          <li><a href="#z-index">CSS Z-Index</a></li>
+          <li><a href="#flexbox">CSS Flexbox</a></li>
+          <li><a href="#grid">CSS Grid</a></li>
+          <li><a href="#alignment">CSS Alignment</a></li>
+        </ol>
+      </aside>
+
+      <main class="chapter-content">
+        <section class="chapter-section" id="position">
+          <h2>19.1 CSS Position</h2>
+          <p>
+            The position property controls how an element is placed in a
+            webpage. The top, right, bottom, and left properties can control its
+            location, depending on the positioning method.
+          </p>
+
+          <h3>19.1.1 Static</h3>
+          <p>
+            Static is the default positioning method. The element follows the
+            normal document flow.
+          </p>
+
+          <div class="demo-box">
+            <div class="position-stage">
+              <div class="sample-item position-static">Static Element</div>
+              <p>The element stays in its normal position.</p>
+            </div>
+          </div>
+
+          <h3>19.1.2 Relative</h3>
+          <p>
+            Relative positioning moves an element from its normal position while
+            keeping its original space in the layout.
+          </p>
+
+          <div class="demo-box">
+            <div class="position-stage">
+              <div class="sample-item">Normal Element</div>
+              <div class="sample-item alt position-relative">
+                Relative Element
+              </div>
+            </div>
+          </div>
+
+          <h3>19.1.3 Absolute</h3>
+          <p>
+            An absolutely positioned element is positioned relative to its
+            nearest ancestor that establishes a positioning context.
+          </p>
+
+          <div class="demo-box">
+            <div class="position-absolute-parent">
+              <span>Positioned Parent</span>
+              <div class="position-absolute">Absolute Element</div>
+            </div>
+          </div>
+
+          <h3>19.1.4 Fixed</h3>
+          <p>
+            A fixed element is positioned relative to the viewport and usually
+            stays in the same place when the page scrolls.
+          </p>
+
+          <div class="demo-box">
+            <div class="position-fixed-note">
+              <strong>Fixed positioning concept</strong>
+              <p>
+                A fixed help button can remain at the bottom corner of the
+                browser window while the page scrolls. This sample illustrates
+                the idea without covering the rest of the page.
+              </p>
+            </div>
+          </div>
+
+          <h3>19.1.5 Sticky</h3>
+          <p>
+            Sticky positioning behaves like normal positioning until the
+            specified scroll position is reached.
+          </p>
+
+          <div class="demo-box">
+            <div class="position-sticky-stage">
+              <div class="position-sticky">Sticky Bar</div>
+              <div class="position-scroll-content">
+                Scroll inside this box to see the sticky bar remain at the top.
+                <p>Reading Corner</p>
+                <p>Book Reviews</p>
+                <p>New Arrivals</p>
+                <p>Fiction Collection</p>
+                <p>Poetry Collection</p>
+                <p>Reading Recommendations</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="note-box">
+            <strong>Remember:</strong> sticky positioning needs a scrolling area
+            and a threshold such as top: 0 to show its sticky behavior.
+          </div>
+        </section>
+        <section class="chapter-section" id="float">
+          <h2>19.2 CSS Float</h2>
+          <p>
+            Float places an element to the left or right, allowing nearby text
+            and inline content to wrap around it.
+          </p>
+
+          <h3>19.2.1 Float</h3>
+
+          <div class="demo-box">
+            <div class="float-article">
+              <div class="float-book">📚</div>
+              <strong>A Little World of Books</strong>
+              <p>
+                Books introduce us to new places, interesting people, and
+                wonderful ideas. A good story can make a quiet afternoon feel
+                like an adventure. Reading also helps us discover different
+                points of view and learn new things.
+              </p>
+            </div>
+          </div>
+
+          <div class="demo-box">
+            <div class="float-article">
+              <div class="float-right">📖</div>
+              <strong>Float Right</strong>
+              <p>
+                In this example, the book icon floats to the right. The
+                surrounding text wraps around it, showing how float can be used
+                in an article or magazine layout.
+              </p>
+            </div>
+          </div>
+
+          <h3>19.2.2 Clear</h3>
+          <p>
+            The clear property prevents an element from sitting alongside
+            floated elements on the specified side.
+          </p>
+
+          <div class="demo-box">
+            <div class="float-article">
+              <div class="float-book">📚</div>
+              Text wraps around this floated book icon.
+              <div class="clear-box">
+                This section uses clear: both, so it starts below the floated
+                element.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="chapter-section" id="z-index">
+          <h2>19.3 CSS Z-Index</h2>
+          <p>
+            The z-index property controls the stacking order of positioned
+            elements. Elements with a higher stacking level can appear in front
+            of elements with a lower level within the same stacking context.
+          </p>
+
+          <div class="demo-box">
+            <div class="zindex-stage">
+              <div class="z-box z-one">z-index: 1</div>
+              <div class="z-box z-two">z-index: 3</div>
+              <div class="z-box z-three">z-index: 2</div>
+            </div>
+          </div>
+
+          <div class="note-box">
+            <strong>Remember:</strong> z-index does not always compare elements
+            globally. Stacking contexts can affect which element appears on top.
+          </div>
+        </section>
+
+        <section class="chapter-section" id="flexbox">
+          <h2>19.4 CSS Flexbox</h2>
+          <p>
+            Flexbox is a one-dimensional layout system for arranging items in a
+            row or column. It helps distribute space and align items.
+          </p>
+
+          <h3>19.4.1 Flex Container</h3>
+
+          <h3>19.4.1.1 Gap</h3>
+          <p>Gap adds space between flex items.</p>
+
+          <div class="demo-box">
+            <div class="flex-demo flex-gap">
+              <div class="sample-item">One</div>
+              <div class="sample-item alt">Two</div>
+              <div class="sample-item green">Three</div>
+            </div>
+          </div>
+
+          <h3>19.4.1.2 Flex-Direction</h3>
+          <p>
+            Flex-direction determines the direction in which items are arranged.
+          </p>
+
+          <div class="demo-box">
+            <div class="demo-label">Row</div>
+            <div class="flex-demo flex-row">
+              <div class="sample-item">One</div>
+              <div class="sample-item alt">Two</div>
+              <div class="sample-item green">Three</div>
+            </div>
+
+            <div class="demo-label" style="margin-top: 18px">Column</div>
+            <div class="flex-demo flex-column">
+              <div class="sample-item">One</div>
+              <div class="sample-item alt">Two</div>
+              <div class="sample-item green">Three</div>
+            </div>
+
+            <div class="demo-label" style="margin-top: 18px">Row Reverse</div>
+            <div class="flex-demo flex-row-reverse">
+              <div class="sample-item">One</div>
+              <div class="sample-item alt">Two</div>
+              <div class="sample-item green">Three</div>
+            </div>
+          </div>
+
+          <h3>19.4.1.3 Justify-Content</h3>
+          <p>Justify-content distributes items along the main axis.</p>
+
+          <div class="demo-box">
+            <div class="demo-label">Space Between</div>
+            <div class="flex-demo flex-justify">
+              <div class="sample-item">One</div>
+              <div class="sample-item alt">Two</div>
+              <div class="sample-item green">Three</div>
+            </div>
+
+            <div class="demo-label" style="margin-top: 18px">Center</div>
+            <div class="flex-demo flex-justify-center">
+              <div class="sample-item">One</div>
+              <div class="sample-item alt">Two</div>
+              <div class="sample-item green">Three</div>
+            </div>
+
+            <div class="demo-label" style="margin-top: 18px">Space Around</div>
+            <div class="flex-demo flex-justify-around">
+              <div class="sample-item">One</div>
+              <div class="sample-item alt">Two</div>
+              <div class="sample-item green">Three</div>
+            </div>
+          </div>
+
+          <h3>19.4.1.4 Align-Items</h3>
+          <p>Align-items aligns items along the cross axis.</p>
+
+          <div class="demo-box">
+            <div class="demo-label">Center</div>
+            <div class="flex-demo flex-align-center">
+              <div class="sample-item">One</div>
+              <div class="sample-item alt">Two</div>
+              <div class="sample-item green">Three</div>
+            </div>
+
+            <div class="demo-label" style="margin-top: 18px">Flex Start</div>
+            <div class="flex-demo flex-align-start">
+              <div class="sample-item">One</div>
+              <div class="sample-item alt">Two</div>
+              <div class="sample-item green">Three</div>
+            </div>
+
+            <div class="demo-label" style="margin-top: 18px">Flex End</div>
+            <div class="flex-demo flex-align-end">
+              <div class="sample-item">One</div>
+              <div class="sample-item alt">Two</div>
+              <div class="sample-item green">Three</div>
+            </div>
+          </div>
+
+          <h3>19.4.1.5 Flex-Wrap</h3>
+          <p>Flex-wrap controls whether items can move onto another line.</p>
+
+          <div class="demo-box">
+            <div class="flex-demo flex-wrap">
+              <div class="sample-item">One</div>
+              <div class="sample-item alt">Two</div>
+              <div class="sample-item green">Three</div>
+              <div class="sample-item purple">Four</div>
+              <div class="sample-item">Five</div>
+            </div>
+          </div>
+
+          <h3>19.4.1.6 Align-Content</h3>
+          <p>
+            Align-content distributes multiple flex lines along the cross axis.
+            It is most visible when the items wrap onto several lines.
+          </p>
+
+          <div class="demo-box">
+            <div class="flex-demo flex-content">
+              <div class="sample-item">One</div>
+              <div class="sample-item alt">Two</div>
+              <div class="sample-item green">Three</div>
+              <div class="sample-item purple">Four</div>
+              <div class="sample-item">Five</div>
+              <div class="sample-item alt">Six</div>
+            </div>
+          </div>
+
+          <h3>19.4.2 Flex Items</h3>
+
+          <h3>19.4.2.1 Flex-Basis</h3>
+          <p>
+            Flex-basis sets an item's initial main size before free space is
+            distributed.
+          </p>
+
+          <div class="demo-box">
+            <div class="flex-demo flex-basis">
+              <div class="sample-item">Book One</div>
+              <div class="sample-item alt">Book Two</div>
+              <div class="sample-item green">Book Three</div>
+            </div>
+          </div>
+
+          <h3>19.4.2.2 Order</h3>
+          <p>
+            The order property changes the visual order of flex items without
+            changing their order in the HTML.
+          </p>
+
+          <div class="demo-box">
+            <div class="flex-demo">
+              <div class="sample-item flex-order-one">HTML One</div>
+              <div class="sample-item alt flex-order-two">HTML Two</div>
+              <div class="sample-item green flex-order-three">HTML Three</div>
+            </div>
+            <p>The visual order is Two, Three, One.</p>
+          </div>
+
+          <h3>19.4.2.3 Flex-Grow</h3>
+          <p>
+            Flex-grow determines how an item can grow to use available positive
+            free space.
+          </p>
+
+          <div class="demo-box">
+            <div class="flex-demo flex-grow">
+              <div class="sample-item grow-one">Grow: 1</div>
+              <div class="sample-item alt grow-two">Grow: 2</div>
+              <div class="sample-item green grow-one">Grow: 1</div>
+            </div>
+          </div>
+
+          <h3>19.4.2.4 Flex-Shrink</h3>
+          <p>
+            Flex-shrink determines how an item can shrink when there is not
+            enough space. The second item below has flex-shrink: 0.
+          </p>
+
+          <div class="demo-box">
+            <div class="flex-demo flex-shrink">
+              <div class="sample-item shrink-one">Shrink: 1</div>
+              <div class="sample-item alt shrink-two">Shrink: 0</div>
+            </div>
+          </div>
+
+          <h3>19.4.2.5 Align-Self</h3>
+          <p>
+            Align-self lets an individual flex item override the container's
+            align-items setting.
+          </p>
+
+          <div class="demo-box">
+            <div class="flex-demo flex-self">
+              <div class="sample-item self-start">Start</div>
+              <div class="sample-item alt self-center">Center</div>
+              <div class="sample-item green self-end">End</div>
+            </div>
+          </div>
+
+          <h3>19.4.2.6 Flex</h3>
+          <p>
+            The flex shorthand combines flex-grow, flex-shrink, and flex-basis.
+          </p>
+
+          <div class="demo-box">
+            <div class="flex-demo flex-shorthand">
+              <div class="sample-item">Flexible One</div>
+              <div class="sample-item alt">Flexible Two</div>
+              <div class="sample-item green">Flexible Three</div>
+            </div>
+          </div>
+
+          <h3>19.4.2.7 Auto Margin for Flex Items</h3>
+          <p>
+            An auto margin can push a flex item away from other items, using
+            available free space.
+          </p>
+
+          <div class="demo-box">
+            <div class="flex-demo flex-auto-margin">
+              <div class="sample-item">Home</div>
+              <div class="sample-item alt">Books</div>
+              <div class="sample-item green auto-item">Profile</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="chapter-section" id="grid">
+          <h2>19.5 CSS Grid</h2>
+          <p>
+            CSS Grid is a two-dimensional layout system. It can arrange elements
+            in both rows and columns.
+          </p>
+
+          <h3>19.5.1 Grid Container</h3>
+
+          <h3>19.5.1.1 Grid-Template-Columns</h3>
+          <p>Grid-template-columns defines the number and size of columns.</p>
+
+          <div class="demo-box">
+            <div class="grid-demo grid-three-columns">
+              <div class="sample-item">One</div>
+              <div class="sample-item alt">Two</div>
+              <div class="sample-item green">Three</div>
+              <div class="sample-item purple">Four</div>
+              <div class="sample-item">Five</div>
+              <div class="sample-item alt">Six</div>
+            </div>
+          </div>
+
+          <h3>19.5.1.2 Grid-Template-Rows</h3>
+          <p>Grid-template-rows defines the size of grid rows.</p>
+
+          <div class="demo-box">
+            <div class="grid-demo grid-rows">
+              <div class="sample-item">Row One</div>
+              <div class="sample-item alt">Row One</div>
+              <div class="sample-item green">Row Two</div>
+              <div class="sample-item purple">Row Two</div>
+              <div class="sample-item">Row Three</div>
+              <div class="sample-item alt">Row Three</div>
+            </div>
+          </div>
+
+          <h3>19.5.1.3 Column-Gap</h3>
+          <p>Column-gap sets the space between columns.</p>
+
+          <div class="demo-box">
+            <div class="grid-demo grid-column-gap">
+              <div class="sample-item">One</div>
+              <div class="sample-item alt">Two</div>
+              <div class="sample-item green">Three</div>
+              <div class="sample-item purple">Four</div>
+              <div class="sample-item">Five</div>
+              <div class="sample-item alt">Six</div>
+            </div>
+          </div>
+
+          <h3>19.5.1.4 Row-Gap</h3>
+          <p>Row-gap sets the space between rows.</p>
+
+          <div class="demo-box">
+            <div class="grid-demo grid-row-gap">
+              <div class="sample-item">One</div>
+              <div class="sample-item alt">Two</div>
+              <div class="sample-item green">Three</div>
+              <div class="sample-item purple">Four</div>
+              <div class="sample-item">Five</div>
+              <div class="sample-item alt">Six</div>
+            </div>
+          </div>
+
+          <h3>19.5.1.5 Gap</h3>
+          <p>Gap sets the spacing between grid rows and columns.</p>
+
+          <div class="demo-box">
+            <div class="grid-demo grid-custom-gap">
+              <div class="sample-item">One</div>
+              <div class="sample-item alt">Two</div>
+              <div class="sample-item green">Three</div>
+              <div class="sample-item purple">Four</div>
+              <div class="sample-item">Five</div>
+              <div class="sample-item alt">Six</div>
+            </div>
+          </div>
+
+          <h3>19.5.1.6 Justify-Items</h3>
+          <p>
+            Justify-items aligns grid items horizontally within their grid
+            areas.
+          </p>
+
+          <div class="demo-box">
+            <div class="grid-demo grid-justify-items">
+              <div class="sample-item">One</div>
+              <div class="sample-item alt">Two</div>
+              <div class="sample-item green">Three</div>
+            </div>
+          </div>
+
+          <h3>19.5.1.7 Align-Items</h3>
+          <p>
+            Align-items aligns grid items along the block axis within their
+            areas.
+          </p>
+
+          <div class="demo-box">
+            <div class="grid-demo grid-align-items">
+              <div class="sample-item">One</div>
+              <div class="sample-item alt">Two</div>
+              <div class="sample-item green">Three</div>
+            </div>
+          </div>
+
+          <h3>19.5.1.8 Justify-Content</h3>
+          <p>
+            Justify-content positions the grid tracks horizontally when the grid
+            is smaller than its container.
+          </p>
+
+          <div class="demo-box">
+            <div class="grid-demo grid-justify-content">
+              <div class="sample-item">One</div>
+              <div class="sample-item alt">Two</div>
+              <div class="sample-item green">Three</div>
+            </div>
+          </div>
+
+          <h3>19.5.1.9 Align-Content</h3>
+          <p>
+            Align-content distributes grid tracks along the block axis when
+            there is extra space in the grid container.
+          </p>
+
+          <div class="demo-box">
+            <div class="grid-demo grid-align-content">
+              <div class="sample-item">One</div>
+              <div class="sample-item alt">Two</div>
+              <div class="sample-item green">Three</div>
+              <div class="sample-item purple">Four</div>
+              <div class="sample-item">Five</div>
+              <div class="sample-item alt">Six</div>
+            </div>
+          </div>
+
+          <h3>19.5.2 Grid Items</h3>
+
+          <h3>19.5.2.1 Grid-Column-Start</h3>
+          <p>Grid-column-start specifies the grid line where an item begins.</p>
+
+          <div class="demo-box">
+            <div class="grid-demo grid-three-columns grid-column-start">
+              <div class="sample-item">One</div>
+              <div class="sample-item alt grid-wide">
+                Starts at Column Line 2
+              </div>
+              <div class="sample-item green">Three</div>
+              <div class="sample-item purple">Four</div>
+            </div>
+          </div>
+
+          <h3>19.5.2.2 Grid-Column-End</h3>
+          <p>Grid-column-end specifies the grid line where an item ends.</p>
+
+          <div class="demo-box">
+            <div class="grid-demo grid-three-columns grid-column-end">
+              <div class="sample-item grid-wide">Spans Across Two Columns</div>
+              <div class="sample-item alt">Two</div>
+              <div class="sample-item green">Three</div>
+            </div>
+          </div>
+
+          <h3>19.5.2.3 Grid-Column</h3>
+          <p>
+            Grid-column is a shorthand for setting an item's start and end
+            columns.
+          </p>
+
+          <div class="demo-box">
+            <div class="grid-demo grid-three-columns grid-column-shorthand">
+              <div class="sample-item grid-wide">Column 1 to Column 3</div>
+              <div class="sample-item alt">Three</div>
+              <div class="sample-item green">Four</div>
+            </div>
+          </div>
+
+          <h3>19.5.2.4 Grid-Row-Start</h3>
+          <p>
+            Grid-row-start specifies the grid line where an item begins
+            vertically.
+          </p>
+
+          <div class="demo-box">
+            <div class="grid-demo grid-two-columns grid-row-start">
+              <div class="sample-item">One</div>
+              <div class="sample-item alt">Two</div>
+              <div class="sample-item green grid-tall">
+                Starts at Row Line 1
+              </div>
+              <div class="sample-item purple">Four</div>
+            </div>
+          </div>
+
+          <h3>19.5.2.5 Grid-Row-End</h3>
+          <p>
+            Grid-row-end specifies the grid line where an item ends vertically.
+          </p>
+
+          <div class="demo-box">
+            <div class="grid-demo grid-two-columns grid-row-end">
+              <div class="sample-item grid-tall">Spans Two Rows</div>
+              <div class="sample-item alt">Two</div>
+              <div class="sample-item green">Three</div>
+              <div class="sample-item purple">Four</div>
+            </div>
+          </div>
+
+          <h3>19.5.2.6 Grid-Row</h3>
+          <p>
+            Grid-row is a shorthand for setting an item's start and end rows.
+          </p>
+
+          <div class="demo-box">
+            <div class="grid-demo grid-two-columns grid-row-shorthand">
+              <div class="sample-item grid-tall">Row 1 to Row 3</div>
+              <div class="sample-item alt">Two</div>
+              <div class="sample-item green">Three</div>
+              <div class="sample-item purple">Four</div>
+            </div>
+          </div>
+
+          <h3>19.5.2.7 Grid-Area</h3>
+          <p>
+            Grid-area can assign a named area or use row and column start/end
+            lines to place an item.
+          </p>
+
+          <div class="demo-box">
+            <div class="grid-demo grid-three-columns">
+              <div class="sample-item grid-area-item">
+                Area: Row 1–3, Column 1–3
+              </div>
+              <div class="sample-item alt">Other Item</div>
+            </div>
+          </div>
+
+          <h3>19.5.2.8 Justify-Self</h3>
+          <p>
+            Justify-self controls the horizontal alignment of an individual grid
+            item.
+          </p>
+
+          <h3>19.5.2.9 Align-Self</h3>
+          <p>
+            Align-self controls the vertical alignment of an individual grid
+            item.
+          </p>
+
+          <div class="demo-box">
+            <div class="grid-demo grid-self">
+              <div class="sample-item self-start">Start</div>
+              <div class="sample-item alt self-center">Center</div>
+              <div class="sample-item green self-end">End</div>
+            </div>
+          </div>
+
+          <h3>19.5.2.10 Grid-Template-Areas</h3>
+          <p>
+            Grid-template-areas lets you name sections of a grid and arrange
+            items by matching their grid-area names.
+          </p>
+
+          <div class="demo-box">
+            <div class="grid-demo grid-template-areas">
+              <div class="sample-item area-header">Header</div>
+              <div class="sample-item alt area-sidebar">Sidebar</div>
+              <div class="sample-item green area-main">Main Content</div>
+              <div class="sample-item purple area-footer">Footer</div>
+            </div>
+          </div>
+
+          <div class="note-box">
+            <strong>Flexbox vs. Grid:</strong> Flexbox is generally suited to
+            arranging items in one direction. Grid is useful when controlling
+            rows and columns together.
+          </div>
+        </section>
+
+        <section class="chapter-section" id="alignment">
+          <h2>19.6 CSS Alignment</h2>
+          <p>
+            CSS alignment properties control how text and elements are
+            positioned horizontally and vertically.
+          </p>
+
+          <h3>19.6.1 Horizontal Alignment</h3>
+          <p>The text-align property aligns inline content inside a block.</p>
+
+          <div class="demo-box">
+            <div class="horizontal-center">
+              <div class="sample-item">Centered Text</div>
+            </div>
+
+            <div class="horizontal-right" style="margin-top: 12px">
+              <div class="sample-item alt">Right-Aligned Text</div>
+            </div>
+
+            <div style="margin-top: 12px">
+              <div class="sample-item green">Left-Aligned Text</div>
+            </div>
+          </div>
+
+          <h3>19.6.2 Vertical Alignment</h3>
+          <p>
+            The vertical-align property can align inline or table-cell content
+            vertically within its line or cell.
+          </p>
+
+          <div class="demo-box">
+            <div class="vertical-stage">
+              <p>Vertically Centered Content</p>
+            </div>
+          </div>
+
+          <h3>19.6.3 Perfect Centering</h3>
+
+          <h3>
+            19.6.3.1 Centering Using the Position and Transform Properties
+          </h3>
+          <p>
+            Position the element at 50% from the top and left, then use
+            translate(-50%, -50%) to center it relative to its own dimensions.
+          </p>
+
+          <div class="demo-box">
+            <div class="perfect-position-stage">
+              <div class="perfect-position-item">Perfect Center</div>
+            </div>
+          </div>
+
+          <h3>19.6.3.2 Centering Using the Flex Property</h3>
+          <p>
+            Flexbox can center an element horizontally and vertically using
+            justify-content and align-items.
+          </p>
+
+          <div class="demo-box">
+            <div class="perfect-flex-stage">
+              <div class="perfect-flex-item">Perfect Center</div>
+            </div>
+          </div>
+
+          <div class="note-box">
+            <strong>Chapter Complete!</strong>
+            You've explored CSS positioning, float, z-index, Flexbox, Grid, and
+            horizontal and vertical alignment.
+          </div>
+        </section>
+      </main>
+    </div>
+    <footer>
+      <p>BIBLUNE | HTML &amp; CSS Project</p>
+    </footer>
+  </body>
+</html>

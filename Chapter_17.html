@@ -1,0 +1,732 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chapter_17</title>
+    <style>
+      body {
+        font-family:
+          "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+      }
+      .logo {
+        font-family: cursive;
+        font-size: 35px;
+        font-style: italic;
+        background-color: hsl(287, 93%, 65%);
+        font-weight: bold;
+        color: #000000;
+        text-decoration: none;
+        letter-spacing: 2px;
+      }
+
+      .menu {
+        width: 100%;
+        background-color: hsl(287, 93%, 65%);
+        display: flow-root;
+        overflow: visible;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      .menu ul {
+        list-style: none;
+        margin-right: 30px;
+      }
+
+      .menu ul li {
+        font-family:
+          "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+        float: left;
+      }
+
+      .menu ul li a {
+        display: block;
+        padding: 14px 18px;
+        color: rgb(8, 8, 8);
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .menu ul li a:hover {
+        background-color: #520172;
+        color: rgb(251, 249, 249);
+      }
+
+      .dropdown {
+        position: relative;
+      }
+
+      .dropdown details summary {
+        display: block;
+        padding: 14px 18px;
+        color: black;
+        font-weight: bold;
+        cursor: pointer;
+        list-style: none;
+      }
+
+      .dropdown details summary:hover {
+        background-color: #520172;
+        color: #ffff;
+      }
+
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        min-width: 160px;
+        max-height: 300px;
+        overflow-y: auto;
+        background-color: hsl(287, 93%, 65%);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        opacity: 80%;
+        z-index: 1000;
+      }
+
+      .dropdown details[open] .dropdown-content {
+        display: block;
+      }
+
+      .dropdown-content a {
+        display: block;
+        padding: 10px 15px;
+        color: white;
+        text-decoration: none;
+        white-space: nowrap;
+      }
+
+      .dropdown-content a:hover {
+        background-color: #520172;
+        color: #ffffff;
+      }
+
+      footer p {
+        font-family:
+          "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+          "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+        text-align: center;
+        background-color: hsl(287, 93%, 65%);
+        color: #000;
+        padding: 12px;
+        margin-top: 40px;
+      }
+
+      .chapter-heading {
+        text-align: center;
+        padding: 30px 20px;
+        background: #fff;
+        border-bottom: 1px solid #dce1e8;
+      }
+
+      .chapter-heading .eyebrow {
+        color: #8b5e3c;
+        font-size: 13px;
+        font-weight: bold;
+        letter-spacing: 3px;
+      }
+
+      .chapter-heading h1 {
+        margin: 8px 0;
+        color: #243b63;
+        font-size: clamp(27px, 4vw, 38px);
+      }
+
+      .chapter-heading p {
+        color: #657187;
+      }
+
+      .chapter-container {
+        display: grid;
+        grid-template-columns: 260px minmax(0, 1fr);
+        gap: 26px;
+        max-width: 1200px;
+        margin: 30px auto;
+        padding: 0 20px;
+        align-items: start;
+      }
+
+      .chapter-sidebar {
+        position: sticky;
+        top: 100px;
+      }
+
+      .chapter-toc {
+        background: #fff;
+        border: 1px solid #dce1e8;
+        border-radius: 12px;
+        padding: 20px;
+      }
+
+      .chapter-toc h2 {
+        color: #243b63;
+        font-size: 19px;
+        margin: 0 0 14px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #e5e7eb;
+      }
+
+      .chapter-toc ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .chapter-toc li {
+        margin: 5px 0;
+      }
+
+      .chapter-toc a {
+        display: block;
+        color: #52627a;
+        text-decoration: none;
+        padding: 8px 10px;
+        border-radius: 7px;
+        font-size: 14px;
+        transition: 0.3s;
+      }
+
+      .chapter-toc a:hover {
+        color: #243b63;
+        background: #f0edff;
+        padding-left: 15px;
+      }
+
+      .chapter-toc .toc-sub {
+        padding-left: 13px;
+      }
+
+      .chapter-content {
+        min-width: 0;
+      }
+
+      .chapter-section {
+        background: #fff;
+        border: 1px solid #dce1e8;
+        border-radius: 12px;
+        padding: 24px;
+        margin-bottom: 24px;
+        scroll-margin-top: 20px;
+      }
+
+      .chapter-section h2 {
+        color: #243b63;
+        margin-top: 0;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #e5e7eb;
+      }
+
+      .chapter-section h3 {
+        color: #344b70;
+        margin-top: 25px;
+      }
+
+      .chapter-section p {
+        color: #4f5f75;
+        line-height: 1.7;
+      }
+
+      .demo-box {
+        border: 1px solid #e1e6ef;
+        border-radius: 10px;
+        padding: 18px;
+        margin: 14px 0;
+        background: #fbfcff;
+        overflow-wrap: anywhere;
+      }
+
+      .demo-label {
+        display: block;
+        color: #8b5e3c;
+        font-size: 12px;
+        font-weight: bold;
+        letter-spacing: 1px;
+        margin-bottom: 10px;
+      }
+
+      .demo-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 12px;
+      }
+
+      .demo-tile {
+        border: 1px solid #e1e6ef;
+        border-radius: 8px;
+        padding: 14px;
+        background: #fff;
+        min-width: 0;
+      }
+
+      .note-box {
+        border-left: 4px solid #8b5e3c;
+        background: #fff8f2;
+        padding: 12px 15px;
+        border-radius: 0 8px 8px 0;
+        margin-top: 16px;
+        line-height: 1.6;
+      }
+
+      .chapter-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 12px 0;
+      }
+
+      .chapter-table th,
+      .chapter-table td {
+        border: 1px solid #dce1e8;
+        padding: 11px 12px;
+        text-align: left;
+        color: #4f5f75;
+      }
+
+      .chapter-table th {
+        background: #f2f4fa;
+        color: #243b63;
+      }
+
+      @media (max-width: 800px) {
+        .chapter-container {
+          grid-template-columns: 1fr;
+          gap: 18px;
+          margin-top: 20px;
+        }
+
+        .chapter-sidebar {
+          position: static;
+        }
+
+        .chapter-section {
+          padding: 18px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="menu">
+      <a href="HomePage.html" class="logo">BIBLUNE</a>
+      <ul>
+        <li><a href="HomePage.html">Home</a></li>
+        <li><a href="#">Books</a></li>
+        <li><a href="#">Categories</a></li>
+        <li class="dropdown">
+          <details>
+            <summary>Chapter ▾</summary>
+            <div class="dropdown-content">
+              <a href="chapter_01.html">01. Getting to Know HTML</a>
+              <a href="chapter_02.html">02. HTML Elements</a>
+              <a href="chapter_03.html">03. HTML Styles</a>
+              <a href="chapter_04.html">04. Semantic HTML</a>
+              <a href="chapter_05.html">05. Web Forms</a>
+              <a href="chapter_06.html">06. HTML Multimedia</a>
+              <a href="chapter_07.html">07. HTML Graphics</a>
+              <a href="chapter_08.html">08. HTML Advanced</a>
+              <a href="chapter_09.html">09. HTML Events</a>
+              <a href="chapter_10.html">10. HTML APIs</a>
+              <a href="chapter_11.html">11. Getting to Know CSS</a>
+              <a href="chapter_12.html">12. CSS Selectors</a>
+              <a href="chapter_13.html">13. CSS Cascading</a>
+              <a href="chapter_14.html">14. CSS Box Model</a>
+              <a href="chapter_15.html">15. CSS Colors</a>
+              <a href="chapter_16.html">16. CSS Text</a>
+              <a href="chapter_17.html">17. CSS Backgrounds</a>
+              <a href="chapter_18.html">18. CSS Display</a>
+              <a href="chapter_19.html">19. CSS Layout</a>
+              <a href="chapter_20.html">20. CSS Transitions and Animations</a>
+              <a href="chapter_21.html">21. Advanced CSS</a>
+              <a href="chapter_22.html">22. Responsive CSS</a>
+            </div>
+          </details>
+        </li>
+        <li><a href="#info">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <section class="chapter-heading">
+      <p class="eyebrow">CHAPTER 17</p>
+      <h1>CSS BACKGROUNDS</h1>
+      <p>
+        Explore background properties, CSS gradients, and sprites through
+        practical bookshop examples.
+      </p>
+    </section>
+
+    <div class="chapter-container">
+      <aside class="chapter-sidebar">
+        <nav class="chapter-toc">
+          <h2>Chapter Contents</h2>
+          <ul>
+            <li>
+              <a href="#background-properties"
+                >17.1 CSS Background Properties</a
+              >
+            </li>
+            <li class="toc-sub">
+              <a href="#background-color">Background Color</a>
+            </li>
+            <li class="toc-sub">
+              <a href="#background-image">Background Image</a>
+            </li>
+            <li class="toc-sub">
+              <a href="#background-repeat">Background Repeat</a>
+            </li>
+            <li class="toc-sub">
+              <a href="#background-position">Background Position</a>
+            </li>
+            <li class="toc-sub">
+              <a href="#background-size">Background Size</a>
+            </li>
+            <li class="toc-sub">
+              <a href="#background-shorthand">Background Shorthand</a>
+            </li>
+            <li class="toc-sub">
+              <a href="#background-clip">Background Clip</a>
+            </li>
+            <li class="toc-sub">
+              <a href="#background-origin">Background Origin</a>
+            </li>
+            <li class="toc-sub">
+              <a href="#background-attachment">Background Attachment</a>
+            </li>
+
+            <li><a href="#css-gradients">17.2 CSS Gradients</a></li>
+            <li class="toc-sub">
+              <a href="#linear-gradient">Linear Gradient</a>
+            </li>
+            <li class="toc-sub">
+              <a href="#repeating-linear-gradient">Repeating Linear Gradient</a>
+            </li>
+            <li class="toc-sub">
+              <a href="#radial-gradient">Radial Gradient</a>
+            </li>
+            <li class="toc-sub">
+              <a href="#repeating-radial-gradient">Repeating Radial Gradient</a>
+            </li>
+
+            <li><a href="#css-sprites">17.3 CSS Sprites</a></li>
+          </ul>
+        </nav>
+      </aside>
+      <main class="chapter-content">
+        <section class="chapter-section" id="background-properties">
+          <h2>17.1 CSS Background Properties</h2>
+
+          <p>
+            Background properties style the area behind an element's content,
+            padding and border.
+          </p>
+
+          <h3 id="background-color">Background Color</h3>
+          <div class="demo-box">
+            <span class="demo-label">Live Output</span>
+            <div
+              style="
+                background-color: #f0edff;
+                padding: 22px;
+                border-radius: 8px;
+              "
+            >
+              A soft background helps this content stand out.
+            </div>
+          </div>
+
+          <h3 id="background-image">Background Image</h3>
+          <div class="demo-box">
+            <span class="demo-label">Live Output</span>
+            <div
+              style="
+                min-height: 150px;
+                border-radius: 8px;
+                background-image:
+                  linear-gradient(
+                    135deg,
+                    rgba(36, 59, 99, 0.82),
+                    rgba(139, 94, 60, 0.62)
+                  ),
+                  url(&quot;Images/header eunha 1.jfif&quot;);
+                background-size: cover;
+                background-position: center;
+                color: white;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                padding: 18px;
+              "
+            >
+              <strong>A little world of books</strong>
+            </div>
+            <p>
+              If the image is not visible, check the image file name and folder
+              path.
+            </p>
+          </div>
+
+          <h3 id="background-repeat">Background Repeat</h3>
+          <div class="demo-box">
+            <span class="demo-label">Repeated Pattern</span>
+            <div
+              style="
+                min-height: 110px;
+                border: 1px solid #dce1e8;
+                border-radius: 8px;
+                background-image: radial-gradient(#8b5e3c 2px, transparent 2px);
+                background-size: 20px 20px;
+              "
+            ></div>
+          </div>
+
+          <h3 id="background-position">Background Position</h3>
+          <div class="demo-box">
+            <span class="demo-label">Bottom-right Position</span>
+            <div
+              style="
+                height: 130px;
+                border: 1px solid #dce1e8;
+                border-radius: 8px;
+                background-image: radial-gradient(
+                  circle,
+                  #8b5e3c 5px,
+                  transparent 6px
+                );
+                background-size: 100% 100%;
+                background-repeat: no-repeat;
+                background-position: right bottom;
+              "
+            ></div>
+          </div>
+
+          <h3 id="background-size">Background Size</h3>
+          <div class="demo-grid">
+            <div class="demo-tile">
+              <span class="demo-label">Cover</span>
+              <div
+                style="
+                  min-height: 120px;
+                  border-radius: 8px;
+                  background: linear-gradient(120deg, #243b63, #8b5e3c);
+                  background-size: cover;
+                "
+              ></div>
+              <p>Fills the box; some image area may be cropped.</p>
+            </div>
+
+            <div class="demo-tile">
+              <span class="demo-label">Fixed Tile Size</span>
+              <div
+                style="
+                  min-height: 120px;
+                  border: 1px solid #dce1e8;
+                  border-radius: 8px;
+                  background-image: repeating-linear-gradient(
+                    45deg,
+                    #f0edff 0 10px,
+                    #fff 10px 20px
+                  );
+                  background-size: 80px 80px;
+                  background-repeat: no-repeat;
+                  background-position: center;
+                "
+              ></div>
+              <p>Shows a background tile at its set size.</p>
+            </div>
+          </div>
+
+          <h3 id="background-shorthand">Background Shorthand</h3>
+          <div class="demo-box">
+            <span class="demo-label">Live Output</span>
+            <div
+              style="
+                min-height: 100px;
+                border-radius: 8px;
+                color: white;
+                padding: 18px;
+                background: linear-gradient(120deg, #243b63, #8b5e3c) center /
+                  cover no-repeat;
+              "
+            >
+              One shorthand declaration can combine several background settings.
+            </div>
+          </div>
+
+          <h3 id="background-clip">Background Clip</h3>
+          <div class="demo-box">
+            <span class="demo-label">Content-box Clipping</span>
+            <div
+              style="
+                border: 10px dotted #8b5e3c;
+                padding: 20px;
+                background: #f0edff;
+                background-clip: content-box;
+              "
+            >
+              The background is painted only behind the content area.
+            </div>
+          </div>
+
+          <h3 id="background-origin">Background Origin</h3>
+          <div class="demo-box">
+            <span class="demo-label">Content-box Origin</span>
+            <div
+              style="
+                border: 10px dashed #8b5e3c;
+                padding: 20px;
+                background: #f0edff;
+                background-origin: content-box;
+              "
+            >
+              The background positioning area begins at the content box.
+            </div>
+          </div>
+
+          <h3 id="background-attachment">Background Attachment</h3>
+          <div class="demo-box">
+            <span class="demo-label">Scrollable Sample</span>
+            <div
+              style="
+                min-height: 120px;
+                border-radius: 8px;
+                padding: 18px;
+                background-image: linear-gradient(135deg, #f0edff, #fff8f2);
+                background-attachment: local;
+                overflow: auto;
+                max-height: 125px;
+              "
+            >
+              Background attachment controls whether a background scrolls with
+              the element, stays fixed relative to the viewport, or scrolls with
+              the page.
+              <br /><br />
+              Scroll inside this box to explore local attachment behavior.
+            </div>
+          </div>
+        </section>
+
+        <section class="chapter-section" id="css-gradients">
+          <h2>17.2 CSS Gradients</h2>
+
+          <p>
+            Gradients create smooth transitions between colors without requiring
+            a separate image file.
+          </p>
+
+          <h3 id="linear-gradient">Linear Gradient</h3>
+          <div class="demo-box">
+            <span class="demo-label">Live Output</span>
+            <div
+              style="
+                min-height: 100px;
+                border-radius: 8px;
+                background: linear-gradient(90deg, #243b63, #8b5e3c);
+              "
+            ></div>
+          </div>
+
+          <h3 id="repeating-linear-gradient">Repeating Linear Gradient</h3>
+          <div class="demo-box">
+            <span class="demo-label">Live Output</span>
+            <div
+              style="
+                min-height: 100px;
+                border-radius: 8px;
+                background: repeating-linear-gradient(
+                  45deg,
+                  #f0edff 0 10px,
+                  #8b5e3c 10px 20px
+                );
+              "
+            ></div>
+          </div>
+
+          <h3 id="radial-gradient">Radial Gradient</h3>
+          <div class="demo-box">
+            <span class="demo-label">Live Output</span>
+            <div
+              style="
+                min-height: 100px;
+                border-radius: 8px;
+                background: radial-gradient(circle, #fff8f2, #8b5e3c, #243b63);
+              "
+            ></div>
+          </div>
+
+          <h3 id="repeating-radial-gradient">Repeating Radial Gradient</h3>
+          <div class="demo-box">
+            <span class="demo-label">Live Output</span>
+            <div
+              style="
+                min-height: 100px;
+                border-radius: 8px;
+                background: repeating-radial-gradient(
+                  circle,
+                  #f0edff 0 8px,
+                  #8b5e3c 8px 16px
+                );
+              "
+            ></div>
+          </div>
+        </section>
+
+        <section class="chapter-section" id="css-sprites">
+          <h2>17.3 CSS Sprites</h2>
+
+          <p>
+            A CSS sprite is one image file containing several small graphics.
+            CSS shows the needed part by positioning the background image.
+          </p>
+
+          <div class="demo-box">
+            <span class="demo-label">Sprite Concept</span>
+
+            <div class="demo-grid">
+              <div
+                class="demo-tile"
+                style="text-align: center; background: #f0edff"
+              >
+                <div style="font-size: 30px">⌂</div>
+                Home
+              </div>
+
+              <div
+                class="demo-tile"
+                style="text-align: center; background: #f0edff"
+              >
+                <div style="font-size: 30px">♡</div>
+                Favorites
+              </div>
+
+              <div
+                class="demo-tile"
+                style="text-align: center; background: #f0edff"
+              >
+                <div style="font-size: 30px">✉</div>
+                Messages
+              </div>
+
+              <div
+                class="demo-tile"
+                style="text-align: center; background: #f0edff"
+              >
+                <div style="font-size: 30px">☆</div>
+                Saved
+              </div>
+            </div>
+          </div>
+
+          <div class="note-box">
+            <strong>Note:</strong> This is a visual explanation of the sprite
+            concept, not a real sprite sheet. A real CSS sprite uses one
+            combined image and different background-position values to reveal
+            each icon.
+          </div>
+        </section>
+      </main>
+    </div>
+    <footer>
+      <p>BIBLUNE | HTML &amp; CSS Project</p>
+    </footer>
+  </body>
+</html>

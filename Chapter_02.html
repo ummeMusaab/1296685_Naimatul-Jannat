@@ -1,0 +1,960 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chapter_02</title>
+    <style>
+      body {
+        font-family:
+          "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+      }
+      .logo {
+        font-family: cursive;
+        font-size: 35px;
+        font-style: italic;
+        background-color: hsl(287, 93%, 65%);
+        font-weight: bold;
+        color: #000000;
+        text-decoration: none;
+        letter-spacing: 2px;
+      }
+
+      .menu {
+        width: 100%;
+        background-color: hsl(287, 93%, 65%);
+        display: flow-root;
+        overflow: visible;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      .menu ul {
+        list-style: none;
+        margin-right: 30px;
+      }
+
+      .menu ul li {
+        font-family:
+          "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+        float: left;
+      }
+
+      .menu ul li a {
+        display: block;
+        padding: 14px 18px;
+        color: rgb(8, 8, 8);
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .menu ul li a:hover {
+        background-color: #520172;
+        color: rgb(251, 249, 249);
+      }
+
+      .dropdown {
+        position: relative;
+      }
+
+      .dropdown details summary {
+        display: block;
+        padding: 14px 18px;
+        color: black;
+        font-weight: bold;
+        cursor: pointer;
+        list-style: none;
+      }
+
+      .dropdown details summary:hover {
+        background-color: #520172;
+        color: #ffff;
+      }
+
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        min-width: 160px;
+        max-height: 300px;
+        overflow-y: auto;
+        background-color: hsl(287, 93%, 65%);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        opacity: 80%;
+        z-index: 1000;
+      }
+
+      .dropdown details[open] .dropdown-content {
+        display: block;
+      }
+
+      .dropdown-content a {
+        display: block;
+        padding: 10px 15px;
+        color: white;
+        text-decoration: none;
+        white-space: nowrap;
+      }
+
+      .dropdown-content a:hover {
+        background-color: #520172;
+        color: #ffffff;
+      }
+
+      .chapter-heading {
+        text-align: center;
+        padding: 30px 20px;
+        background: #fff;
+        border-bottom: 1px solid #dce1e8;
+      }
+
+      .chapter-heading .eyebrow {
+        color: #8b5e3c;
+        font-size: 13px;
+        font-weight: bold;
+        letter-spacing: 3px;
+      }
+
+      .chapter-heading h1 {
+        margin: 8px 0;
+        color: #243b63;
+        font-size: clamp(27px, 4vw, 38px);
+      }
+
+      .chapter-heading p {
+        color: #657187;
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: 260px minmax(0, 1fr);
+        gap: 22px;
+        max-width: 1400px;
+        margin: 25px auto;
+        padding: 0 20px;
+        align-items: start;
+      }
+
+      .toc {
+        position: sticky;
+        top: 100px;
+        max-height: calc(100vh - 30px);
+        overflow-y: auto;
+        padding: 18px;
+        background: #fff;
+        border: 1px solid #dce1e8;
+      }
+
+      .toc h2 {
+        margin-top: 0;
+        color: #243b63;
+        font-size: 21px;
+      }
+
+      .toc ol {
+        padding-left: 22px;
+        margin-bottom: 0;
+      }
+
+      .toc li {
+        padding: 4px 0;
+        font-size: 13px;
+      }
+
+      .toc a {
+        color: #35445c;
+        text-decoration: none;
+      }
+
+      .toc a:hover {
+        color: #8b5e3c;
+        text-decoration: underline;
+      }
+
+      .toc ol ol {
+        padding-left: 20px;
+        list-style-type: lower-alpha;
+      }
+
+      .content {
+        min-width: 0;
+        padding: 24px;
+        background: #fff;
+        border: 1px solid #dce1e8;
+      }
+
+      .content > h2 {
+        margin-top: 0;
+        color: #243b63;
+        font-size: 30px;
+      }
+
+      .topic {
+        padding: 22px 0;
+        border-bottom: 1px solid #d7dce3;
+        scroll-margin-top: 15px;
+      }
+
+      .topic:last-child {
+        border-bottom: 0;
+      }
+
+      .topic h3 {
+        margin: 0 0 12px;
+        color: #243b63;
+        font-size: 23px;
+      }
+
+      .topic h4 {
+        margin: 18px 0 8px;
+        color: #35445c;
+        font-size: 18px;
+      }
+
+      .demo {
+        margin-top: 15px;
+        padding: 18px;
+        background: #faf8f5;
+        border-left: 4px solid #b18a67;
+        overflow-wrap: anywhere;
+      }
+
+      .demo-label {
+        margin-top: 0;
+        color: #8b5e3c;
+        font-size: 11px;
+        font-weight: bold;
+        letter-spacing: 1.5px;
+      }
+
+      .output {
+        padding: 16px;
+        background: #fff;
+        border: 1px solid #dce1e8;
+      }
+
+      .note {
+        color: #657187;
+        font-size: 13px;
+      }
+
+      .book-image {
+        display: block;
+        width: 100%;
+        max-width: 260px;
+        height: auto;
+        margin: 10px 0;
+        border-radius: 5px;
+      }
+
+      .sample-link {
+        display: inline-block;
+        padding: 8px 13px;
+        color: white;
+        background: #243b63;
+        text-decoration: none;
+        border-radius: 4px;
+      }
+
+      .sample-link:hover {
+        background: #8b5e3c;
+      }
+
+      .list-samples {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 15px;
+      }
+
+      .list-samples > div {
+        padding: 12px;
+        background: #fff;
+        border: 1px solid #dce1e8;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+      }
+
+      caption {
+        padding: 10px;
+        font-weight: bold;
+        color: #243b63;
+      }
+
+      th,
+      td {
+        padding: 10px;
+        border: 1px solid #cbd2dc;
+        text-align: left;
+      }
+
+      th {
+        background: #e9edf3;
+      }
+
+      .progress-row {
+        margin: 15px 0;
+      }
+
+      progress,
+      meter {
+        width: 100%;
+        height: 22px;
+      }
+
+      pre {
+        max-width: 100%;
+        padding: 14px;
+        overflow-x: auto;
+        background: #202938;
+        color: #fff;
+        border-radius: 5px;
+      }
+
+      code,
+      kbd,
+      samp {
+        overflow-wrap: anywhere;
+      }
+
+      .entity-samples {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .entity-samples span {
+        padding: 10px 14px;
+        background: #fff;
+        border: 1px solid #dce1e8;
+      }
+
+      .mini-map {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+        max-width: 360px;
+      }
+
+      .mini-map a {
+        display: block;
+        padding: 25px 10px;
+        text-align: center;
+        color: #243b63;
+        background: #e9edf3;
+        border: 1px solid #cbd2dc;
+      }
+
+      .mini-map a:hover {
+        background: #d7e9e9;
+      }
+
+      .page-footer {
+        padding: 22px;
+        text-align: center;
+        color: #657187;
+        background: #fff;
+        border-top: 1px solid #dce1e8;
+        font-size: 13px;
+      }
+
+      footer p {
+        font-family:
+          "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+          "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+        text-align: center;
+        background-color: hsl(287, 93%, 65%);
+        color: #000;
+        padding: 12px;
+        margin-top: 40px;
+      }
+
+      @media (max-width: 850px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+
+        .toc {
+          position: static;
+          max-height: none;
+        }
+
+        .toc > ol {
+          columns: 2;
+          column-gap: 25px;
+        }
+
+        .content {
+          padding: 18px;
+        }
+      }
+
+      @media (max-width: 500px) {
+        .site-header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .toc > ol {
+          columns: 1;
+        }
+
+        .content > h2 {
+          font-size: 25px;
+        }
+
+        th,
+        td {
+          padding: 7px;
+          font-size: 13px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="menu">
+      <a href="HomePage.html" class="logo">BIBLUNE</a>
+      <ul>
+        <li><a href="HomePage.html">Home</a></li>
+        <li><a href="#">Books</a></li>
+        <li><a href="#">Categories</a></li>
+        <li class="dropdown">
+          <details>
+            <summary>Chapter ▾</summary>
+            <div class="dropdown-content">
+              <a href="chapter_01.html">01. Getting to Know HTML</a>
+              <a href="chapter_02.html">02. HTML Elements</a>
+              <a href="chapter_03.html">03. HTML Styles</a>
+              <a href="chapter_04.html">04. Semantic HTML</a>
+              <a href="chapter_05.html">05. Web Forms</a>
+              <a href="chapter_06.html">06. HTML Multimedia</a>
+              <a href="chapter_07.html">07. HTML Graphics</a>
+              <a href="chapter_08.html">08. HTML Advanced</a>
+              <a href="chapter_09.html">09. HTML Events</a>
+              <a href="chapter_10.html">10. HTML APIs</a>
+              <a href="chapter_11.html">11. Getting to Know CSS</a>
+              <a href="chapter_12.html">12. CSS Selectors</a>
+              <a href="chapter_13.html">13. CSS Cascading</a>
+              <a href="chapter_14.html">14. CSS Box Model</a>
+              <a href="chapter_15.html">15. CSS Colors</a>
+              <a href="chapter_16.html">16. CSS Text</a>
+              <a href="chapter_17.html">17. CSS Backgrounds</a>
+              <a href="chapter_18.html">18. CSS Display</a>
+              <a href="chapter_19.html">19. CSS Layout</a>
+              <a href="chapter_20.html">20. CSS Transitions and Animations</a>
+              <a href="chapter_21.html">21. Advanced CSS</a>
+              <a href="chapter_22.html">22. Responsive CSS</a>
+            </div>
+          </details>
+        </li>
+        <li><a href="#info">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <section class="chapter-heading">
+      <p class="eyebrow">CHAPTER 02</p>
+      <h1>HTML ELEMENTS</h1>
+      <p>
+        Explore the building blocks of a webpage through practical examples.
+      </p>
+    </section>
+    <main class="layout">
+      <aside class="toc">
+        <h2>Table of Contents</h2>
+        <ol>
+          <li><a href="#headings">Headings</a></li>
+          <li><a href="#paragraphs">Paragraphs</a></li>
+          <li>
+            <a href="#hyperlinks">Hyperlinks</a>
+            <ol>
+              <li><a href="#external">External Anchors</a></li>
+              <li><a href="#internal">Internal Anchors</a></li>
+              <li><a href="#downloads">Download Links</a></li>
+            </ol>
+          </li>
+          <li>
+            <a href="#images">Images</a>
+            <ol>
+              <li><a href="#image-maps">Image Maps</a></li>
+              <li><a href="#responsive-pictures">Responsive Pictures</a></li>
+            </ol>
+          </li>
+          <li>
+            <a href="#lists">Lists</a>
+            <ol>
+              <li><a href="#unordered">Unordered List</a></li>
+              <li><a href="#ordered">Ordered List</a></li>
+              <li><a href="#description">Description Lists</a></li>
+            </ol>
+          </li>
+          <li>
+            <a href="#tables">Tables</a>
+            <ol>
+              <li><a href="#table-headers">Table Headers</a></li>
+              <li><a href="#table-rows">Table Rows</a></li>
+              <li><a href="#table-caption">Table Caption</a></li>
+              <li><a href="#column-groups">Group of Columns</a></li>
+              <li><a href="#column-span">Column Span</a></li>
+            </ol>
+          </li>
+          <li>
+            <a href="#breaks">Breaks</a>
+            <ol>
+              <li><a href="#line-break">Line Breaking</a></li>
+              <li><a href="#thematic-break">Thematic Breaking</a></li>
+            </ol>
+          </li>
+          <li><a href="#progress-bars">Progress Bars</a></li>
+          <li>
+            <a href="#computer-code">Computer Code</a>
+            <ol>
+              <li><a href="#inline-code">Inline Code</a></li>
+              <li><a href="#code-block">Preformatted Code</a></li>
+            </ol>
+          </li>
+          <li><a href="#iframes">Iframes</a></li>
+          <li><a href="#entities">HTML Entities</a></li>
+        </ol>
+      </aside>
+      <article class="content">
+        <h2>Welcome to HTML Elements!</h2>
+        <p>
+          HTML elements organize text, media, links, data and other webpage
+          content.
+        </p>
+        <section class="topic" id="headings">
+          <h3>2.1 Headings</h3>
+          <p>
+            HTML provides six heading levels, from the most important heading to
+            the least prominent.
+          </p>
+          <div class="demo">
+            <p class="demo-label">Live Example</p>
+            <div class="output">
+              <h1>BookNest Reading Room</h1>
+              <h2>Fiction Collection</h2>
+              <h3>Mystery Stories</h3>
+              <h4>New Arrivals</h4>
+              <h5>Staff Picks</h5>
+              <h6>More to Explore</h6>
+            </div>
+          </div>
+        </section>
+        <section class="topic" id="paragraphs">
+          <h3>2.2 Paragraphs</h3>
+          <p>
+            The paragraph element groups related sentences into readable blocks
+            of text.
+          </p>
+          <div class="demo">
+            <p class="demo-label">Live Example</p>
+            <div class="output">
+              <p>
+                Books introduce us to new ideas, fascinating characters and
+                distant places.
+              </p>
+              <p>Reading every day can build knowledge and imagination.</p>
+            </div>
+          </div>
+        </section>
+        <section class="topic" id="hyperlinks">
+          <h3>2.3 Hyperlinks</h3>
+          <p>Hyperlinks connect one page or resource to another.</p>
+          <div class="demo" id="external">
+            <h4>2.3.1 External Anchors</h4>
+            <p>Open an external website in a new tab.</p>
+            <div class="output">
+              <a
+                class="sample-link"
+                href="https://www.wikipedia.org/"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Visit Wikipedia</a
+              >
+            </div>
+          </div>
+          <div class="demo" id="internal">
+            <h4>2.3.2 Internal Anchors</h4>
+            <p>Use a link to jump to another section on this page.</p>
+            <div class="output">
+              <a class="sample-link" href="#entities">Jump to HTML Entities</a>
+            </div>
+          </div>
+          <div class="demo" id="downloads">
+            <h4>2.3.3 Download Links</h4>
+            <p>
+              This link downloads a small text file created with a data URL.
+            </p>
+            <div class="output">
+              <a
+                class="sample-link"
+                href="data:text/plain;charset=utf-8,BIBLUNE%20-%20A%20little%20world%20of%20books."
+                download="bib lune-reading-note.txt"
+                >Download Reading Note</a
+              >
+              <p class="note">
+                The download link uses the HTML download attribute.
+              </p>
+            </div>
+          </div>
+        </section>
+        <section class="topic" id="images">
+          <h3>2.4 Images</h3>
+          <p>
+            Images add visual information. Alternative text helps users who
+            cannot see the image.
+          </p>
+          <div class="demo">
+            <p class="demo-label">Live Example</p>
+            <div class="output">
+              <img
+                class="book-image"
+                src="Images/opened book.jpg"
+                alt="A book displayed on a neutral background"
+              />
+              <p class="note">
+                The image includes alternative text for accessibility.
+              </p>
+            </div>
+          </div>
+          <div class="demo" id="image-maps">
+            <h4>2.4.1 Image Maps</h4>
+            <p>
+              An image map lets different regions of one image link to different
+              destinations.
+            </p>
+            <div class="output">
+              <img
+                src="Images/petra.jpg"
+                alt="A sample image divided into two clickable regions"
+                usemap="#book-map"
+                width="360"
+                height="140"
+                style="max-width: 100%; height: auto"
+              />
+              <map name="book-map">
+                <area
+                  shape="rect"
+                  coords="0,0,180,140"
+                  href="https://archive.roar.media/bangla/main/architecture/the-red-rose-city-petra"
+                  alt="Explore lists"
+                />
+                <area
+                  shape="rect"
+                  coords="180,0,360,140"
+                  href="https://archive.roar.media/bangla/main/architecture/the-red-rose-city-petra"
+                  alt="Explore tables"
+                />
+              </map>
+              <p class="note">
+                Click the left or right half of the image to visit a section.
+              </p>
+            </div>
+          </div>
+          <div class="demo" id="responsive-pictures">
+            <h4>2.4.2 Responsive Pictures</h4>
+            <p>
+              The picture element can provide different images for different
+              screen sizes.
+            </p>
+            <div class="output">
+              <picture>
+                <source
+                  media="(max-width: 50%)"
+                  srcset="./Images/nari jiboner shukh shongram.jfif"
+                />
+                <source
+                  media="(min-width: 51%)"
+                  srcset="./Images/nari jiboner shukh shongram.jfif"
+                />
+                <img
+                  class="book-image"
+                  src="Images/tumi-sei-rani-250x381.jpg"
+                  alt="Books displayed for readers"
+                />
+              </picture>
+              <p class="note">
+                Resize the browser window to test the responsive source
+                selection.
+              </p>
+            </div>
+          </div>
+        </section>
+        <section class="topic" id="lists">
+          <h3>2.5 Lists</h3>
+          <p>Lists organize related items in a clear, readable format.</p>
+          <div class="demo list-samples" id="unordered">
+            <div>
+              <h4>2.5.1 Unordered List</h4>
+              <ul>
+                <li>Fiction</li>
+                <li>Science</li>
+                <li>History</li>
+              </ul>
+            </div>
+            <div id="ordered">
+              <h4>2.5.2 Ordered List</h4>
+              <ol>
+                <li>Choose a book</li>
+                <li>Read a chapter</li>
+                <li>Share your thoughts</li>
+              </ol>
+            </div>
+            <div id="description">
+              <h4>2.5.3 Description Lists</h4>
+              <dl>
+                <dt><strong>Author</strong></dt>
+                <dd>A person who writes a book.</dd>
+                <dt><strong>Publisher</strong></dt>
+                <dd>An organization that publishes books.</dd>
+              </dl>
+            </div>
+          </div>
+        </section>
+        <section class="topic" id="tables">
+          <h3>2.6 Tables</h3>
+          <p>Tables organize related information into rows and columns.</p>
+          <div class="demo" id="table-headers">
+            <h4>2.6.1 Table Headers</h4>
+            <div class="output">
+              <table>
+                <tr>
+                  <th scope="col">Book</th>
+                  <th scope="col">Genre</th>
+                  <th scope="col">Price</th>
+                </tr>
+                <tr>
+                  <td>The Secret Garden</td>
+                  <td>Fiction</td>
+                  <td>$12</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <div class="demo" id="table-rows">
+            <h4>2.6.2 Table Rows</h4>
+            <div class="output">
+              <table>
+                <tr>
+                  <th>Reader</th>
+                  <th>Books Read</th>
+                </tr>
+                <tr>
+                  <td>Alex</td>
+                  <td>5</td>
+                </tr>
+                <tr>
+                  <td>Jamie</td>
+                  <td>8</td>
+                </tr>
+                <tr>
+                  <td>Riley</td>
+                  <td>3</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <div class="demo" id="table-caption">
+            <h4>2.6.3 Table Caption</h4>
+            <div class="output">
+              <table>
+                <caption>
+                  Monthly Reading Goals
+                </caption>
+                <tr>
+                  <th>Month</th>
+                  <th>Goal</th>
+                </tr>
+                <tr>
+                  <td>October</td>
+                  <td>4 books</td>
+                </tr>
+                <tr>
+                  <td>November</td>
+                  <td>5 books</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <div class="demo" id="column-groups">
+            <h4>2.6.4 Group of Columns</h4>
+            <p>The column group element can style related columns together.</p>
+            <div class="output">
+              <table>
+                <colgroup>
+                  <col />
+                  <col span="2" style="background: #f3eee8" />
+                </colgroup>
+                <tr>
+                  <th>Book</th>
+                  <th>Genre</th>
+                  <th>Status</th>
+                </tr>
+                <tr>
+                  <td>Little Women</td>
+                  <td>Classic</td>
+                  <td>Available</td>
+                </tr>
+                <tr>
+                  <td>Ocean Life</td>
+                  <td>Science</td>
+                  <td>Borrowed</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <div class="demo" id="column-span">
+            <h4>2.6.5 Column Span</h4>
+            <p>A cell can span multiple columns using the colspan attribute.</p>
+            <div class="output">
+              <table>
+                <tr>
+                  <th colspan="2">Book Details</th>
+                </tr>
+                <tr>
+                  <td>Title</td>
+                  <td>The Little Prince</td>
+                </tr>
+                <tr>
+                  <td>Category</td>
+                  <td>Classic Fiction</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </section>
+        <section class="topic" id="breaks">
+          <h3>2.7 Breaks</h3>
+          <div class="demo" id="line-break">
+            <h4>2.7.1 Line Breaking</h4>
+            <p>
+              The line break element starts text on a new line without creating
+              a new paragraph.
+            </p>
+            <div class="output">
+              BIBLUNE Bookstore<br />
+              A little world of books.<br />
+              Find your next adventure.
+            </div>
+          </div>
+          <div class="demo" id="thematic-break">
+            <h4>2.7.2 Thematic Breaking</h4>
+            <p>
+              The thematic break element separates related content sections.
+            </p>
+            <div class="output">
+              <p>Our Fiction Collection</p>
+              <hr />
+              <p>Our Science Collection</p>
+            </div>
+          </div>
+        </section>
+        <section class="topic" id="progress-bars">
+          <h3>2.8 Progress Bars</h3>
+          <p>
+            The progress element shows the completion of a task. The meter
+            element represents a value within a known range.
+          </p>
+          <div class="demo">
+            <h4>2.8.1 Progress</h4>
+            <div class="output">
+              <div class="progress-row">
+                <label for="reading-progress">Reading progress: 70%</label>
+                <progress id="reading-progress" value="70" max="100">
+                  70%
+                </progress>
+              </div>
+            </div>
+            <h4>2.8.2 Meter</h4>
+            <div class="output">
+              <div class="progress-row">
+                <label for="book-rating">Book rating: 4 out of 5</label>
+                <meter id="book-rating" min="0" max="5" value="4">
+                  4 out of 5
+                </meter>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="topic" id="computer-code">
+          <h3>2.9 Computer Code</h3>
+          <p>
+            HTML can display short code fragments and preserve the formatting of
+            longer code samples.
+          </p>
+          <div class="demo" id="inline-code">
+            <h4>2.9.1 Inline Code</h4>
+            <div class="output">
+              <p>Use the <code>title</code> element to set a webpage title.</p>
+              <p>Press <kbd>Ctrl</kbd> + <kbd>S</kbd> to save a file.</p>
+              <p>Example output: <samp>Page saved successfully.</samp></p>
+              <p>
+                The variable <var>bookCount</var> represents a number of books.
+              </p>
+            </div>
+          </div>
+          <div class="demo" id="code-block">
+            <h4>2.9.2 Preformatted Code</h4>
+            <p>The pre element preserves spaces and line breaks.</p>
+            <div class="output">
+              <pre>
+                            <code>Welcome to BIBLUNE!
+                            Explore a little world of books. Read, Learn & Discover.</code>
+                        </pre>
+            </div>
+          </div>
+        </section>
+        <section class="topic" id="iframes">
+          <h3>2.10 Iframes</h3>
+          <p>
+            An iframe embeds another webpage or document inside the current
+            page.
+          </p>
+          <div class="demo">
+            <p class="demo-label">Embedded Preview</p>
+            <div class="output">
+              <iframe
+                title="Example embedded webpage"
+                srcdoc="<h2 style='font-family:Arial;color:#243b63'>BIBLUNE Reading Room</h2><p style='font-family:Arial'>This content is displayed inside an iframe.</p>"
+                width="100%"
+                height="180"
+                loading="lazy"
+                style="border: 1px solid #cbd2dc; background: white"
+              >
+              </iframe>
+            </div>
+            <p class="note">
+              This example uses srcdoc, so it works without an external website.
+            </p>
+          </div>
+        </section>
+        <section class="topic" id="entities">
+          <h3>2.11 HTML Entities</h3>
+          <p>
+            HTML entities display reserved characters and symbols that have
+            special meaning in HTML.
+          </p>
+          <div class="demo">
+            <p class="demo-label">Entity Examples</p>
+            <div class="output entity-samples">
+              <span>Less than: &lt;</span>
+              <span>Greater than: &gt;</span>
+              <span>Ampersand: &amp;</span>
+              <span>Copyright: &copy;</span>
+              <span>Registered: &reg;</span>
+              <span>Non-breaking space: Book&nbsp;Nest</span>
+            </div>
+          </div>
+        </section>
+      </article>
+    </main>
+    <footer>
+      <p>BIBLUNE | HTML &amp; CSS Project</p>
+    </footer>
+  </body>
+</html>

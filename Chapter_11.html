@@ -1,0 +1,547 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chapter_11</title>
+    <style>
+      .logo {
+        font-family: cursive;
+        font-size: 35px;
+        font-style: italic;
+        background-color: hsl(287, 93%, 65%);
+        font-weight: bold;
+        color: #000000;
+        text-decoration: none;
+        letter-spacing: 2px;
+      }
+
+      .menu {
+        width: 100%;
+        background-color: hsl(287, 93%, 65%);
+        display: flow-root;
+        overflow: visible;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      .menu ul {
+        list-style: none;
+        margin-right: 30px;
+      }
+
+      .menu ul li {
+        font-family:
+          "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+        float: left;
+      }
+
+      .menu ul li a {
+        display: block;
+        padding: 14px 18px;
+        color: rgb(8, 8, 8);
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .menu ul li a:hover {
+        background-color: #520172;
+        color: rgb(251, 249, 249);
+      }
+
+      .dropdown {
+        position: relative;
+      }
+
+      .dropdown details summary {
+        display: block;
+        padding: 14px 18px;
+        color: black;
+        font-weight: bold;
+        cursor: pointer;
+        list-style: none;
+      }
+
+      .dropdown details summary:hover {
+        background-color: #520172;
+        color: #ffff;
+      }
+
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        min-width: 160px;
+        max-height: 300px;
+        overflow-y: auto;
+        background-color: hsl(287, 93%, 65%);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        opacity: 80%;
+        z-index: 1000;
+      }
+
+      .dropdown details[open] .dropdown-content {
+        display: block;
+      }
+
+      .dropdown-content a {
+        display: block;
+        padding: 10px 15px;
+        color: white;
+        text-decoration: none;
+        white-space: nowrap;
+      }
+
+      .dropdown-content a:hover {
+        background-color: #520172;
+        color: #ffffff;
+      }
+
+      footer p {
+        font-family:
+          "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+          "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+        text-align: center;
+        background-color: hsl(287, 93%, 65%);
+        color: #000;
+        padding: 12px;
+        margin-top: 40px;
+      }
+
+      .chapter-heading {
+        padding: 30px 20px;
+        text-align: center;
+        background: #ffffff;
+        border-bottom: 1px solid #dce1e8;
+      }
+
+      .chapter-heading .eyebrow {
+        color: #8b5e3c;
+        font-size: 13px;
+        font-weight: bold;
+        letter-spacing: 3px;
+      }
+
+      .chapter-heading h1 {
+        margin: 8px 0;
+        color: #243b63;
+        font-size: clamp(27px, 4vw, 38px);
+      }
+
+      .chapter-heading p {
+        color: #657187;
+      }
+
+      .container {
+        display: flex;
+        gap: 25px;
+        padding: 25px;
+        align-items: flex-start;
+      }
+
+      .toc {
+        width: 250px;
+        min-width: 200px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 12px;
+        position: sticky;
+        top: 100px;
+      }
+
+      .toc h2 {
+        color: #6b3fa0;
+        font-size: 20px;
+      }
+
+      .toc a {
+        display: block;
+        color: #333;
+        text-decoration: none;
+        padding: 8px 0;
+      }
+
+      .toc a:hover {
+        color: #8a2be2;
+      }
+
+      main {
+        flex: 1;
+        min-width: 0;
+      }
+
+      section {
+        background-color: white;
+        padding: 25px;
+        margin-bottom: 25px;
+        border-radius: 12px;
+        box-shadow: 0 3px 10px #ddd;
+      }
+
+      h2,
+      h3 {
+        color: #6b3fa0;
+      }
+
+      .demo {
+        background-color: #f4f0fa;
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 15px;
+      }
+
+      .demo-card {
+        background-color: white;
+        border: 1px solid #ddd;
+        padding: 15px;
+        margin: 12px 0;
+        border-radius: 8px;
+      }
+
+      .syntax-demo {
+        color: #8a2be2;
+        font-size: 24px;
+        text-align: center;
+      }
+
+      .unit-box {
+        background-color: #f9e986;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 6px;
+      }
+
+      .shorthand-box {
+        background-color: #e8ddf7;
+        border: 3px solid #8a2be2;
+        border-radius: 12px;
+        padding: 20px;
+        margin: 15px 0;
+      }
+
+      .inline-demo {
+        color: #8a2be2;
+        font-weight: bold;
+      }
+
+      .internal-demo {
+        color: #287a55;
+        font-weight: bold;
+      }
+
+      .external-demo {
+        color: #b05b20;
+        font-weight: bold;
+      }
+
+      .user-agent-demo {
+        all: revert;
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          flex-direction: column;
+          padding: 12px;
+        }
+
+        .toc {
+          position: static;
+          width: auto;
+        }
+
+        nav a {
+          display: inline-block;
+          margin: 6px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="menu">
+      <a href="HomePage.html" class="logo">BIBLUNE</a>
+      <ul>
+        <li><a href="HomePage.html">Home</a></li>
+        <li><a href="#">Books</a></li>
+        <li><a href="#">Categories</a></li>
+        <li class="dropdown">
+          <details>
+            <summary>Chapter ▾</summary>
+            <div class="dropdown-content">
+              <a href="chapter_01.html">01. Getting to Know HTML</a>
+              <a href="chapter_02.html">02. HTML Elements</a>
+              <a href="chapter_03.html">03. HTML Styles</a>
+              <a href="chapter_04.html">04. Semantic HTML</a>
+              <a href="chapter_05.html">05. Web Forms</a>
+              <a href="chapter_06.html">06. HTML Multimedia</a>
+              <a href="chapter_07.html">07. HTML Graphics</a>
+              <a href="chapter_08.html">08. HTML Advanced</a>
+              <a href="chapter_09.html">09. HTML Events</a>
+              <a href="chapter_10.html">10. HTML APIs</a>
+              <a href="chapter_11.html">11. Getting to Know CSS</a>
+              <a href="chapter_12.html">12. CSS Selectors</a>
+              <a href="chapter_13.html">13. CSS Cascading</a>
+              <a href="chapter_14.html">14. CSS Box Model</a>
+              <a href="chapter_15.html">15. CSS Colors</a>
+              <a href="chapter_16.html">16. CSS Text</a>
+              <a href="chapter_17.html">17. CSS Backgrounds</a>
+              <a href="chapter_18.html">18. CSS Display</a>
+              <a href="chapter_19.html">19. CSS Layout</a>
+              <a href="chapter_20.html">20. CSS Transitions and Animations</a>
+              <a href="chapter_21.html">21. Advanced CSS</a>
+              <a href="chapter_22.html">22. Responsive CSS</a>
+            </div>
+          </details>
+        </li>
+        <li><a href="#info">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <div class="container">
+      <aside class="toc">
+        <h2>Table of Contents</h2>
+
+        <a href="#syntax">11.1 CSS Syntax</a>
+        <a href="#comments">11.2 Comments in CSS</a>
+        <a href="#units">11.3 CSS Units</a>
+        <a href="#absolute">11.3.1 Absolute Lengths</a>
+        <a href="#relative">11.3.2 Relative Lengths</a>
+        <a href="#em">11.3.2.1 em</a>
+        <a href="#rem">11.3.2.2 rem</a>
+        <a href="#shorthand">11.4 Shorthand Properties</a>
+        <a href="#where-css">11.5 Where Do We Put Our CSS?</a>
+        <a href="#inline">11.5.1 Inline CSS</a>
+        <a href="#internal">11.5.2 Internal CSS</a>
+        <a href="#external">11.5.3 External CSS</a>
+        <a href="#user-agent">11.6 User Agent Style Sheets</a>
+      </aside>
+
+      <main>
+        <section class="chapter-heading">
+          <p class="eyebrow">CHAPTER 11</p>
+          <h1>Getting to Know CSS</h1>
+          <p>
+            A CSS rule consists of a selector and a declaration block.Each
+            declaration contains a property and a value.
+          </p>
+        </section>
+        <section id="syntax">
+          <div class="demo">
+            <div class="demo-card">
+              <p class="syntax-demo">CSS makes webpages beautiful!</p>
+            </div>
+
+            <p><strong>Selector:</strong> Selects the HTML element.</p>
+
+            <p><strong>Property:</strong> Specifies what to style.</p>
+
+            <p><strong>Value:</strong> Defines the style.</p>
+          </div>
+        </section>
+        <section id="comments">
+          <h2>11.2 Comments in CSS</h2>
+
+          <p>
+            CSS comments are used to explain the code. They are ignored by the
+            browser.
+          </p>
+
+          <div class="demo">
+            <div class="demo-card">
+              <h3>Comments in a Stylesheet</h3>
+
+              <p>
+                Comments help developers understand and organize their styles.
+              </p>
+
+              <p>They do not change the appearance of the webpage.</p>
+            </div>
+          </div>
+        </section>
+        <section id="units">
+          <h2>11.3 CSS Units</h2>
+
+          <p>
+            CSS units define measurements such as width, height, margin, and
+            font size.
+          </p>
+
+          <div class="demo">
+            <div class="unit-box">Small measurement</div>
+
+            <div class="unit-box" style="width: 70%">Relative width</div>
+
+            <div class="unit-box" style="width: 250px">Fixed width: 250px</div>
+          </div>
+        </section>
+        <section id="absolute">
+          <h2>11.3.1 Absolute Lengths</h2>
+
+          <p>
+            Absolute units represent fixed measurements. They do not depend on
+            the size of a parent element.
+          </p>
+
+          <div class="demo">
+            <div class="unit-box" style="width: 200px">200px wide</div>
+
+            <div class="unit-box" style="width: 5cm">5cm wide</div>
+
+            <div class="unit-box" style="width: 2in">2in wide</div>
+          </div>
+        </section>
+        <section id="relative">
+          <h2>11.3.2 Relative Lengths</h2>
+
+          <p>
+            Relative units depend on another measurement, such as the font size
+            of an element or its parent.
+          </p>
+
+          <div class="demo">
+            <div style="font-size: 20px">
+              <div class="unit-box" style="width: 10em">Width: 10em</div>
+
+              <div class="unit-box" style="width: 10rem">Width: 10rem</div>
+            </div>
+          </div>
+        </section>
+        <section id="em">
+          <h2>11.3.2.1 em</h2>
+
+          <p>
+            The em unit is relative to the font size of the element's parent.
+          </p>
+
+          <div class="demo">
+            <div style="font-size: 20px">
+              <p style="font-size: 1em">This text is 1em (20px).</p>
+
+              <p style="font-size: 1.5em">This text is 1.5em (30px).</p>
+
+              <p style="font-size: 2em">This text is 2em (40px).</p>
+            </div>
+          </div>
+        </section>
+        <section id="rem">
+          <h2>11.3.2.2 rem</h2>
+
+          <p>
+            The rem unit is relative to the font size of the root HTML element.
+          </p>
+
+          <div class="demo">
+            <p style="font-size: 1rem">This text is 1rem.</p>
+
+            <p style="font-size: 1.5rem">This text is 1.5rem.</p>
+
+            <p style="font-size: 2rem">This text is 2rem.</p>
+          </div>
+        </section>
+        <section id="shorthand">
+          <h2>11.4 Shorthand Properties</h2>
+
+          <p>
+            Shorthand properties allow multiple related CSS properties to be set
+            in a single declaration.
+          </p>
+
+          <div class="demo">
+            <div class="shorthand-box">
+              <h3>Shorthand Styling</h3>
+
+              <p>
+                This box uses shorthand properties for margin, padding, border,
+                and background.
+              </p>
+            </div>
+          </div>
+        </section>
+        <section id="where-css">
+          <h2>11.5 Where Do We Put Our CSS?</h2>
+
+          <p>
+            CSS can be added to an HTML document in three ways: Inline CSS,
+            Internal CSS, and External CSS.
+          </p>
+
+          <div class="demo">
+            <div class="demo-card">
+              <p class="inline-demo">Inline CSS Example</p>
+
+              <p class="internal-demo">Internal CSS Example</p>
+
+              <p class="external-demo">External CSS Example</p>
+            </div>
+          </div>
+        </section>
+        <section id="inline">
+          <h2>11.5.1 Inline CSS</h2>
+
+          <p>
+            Inline CSS is written inside the style attribute of an HTML element.
+          </p>
+
+          <div class="demo">
+            <p style="color: #8a2be2; font-size: 24px">
+              This paragraph uses Inline CSS.
+            </p>
+          </div>
+        </section>
+        <section id="internal">
+          <h2>11.5.2 Internal CSS</h2>
+
+          <p>
+            Internal CSS is written inside a style element in the head section
+            of an HTML document.
+          </p>
+
+          <div class="demo">
+            <p class="internal-demo">This paragraph uses Internal CSS.</p>
+          </div>
+        </section>
+        <section id="external">
+          <h2>11.5.3 External CSS</h2>
+
+          <p>
+            External CSS is written in a separate .css file and linked to an
+            HTML document.
+          </p>
+
+          <div class="demo">
+            <p class="external-demo">This paragraph uses External CSS.</p>
+
+            <p>
+              The BIBLUNE website uses BookishStyle.css as its external
+              stylesheet.
+            </p>
+          </div>
+        </section>
+        <section id="user-agent">
+          <h2>11.6 User Agent Style Sheets</h2>
+
+          <p>
+            A user agent stylesheet contains the browser's default styles for
+            HTML elements.
+          </p>
+
+          <div class="demo">
+            <div class="demo-card">
+              <h3 class="user-agent-demo">Default Heading</h3>
+
+              <p class="user-agent-demo">
+                This paragraph demonstrates the browser's default styling.
+              </p>
+
+              <button class="user-agent-demo">Default Button</button>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+    <footer>
+      <p>BIBLUNE | HTML &amp; CSS Project</p>
+    </footer>
+  </body>
+</html>

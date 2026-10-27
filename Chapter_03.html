@@ -1,0 +1,803 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chapter_03</title>
+    <style>
+      body {
+        font-family:
+          "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+      }
+      .logo {
+        font-family: cursive;
+        font-size: 35px;
+        font-style: italic;
+        background-color: hsl(287, 93%, 65%);
+        font-weight: bold;
+        color: #000000;
+        text-decoration: none;
+        letter-spacing: 2px;
+      }
+
+      .menu {
+        width: 100%;
+        background-color: hsl(287, 93%, 65%);
+        display: flow-root;
+        overflow: visible;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      .menu ul {
+        list-style: none;
+        margin-right: 30px;
+      }
+
+      .menu ul li {
+        font-family:
+          "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+        float: left;
+      }
+
+      .menu ul li a {
+        display: block;
+        padding: 14px 18px;
+        color: rgb(8, 8, 8);
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .menu ul li a:hover {
+        background-color: #520172;
+        color: rgb(251, 249, 249);
+      }
+
+      .dropdown {
+        position: relative;
+      }
+
+      .dropdown details summary {
+        display: block;
+        padding: 14px 18px;
+        color: black;
+        font-weight: bold;
+        cursor: pointer;
+        list-style: none;
+      }
+
+      .dropdown details summary:hover {
+        background-color: #520172;
+        color: #ffff;
+      }
+
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        min-width: 160px;
+        max-height: 300px;
+        overflow-y: auto;
+        background-color: hsl(287, 93%, 65%);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        opacity: 80%;
+        z-index: 1000;
+      }
+
+      .dropdown details[open] .dropdown-content {
+        display: block;
+      }
+
+      .dropdown-content a {
+        display: block;
+        padding: 10px 15px;
+        color: white;
+        text-decoration: none;
+        white-space: nowrap;
+      }
+
+      .dropdown-content a:hover {
+        background-color: #520172;
+        color: #ffffff;
+      }
+
+      .chapter-heading {
+        text-align: center;
+        padding: 30px 20px;
+        background: #fff;
+        border-bottom: 1px solid #dce1e8;
+      }
+
+      .chapter-heading .eyebrow {
+        color: #8b5e3c;
+        font-size: 13px;
+        font-weight: bold;
+        letter-spacing: 3px;
+      }
+
+      .chapter-heading h1 {
+        margin: 8px 0;
+        color: #243b63;
+        font-size: clamp(27px, 4vw, 38px);
+      }
+
+      .chapter-heading p {
+        color: #657187;
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: 260px minmax(0, 1fr);
+        gap: 22px;
+        max-width: 1400px;
+        margin: 25px auto;
+        padding: 0 20px;
+        align-items: start;
+      }
+
+      .toc {
+        position: sticky;
+        top: 100px;
+        max-height: calc(100vh - 30px);
+        overflow-y: auto;
+        padding: 18px;
+        background: #fff;
+        border: 1px solid #dce1e8;
+      }
+
+      .toc h2 {
+        margin-top: 0;
+        color: #243b63;
+        font-size: 21px;
+      }
+
+      .toc ol {
+        padding-left: 22px;
+        margin-bottom: 0;
+      }
+
+      .toc li {
+        padding: 4px 0;
+        font-size: 13px;
+      }
+
+      .toc a {
+        color: #35445c;
+        text-decoration: none;
+      }
+
+      .toc a:hover {
+        color: #8b5e3c;
+        text-decoration: underline;
+      }
+
+      .toc ol ol {
+        padding-left: 20px;
+        list-style-type: lower-alpha;
+      }
+
+      .content {
+        min-width: 0;
+        padding: 24px;
+        background: #fff;
+        border: 1px solid #dce1e8;
+      }
+
+      .content > h2 {
+        margin-top: 0;
+        color: #243b63;
+        font-size: 30px;
+      }
+
+      .topic {
+        padding: 22px 0;
+        border-bottom: 1px solid #d7dce3;
+        scroll-margin-top: 15px;
+      }
+
+      .topic:last-child {
+        border-bottom: 0;
+      }
+
+      .topic h3 {
+        margin: 0 0 12px;
+        color: #243b63;
+        font-size: 23px;
+      }
+
+      .topic h4 {
+        margin: 18px 0 8px;
+        color: #35445c;
+        font-size: 18px;
+      }
+
+      .demo {
+        margin-top: 15px;
+        padding: 18px;
+        background: #faf8f5;
+        border-left: 4px solid #b18a67;
+        overflow-wrap: anywhere;
+        scroll-margin-top: 15px;
+      }
+
+      .demo-label {
+        margin-top: 0;
+        color: #8b5e3c;
+        font-size: 11px;
+        font-weight: bold;
+        letter-spacing: 1.5px;
+      }
+
+      .output {
+        padding: 16px;
+        background: #fff;
+        border: 1px solid #dce1e8;
+      }
+
+      .note {
+        color: #657187;
+        font-size: 13px;
+      }
+
+      .format-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin-top: 15px;
+      }
+
+      .format-card {
+        min-width: 0;
+        padding: 15px;
+        background: #fff;
+        border: 1px solid #dce1e8;
+      }
+
+      .format-card h4 {
+        margin-top: 0;
+      }
+
+      .format-card p {
+        overflow-wrap: anywhere;
+      }
+
+      .style-preview {
+        padding: 20px;
+        background: #fff;
+        border: 1px solid #dce1e8;
+      }
+
+      .style-preview p {
+        margin: 10px 0;
+      }
+
+      .attribute-table {
+        width: 100%;
+        margin-top: 15px;
+        border-collapse: collapse;
+        background: #fff;
+      }
+
+      .attribute-table th,
+      .attribute-table td {
+        padding: 10px;
+        border: 1px solid #cbd2dc;
+        text-align: left;
+        overflow-wrap: anywhere;
+      }
+
+      .attribute-table th {
+        background: #e9edf3;
+      }
+
+      .attribute-table code,
+      .demo code {
+        overflow-wrap: anywhere;
+      }
+
+      .note-box {
+        margin-top: 15px;
+        padding: 14px;
+        background: #f5f6f8;
+        border-left: 4px solid #8b5e3c;
+      }
+
+      .page-footer {
+        padding: 22px;
+        text-align: center;
+        color: #657187;
+        background: #fff;
+        border-top: 1px solid #dce1e8;
+        font-size: 13px;
+      }
+
+      .page-footer a {
+        color: #243b63;
+        text-decoration: none;
+      }
+
+      .page-footer a:hover {
+        color: #8b5e3c;
+        text-decoration: underline;
+      }
+
+      @media (max-width: 850px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+
+        .toc {
+          position: static;
+          max-height: none;
+        }
+
+        .toc > ol {
+          columns: 2;
+          column-gap: 25px;
+        }
+
+        .content {
+          padding: 18px;
+        }
+      }
+
+      @media (max-width: 500px) {
+        .site-header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .toc > ol {
+          columns: 1;
+        }
+
+        .content > h2 {
+          font-size: 25px;
+        }
+
+        .attribute-table th,
+        .attribute-table td {
+          padding: 7px;
+          font-size: 12px;
+        }
+      }
+
+      footer p {
+        font-family:
+          "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+          "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+        text-align: center;
+        background-color: hsl(287, 93%, 65%);
+        color: #000;
+        padding: 12px;
+        margin-top: 40px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="menu">
+      <a href="HomePage.html" class="logo">BIBLUNE</a>
+      <ul>
+        <li><a href="HomePage.html">Home</a></li>
+        <li><a href="#">Books</a></li>
+        <li><a href="#">Categories</a></li>
+        <li class="dropdown">
+          <details>
+            <summary>Chapter ▾</summary>
+            <div class="dropdown-content">
+              <a href="chapter_01.html">01. Getting to Know HTML</a>
+              <a href="chapter_02.html">02. HTML Elements</a>
+              <a href="chapter_03.html">03. HTML Styles</a>
+              <a href="chapter_04.html">04. Semantic HTML</a>
+              <a href="chapter_05.html">05. Web Forms</a>
+              <a href="chapter_06.html">06. HTML Multimedia</a>
+              <a href="chapter_07.html">07. HTML Graphics</a>
+              <a href="chapter_08.html">08. HTML Advanced</a>
+              <a href="chapter_09.html">09. HTML Events</a>
+              <a href="chapter_10.html">10. HTML APIs</a>
+              <a href="chapter_11.html">11. Getting to Know CSS</a>
+              <a href="chapter_12.html">12. CSS Selectors</a>
+              <a href="chapter_13.html">13. CSS Cascading</a>
+              <a href="chapter_14.html">14. CSS Box Model</a>
+              <a href="chapter_15.html">15. CSS Colors</a>
+              <a href="chapter_16.html">16. CSS Text</a>
+              <a href="chapter_17.html">17. CSS Backgrounds</a>
+              <a href="chapter_18.html">18. CSS Display</a>
+              <a href="chapter_19.html">19. CSS Layout</a>
+              <a href="chapter_20.html">20. CSS Transitions and Animations</a>
+              <a href="chapter_21.html">21. Advanced CSS</a>
+              <a href="chapter_22.html">22. Responsive CSS</a>
+            </div>
+          </details>
+        </li>
+        <li><a href="#info">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <section class="chapter-heading">
+      <p class="eyebrow">CHAPTER 03</p>
+      <h1>HTML STYLES</h1>
+      <p>
+        Learn text formatting and inline styles through practical bookshop
+        examples.
+      </p>
+    </section>
+    <main class="layout">
+      <aside class="toc">
+        <h2>Table of Contents</h2>
+        <ol>
+          <li>
+            <a href="#formatting">3.1 Formatting Elements</a>
+            <ol>
+              <li><a href="#bold">3.1.1 Bold</a></li>
+              <li><a href="#italic">3.1.2 Italic</a></li>
+              <li><a href="#underline">3.1.3 Underline</a></li>
+              <li><a href="#strong">3.1.4 Strong</a></li>
+              <li><a href="#emphasis">3.1.5 Emphasis</a></li>
+              <li>
+                <a href="#other-formatting">3.1.6 Other Formatting Elements</a>
+              </li>
+            </ol>
+          </li>
+          <li>
+            <a href="#style-attribute">3.2 HTML Style Attribute</a>
+            <ol>
+              <li><a href="#text-color">Text Color</a></li>
+              <li><a href="#background-color">Background Color</a></li>
+              <li><a href="#font-size">Font Size</a></li>
+              <li><a href="#font-family">Font Family</a></li>
+              <li><a href="#text-alignment">Text Alignment</a></li>
+              <li><a href="#multiple-styles">Multiple Styles</a></li>
+            </ol>
+          </li>
+        </ol>
+      </aside>
+      <article class="content">
+        <h2>Welcome to HTML Styles!</h2>
+        <p>
+          HTML formatting elements help us communicate the meaning of text. The
+          style attribute allows us to apply CSS directly to an individual HTML
+          element.
+        </p>
+        <div class="note-box">
+          <strong>Chapter objective:</strong>
+          Understand how to format book titles, highlight offers, show old and
+          new prices, and style text on the BIBLUNE website.
+        </div>
+        <section class="topic" id="formatting">
+          <h3>3.1 Formatting Elements</h3>
+          <p>
+            HTML formatting elements change the appearance of text or indicate
+            its meaning and importance.
+          </p>
+          <div class="demo">
+            <p class="demo-label">FORMATTING OVERVIEW</p>
+            <div class="output">
+              <p><b>Bold text using b</b></p>
+              <p><i>Italic text using i</i></p>
+              <p><u>Underlined text using u</u></p>
+              <p><strong>Important text using strong</strong></p>
+              <p><em>Emphasized text using em</em></p>
+              <p><mark>Highlighted text using mark</mark></p>
+              <p><del>Old price: ৳800</del></p>
+              <p><ins>New price: ৳600</ins></p>
+              <p><small>Terms and conditions apply.</small></p>
+              <p>Water formula: H<sub>2</sub>O</p>
+              <p>Power: 2<sup>3</sup> = 8</p>
+            </div>
+          </div>
+          <p class="note">
+            The following sections explain each group of elements with code
+            examples and their browser output.
+          </p>
+        </section>
+        <section class="topic" id="bold">
+          <h3>3.1.1 Bold Element</h3>
+          <div class="demo">
+            <p class="demo-label">LIVE OUTPUT</p>
+            <div class="output">
+              <p>Explore our <b>Bestselling Books</b>.</p>
+            </div>
+          </div>
+          <div class="note-box">
+            <strong>Remember:</strong>
+            Use <code>&lt;b&gt;</code> when you want attention to a piece of
+            text without assigning special importance.
+          </div>
+        </section>
+        <section class="topic" id="italic">
+          <h3>3.1.2 Italic Element</h3>
+          <div class="demo">
+            <p class="demo-label">LIVE OUTPUT</p>
+            <div class="output">
+              <p>Read <i>The Little Prince</i> today.</p>
+            </div>
+          </div>
+          <p class="note">
+            Italic text changes the presentation, but it does not automatically
+            mean that the text is important.
+          </p>
+        </section>
+        <section class="topic" id="underline">
+          <h3>3.1.3 Underline Element</h3>
+          <p>
+            The <code>&lt;u&gt;</code> element marks text with an underline. Use
+            it when the underline has a meaningful purpose, such as indicating a
+            specially annotated word.
+          </p>
+          <div class="demo">
+            <p class="demo-label">LIVE OUTPUT</p>
+            <div class="output">
+              <p>Discover our <u>new collection</u>.</p>
+            </div>
+          </div>
+          <p class="note">
+            Avoid using underlines for ordinary text that might be mistaken for
+            a hyperlink.
+          </p>
+        </section>
+        <section class="topic" id="strong">
+          <h3>3.1.4 Strong Element</h3>
+          <p>
+            The <code>&lt;strong&gt;</code> element indicates that its content
+            has strong importance, seriousness or urgency. Browsers generally
+            display it in bold.
+          </p>
+          <div class="demo">
+            <p class="demo-label">LIVE OUTPUT</p>
+            <div class="output">
+              <p><strong>Limited Stock Available!</strong></p>
+            </div>
+          </div>
+          <div class="note-box">
+            <strong>Difference:</strong>
+            <code>&lt;b&gt;</code> draws attention to text.
+            <code>&lt;strong&gt;</code> communicates strong importance.
+          </div>
+        </section>
+        <section class="topic" id="emphasis">
+          <h3>3.1.5 Emphasis Element</h3>
+
+          <p>
+            The <code>&lt;em&gt;</code> element adds stress emphasis to text.
+            Browsers generally display it in italic.
+          </p>
+          <div class="demo">
+            <p class="demo-label">LIVE OUTPUT</p>
+            <div class="output">
+              <p>This book is <em>really worth reading</em>.</p>
+            </div>
+          </div>
+          <div class="note-box">
+            <strong>Difference:</strong>
+            <code>&lt;i&gt;</code> can indicate an alternate voice or mood,
+            while <code>&lt;em&gt;</code> indicates emphasis.
+          </div>
+        </section>
+        <section class="topic" id="other-formatting">
+          <h3>3.1.6 Other Formatting Elements</h3>
+          <p>
+            HTML includes additional elements for highlighting, smaller text,
+            deleted content, inserted content, subscript and superscript.
+          </p>
+          <div class="format-grid">
+            <div class="format-card">
+              <h4>Small Text</h4>
+              <p>
+                The <code>&lt;small&gt;</code> element displays smaller text.
+              </p>
+              <div class="output">
+                <small>Offer valid this week.</small>
+              </div>
+            </div>
+
+            <div class="format-card">
+              <h4>Highlighted Text</h4>
+              <p>
+                The <code>&lt;mark&gt;</code> element highlights relevant text.
+              </p>
+              <div class="output">
+                <mark>Featured Book</mark>
+              </div>
+            </div>
+            <div class="format-card">
+              <h4>Deleted Text</h4>
+              <p>
+                The <code>&lt;del&gt;</code> element represents deleted content.
+              </p>
+              <div class="output">Previous price: <del>৳800</del></div>
+            </div>
+            <div class="format-card">
+              <h4>Inserted Text</h4>
+              <p>
+                The <code>&lt;ins&gt;</code> element represents inserted
+                content.
+              </p>
+              <div class="output">Current price: <ins>৳600</ins></div>
+            </div>
+            <div class="format-card">
+              <h4>Subscript</h4>
+              <p>The <code>&lt;sub&gt;</code> element displays lowered text.</p>
+              <div class="output">H<sub>2</sub>O</div>
+            </div>
+            <div class="format-card">
+              <h4>Superscript</h4>
+              <p>The <code>&lt;sup&gt;</code> element displays raised text.</p>
+              <div class="output">2<sup>3</sup> = 8</div>
+            </div>
+          </div>
+          <div class="demo">
+            <h4>Complete Book Price Example</h4>
+            <div class="output">
+              <p>
+                <strong>Special Offer:</strong>
+                <mark>Limited Time</mark>
+              </p>
+              <p>Old Price: <del>৳800</del> New Price: <ins>৳600</ins></p>
+              <p>
+                <small>Offer conditions apply.</small>
+              </p>
+            </div>
+          </div>
+        </section>
+        <section class="topic" id="style-attribute">
+          <h3>3.2 HTML Style Attribute</h3>
+          <p>
+            The HTML <code>style</code> attribute applies inline CSS directly to
+            an element. It can control text color, background color, font size,
+            font family and alignment.
+          </p>
+          <div class="demo">
+            <p class="demo-label">LIVE OUTPUT</p>
+            <div class="output">
+              <p style="color: brown">Welcome to BIBLUNE!</p>
+            </div>
+          </div>
+          <div class="note-box">
+            <strong>Syntax:</strong>
+            <p><code>style="property: value;"</code></p>
+            <p>
+              A CSS declaration contains a property and a value, separated by a
+              colon. Multiple declarations are separated by semicolons.
+            </p>
+          </div>
+          <div class="demo" id="text-color">
+            <h4>Text Color</h4>
+            <p>
+              The <code>color</code> property changes the color of the text.
+            </p>
+            <div class="output">
+              <p style="color: #8b5e3c">Discover your next book.</p>
+            </div>
+          </div>
+          <div class="demo" id="background-color">
+            <h4>Background Color</h4>
+            <p>
+              The <code>background-color</code> property sets the background
+              color of an element.
+            </p>
+            <div class="output">
+              <p style="background-color: #e9edf3; padding: 12px">
+                Welcome to our bookstore.
+              </p>
+            </div>
+          </div>
+          <div class="demo" id="font-size">
+            <h4>Font Size</h4>
+            <p>
+              The <code>font-size</code> property controls the size of text.
+              Common units include px, em and rem.
+            </p>
+            <div class="output">
+              <p style="font-size: 24px">Premium Book Collection</p>
+            </div>
+          </div>
+          <div class="demo" id="font-family">
+            <h4>Font Family</h4>
+            <p>
+              The <code>font-family</code> property chooses the typeface used to
+              display text.
+            </p>
+            <div class="output">
+              <p style="font-family: Georgia, serif">
+                A little world of books.
+              </p>
+            </div>
+          </div>
+          <div class="demo" id="text-alignment">
+            <h4>Text Alignment</h4>
+            <p>
+              The <code>text-align</code> property aligns text to the left,
+              right, center or justifies it.
+            </p>
+            <div class="output">
+              <p style="text-align: center">Happy Reading!</p>
+            </div>
+            <div class="output" style="margin-top: 12px">
+              <p style="text-align: right">Right-aligned text</p>
+            </div>
+          </div>
+          <div class="demo" id="multiple-styles">
+            <h4>Multiple CSS Properties</h4>
+            <p>
+              Several CSS declarations can be placed in one style attribute,
+              separated by semicolons.
+            </p>
+            <div class="output">
+              <p
+                style="
+                  color: white;
+                  background-color: #243b63;
+                  font-size: 20px;
+                  text-align: center;
+                  padding: 12px;
+                "
+              >
+                Welcome to BIBLUNE!
+              </p>
+            </div>
+          </div>
+          <div class="demo">
+            <h4>Quick Reference Table</h4>
+            <p>
+              These are some commonly used CSS properties inside the style
+              attribute.
+            </p>
+            <table class="attribute-table">
+              <thead>
+                <tr>
+                  <th>Property</th>
+                  <th>Purpose</th>
+                  <th>Example</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>color</td>
+                  <td>Text color</td>
+                  <td>color: brown;</td>
+                </tr>
+                <tr>
+                  <td>background-color</td>
+                  <td>Background color</td>
+                  <td>background-color: beige;</td>
+                </tr>
+                <tr>
+                  <td>font-size</td>
+                  <td>Text size</td>
+                  <td>font-size: 20px;</td>
+                </tr>
+                <tr>
+                  <td>font-family</td>
+                  <td>Typeface</td>
+                  <td>font-family: Arial;</td>
+                </tr>
+                <tr>
+                  <td>text-align</td>
+                  <td>Text alignment</td>
+                  <td>text-align: center;</td>
+                </tr>
+                <tr>
+                  <td>padding</td>
+                  <td>Inner spacing</td>
+                  <td>padding: 12px;</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="note-box">
+            <strong>Important:</strong>
+            Inline CSS applies to the element carrying the style attribute. For
+            a large website like BIBLUNE, an internal or external stylesheet is
+            usually easier to maintain.
+          </div>
+        </section>
+      </article>
+    </main>
+    <footer>
+      <p>BIBLUNE | HTML &amp; CSS Project</p>
+    </footer>
+  </body>
+</html>

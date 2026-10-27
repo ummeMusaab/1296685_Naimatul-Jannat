@@ -1,0 +1,1251 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chapter-_05</title>
+    <style>
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        line-height: 1.6;
+        color: #263247;
+        background: #f5f6f8;
+      }
+
+      .logo {
+        font-family: cursive;
+        font-size: 35px;
+        font-style: italic;
+        background-color: hsl(287, 93%, 65%);
+        font-weight: bold;
+        color: #000000;
+        text-decoration: none;
+        letter-spacing: 2px;
+      }
+
+      .menu {
+        width: 100%;
+        background-color: hsl(287, 93%, 65%);
+        display: flow-root;
+        overflow: visible;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      .menu ul {
+        list-style: none;
+        margin-right: 30px;
+      }
+
+      .menu ul li {
+        font-family:
+          "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+        float: left;
+      }
+
+      .menu ul li a {
+        display: block;
+        padding: 14px 18px;
+        color: rgb(8, 8, 8);
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .menu ul li a:hover {
+        background-color: #520172;
+        color: rgb(251, 249, 249);
+      }
+
+      .dropdown {
+        position: relative;
+      }
+
+      .dropdown details summary {
+        display: block;
+        padding: 14px 18px;
+        color: black;
+        font-weight: bold;
+        cursor: pointer;
+        list-style: none;
+      }
+
+      .dropdown details summary:hover {
+        background-color: #520172;
+        color: #ffff;
+      }
+
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        min-width: 160px;
+        max-height: 300px;
+        overflow-y: auto;
+        background-color: hsl(287, 93%, 65%);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        opacity: 80%;
+        z-index: 1000;
+      }
+
+      .dropdown details[open] .dropdown-content {
+        display: block;
+      }
+
+      .dropdown-content a {
+        display: block;
+        padding: 10px 15px;
+        color: white;
+        text-decoration: none;
+        white-space: nowrap;
+      }
+
+      .dropdown-content a:hover {
+        background-color: #520172;
+        color: #ffffff;
+      }
+
+      footer p {
+        font-family:
+          "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+          "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+        text-align: center;
+        background-color: hsl(287, 93%, 65%);
+        color: #000;
+        padding: 12px;
+        margin-top: 40px;
+      }
+
+      .chapter-heading {
+        padding: 30px 20px;
+        text-align: center;
+        background: #ffffff;
+        border-bottom: 1px solid #dce1e8;
+      }
+
+      .chapter-heading .eyebrow {
+        color: #8b5e3c;
+        font-size: 13px;
+        font-weight: bold;
+        letter-spacing: 3px;
+      }
+
+      .chapter-heading h1 {
+        margin: 8px 0;
+        color: #243b63;
+        font-size: clamp(27px, 4vw, 38px);
+      }
+
+      .chapter-heading p {
+        color: #657187;
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: 250px minmax(0, 1fr);
+        align-items: start;
+        gap: 22px;
+        max-width: 1400px;
+        margin: 25px auto;
+        padding: 0 20px;
+      }
+
+      .toc,
+      .content {
+        background: #ffffff;
+        border: 1px solid #dce1e8;
+      }
+
+      .toc {
+        position: sticky;
+        top: 100px;
+        max-height: calc(100vh - 30px);
+        overflow-y: auto;
+        padding: 18px;
+      }
+
+      .toc h2 {
+        margin-top: 0;
+        color: #243b63;
+        font-size: 21px;
+      }
+
+      .toc ol {
+        padding-left: 22px;
+      }
+
+      .toc li {
+        padding: 3px 0;
+        font-size: 13px;
+      }
+
+      .toc a {
+        color: #35445c;
+        text-decoration: none;
+      }
+
+      .toc a:hover {
+        color: #8b5e3c;
+        text-decoration: underline;
+      }
+
+      .toc ol ol {
+        padding-left: 18px;
+        list-style-type: lower-alpha;
+      }
+
+      .content {
+        min-width: 0;
+        padding: 24px;
+      }
+
+      .content > h2 {
+        margin-top: 0;
+        color: #243b63;
+        font-size: 30px;
+      }
+
+      .topic {
+        padding: 22px 0;
+        border-bottom: 1px solid #d7dce3;
+        scroll-margin-top: 15px;
+      }
+
+      .topic:last-child {
+        border-bottom: 0;
+      }
+
+      .topic h3 {
+        margin: 0 0 12px;
+        color: #243b63;
+        font-size: 23px;
+      }
+
+      .demo {
+        margin-top: 15px;
+        padding: 18px;
+        background: #faf8f5;
+        border-left: 4px solid #b18a67;
+        scroll-margin-top: 15px;
+      }
+
+      .demo h4 {
+        margin: 0 0 8px;
+        color: #35445c;
+        font-size: 18px;
+      }
+
+      .demo-label {
+        margin-top: 0;
+        color: #8b5e3c;
+        font-size: 11px;
+        font-weight: bold;
+        letter-spacing: 1.5px;
+      }
+
+      .output {
+        padding: 16px;
+        background: #ffffff;
+        border: 1px solid #dce1e8;
+      }
+
+      .note {
+        color: #657187;
+        font-size: 13px;
+      }
+
+      .sample-form {
+        display: grid;
+        gap: 13px;
+        max-width: 680px;
+      }
+
+      .form-row {
+        display: grid;
+        gap: 5px;
+      }
+
+      label {
+        color: #35445c;
+        font-weight: 600;
+      }
+
+      .sample-form
+        input:not([type="checkbox"]):not([type="radio"]):not(
+          [type="range"]
+        ):not([type="color"]):not([type="hidden"]):not([type="image"]),
+      .sample-form textarea,
+      .sample-form select,
+      .output
+        input:not([type="checkbox"]):not([type="radio"]):not(
+          [type="range"]
+        ):not([type="color"]):not([type="hidden"]):not([type="image"]),
+      .output textarea,
+      .output select {
+        width: 100%;
+        max-width: 100%;
+        padding: 10px 11px;
+        border: 1px solid #cbd2dc;
+        border-radius: 5px;
+        background: #ffffff;
+        color: #263247;
+        font: inherit;
+      }
+
+      textarea {
+        resize: vertical;
+      }
+
+      button,
+      .sample-button {
+        padding: 10px 15px;
+        border: 0;
+        border-radius: 5px;
+        background: #243b63;
+        color: #ffffff;
+        font: inherit;
+        cursor: pointer;
+      }
+
+      button:hover,
+      .sample-button:hover {
+        background: #8b5e3c;
+      }
+
+      .button-row,
+      .choice-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+      }
+
+      fieldset {
+        padding: 14px;
+        border: 1px solid #cbd2dc;
+        border-radius: 5px;
+      }
+
+      legend {
+        padding: 0 6px;
+        color: #243b63;
+        font-weight: bold;
+      }
+
+      .choice-row label {
+        font-weight: normal;
+      }
+
+      input[type="checkbox"],
+      input[type="radio"] {
+        accent-color: #243b63;
+      }
+
+      .type-grid,
+      .field-demo {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 14px;
+      }
+
+      .type-card,
+      .field-demo > div {
+        min-width: 0;
+        padding: 14px;
+        background: #ffffff;
+        border: 1px solid #dce1e8;
+        border-radius: 5px;
+      }
+
+      .type-card h4 {
+        margin: 0 0 8px;
+      }
+
+      .type-card p {
+        margin: 6px 0;
+      }
+
+      .type-card
+        input:not([type="checkbox"]):not([type="radio"]):not(
+          [type="range"]
+        ):not([type="color"]):not([type="hidden"]):not([type="image"]) {
+        max-width: 100%;
+        padding: 8px;
+        border: 1px solid #cbd2dc;
+        border-radius: 4px;
+      }
+
+      .field-demo label {
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      .field-demo
+        input:not([type="checkbox"]):not([type="radio"]):not(
+          [type="range"]
+        ):not([type="color"]):not([type="hidden"]) {
+        max-width: 100%;
+        padding: 8px;
+        border: 1px solid #cbd2dc;
+        border-radius: 4px;
+      }
+
+      .invalid-demo input:invalid,
+      .invalid-demo select:invalid,
+      .invalid-demo textarea:invalid {
+        border: 2px solid #bd4545;
+        background: #fff7f7;
+      }
+
+      .valid-demo input:valid {
+        border: 2px solid #3c8a62;
+        background: #f6fff9;
+      }
+
+      .page-footer {
+        padding: 22px;
+        text-align: center;
+        color: #657187;
+        background: #ffffff;
+        border-top: 1px solid #dce1e8;
+        font-size: 13px;
+      }
+
+      .page-footer a {
+        color: #35445c;
+      }
+
+      @media (max-width: 850px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+
+        .toc {
+          position: static;
+          max-height: none;
+        }
+
+        .toc > ol {
+          columns: 2;
+          column-gap: 25px;
+        }
+
+        .content {
+          padding: 18px;
+        }
+      }
+
+      @media (min-width: 500px) {
+        .site-header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .toc > ol {
+          columns: 1;
+        }
+
+        .content > h2 {
+          font-size: 25px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="menu">
+      <a href="HomePage.html" class="logo">BIBLUNE</a>
+      <ul>
+        <li><a href="HomePage.html">Home</a></li>
+        <li><a href="#">Books</a></li>
+        <li><a href="#">Categories</a></li>
+        <li class="dropdown">
+          <details>
+            <summary>Chapter ▾</summary>
+            <div class="dropdown-content">
+              <a href="chapter_01.html">01. Getting to Know HTML</a>
+              <a href="chapter_02.html">02. HTML Elements</a>
+              <a href="chapter_03.html">03. HTML Styles</a>
+              <a href="chapter_04.html">04. Semantic HTML</a>
+              <a href="chapter_05.html">05. Web Forms</a>
+              <a href="chapter_06.html">06. HTML Multimedia</a>
+              <a href="chapter_07.html">07. HTML Graphics</a>
+              <a href="chapter_08.html">08. HTML Advanced</a>
+              <a href="chapter_09.html">09. HTML Events</a>
+              <a href="chapter_10.html">10. HTML APIs</a>
+              <a href="chapter_11.html">11. Getting to Know CSS</a>
+              <a href="chapter_12.html">12. CSS Selectors</a>
+              <a href="chapter_13.html">13. CSS Cascading</a>
+              <a href="chapter_14.html">14. CSS Box Model</a>
+              <a href="chapter_15.html">15. CSS Colors</a>
+              <a href="chapter_16.html">16. CSS Text</a>
+              <a href="chapter_17.html">17. CSS Backgrounds</a>
+              <a href="chapter_18.html">18. CSS Display</a>
+              <a href="chapter_19.html">19. CSS Layout</a>
+              <a href="chapter_20.html">20. CSS Transitions and Animations</a>
+              <a href="chapter_21.html">21. Advanced CSS</a>
+              <a href="chapter_22.html">22. Responsive CSS</a>
+            </div>
+          </details>
+        </li>
+        <li><a href="#info">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <section class="chapter-heading">
+      <p class="eyebrow">CHAPTER 05</p>
+      <h1>WEB FORMS</h1>
+      <p>Explore practical HTML forms for a friendly online bookstore.</p>
+    </section>
+    <main class="layout">
+      <aside class="toc">
+        <h2>Table of Contents</h2>
+        <ol>
+          <li>
+            <a href="#form-elements">HTML Form Elements</a>
+            <ol>
+              <li><a href="#input-label">Input and Label</a></li>
+              <li><a href="#textarea">Textarea</a></li>
+              <li><a href="#select-option">Select and Option</a></li>
+              <li><a href="#button">Button</a></li>
+              <li><a href="#fieldset-legend">Fieldset and Legend</a></li>
+              <li><a href="#datalist">Datalist</a></li>
+            </ol>
+          </li>
+          <li>
+            <a href="#input-types">HTML Input Types</a>
+            <ol>
+              <li><a href="#buttons">Buttons</a></li>
+              <li><a href="#texts">Texts</a></li>
+              <li><a href="#numbers">Numbers</a></li>
+              <li><a href="#options">Options</a></li>
+              <li><a href="#files">Files</a></li>
+              <li><a href="#date-time">Date and Time</a></li>
+              <li><a href="#colors">Colors</a></li>
+            </ol>
+          </li>
+          <li>
+            <a href="#input-attributes">HTML Input Attributes</a>
+            <ol>
+              <li><a href="#name">name</a></li>
+              <li><a href="#value">value</a></li>
+              <li><a href="#placeholder">placeholder</a></li>
+              <li><a href="#readonly">readonly</a></li>
+              <li><a href="#disabled">disabled</a></li>
+              <li><a href="#size">size</a></li>
+              <li><a href="#multiple">multiple</a></li>
+              <li><a href="#step">step</a></li>
+              <li><a href="#width-height">width and height</a></li>
+              <li><a href="#autofocus">autofocus</a></li>
+              <li><a href="#autocomplete">autocomplete</a></li>
+            </ol>
+          </li>
+          <li>
+            <a href="#validation">Form Validation</a>
+            <ol>
+              <li><a href="#minlength">minlength</a></li>
+              <li><a href="#maxlength">maxlength</a></li>
+              <li><a href="#min-max">min and max</a></li>
+              <li><a href="#required">required</a></li>
+              <li><a href="#pattern">pattern</a></li>
+              <li><a href="#invalid-styles">Styles for Invalid Inputs</a></li>
+            </ol>
+          </li>
+        </ol>
+      </aside>
+      <article class="content">
+        <h2>Welcome to Web Forms!</h2>
+        <p>
+          HTML forms collect information from readers, such as contact details,
+          book preferences and order requests. Try the working examples below.
+          This page uses HTML and CSS only; it does not display source code.
+        </p>
+        <section class="topic" id="form-elements">
+          <h3>5.1 HTML Form Elements</h3>
+          <p>
+            Form elements let visitors enter information, choose options and
+            submit responses.
+          </p>
+          <div class="demo" id="input-label">
+            <h4>5.1.1 &lt;input&gt; and &lt;label&gt;</h4>
+            <p>
+              A label describes an input field. Match the label's
+              <em>for</em> value with the input's <em>id</em>.
+            </p>
+            <div class="output">
+              <form class="sample-form" action="#input-label" method="get">
+                <div class="form-row">
+                  <label for="reader-name">Reader Name</label>
+                  <input
+                    type="text"
+                    id="reader-name"
+                    name="readerName"
+                    placeholder="Enter your name"
+                  />
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="demo" id="textarea">
+            <h4>5.1.2 &lt;textarea&gt;</h4>
+            <p>
+              Use a textarea when someone needs to write a longer message or
+              review.
+            </p>
+            <div class="output">
+              <div class="form-row">
+                <label for="book-review">Your Book Review</label>
+                <textarea
+                  id="book-review"
+                  name="bookReview"
+                  rows="4"
+                  placeholder="What did you think about the book?"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="demo" id="select-option">
+            <h4>5.1.3 &lt;select&gt; and &lt;option&gt;</h4>
+            <p>A select menu lets a visitor choose one item from a list.</p>
+            <div class="output">
+              <div class="form-row">
+                <label for="genre-select">Choose a Book Genre</label>
+                <select id="genre-select" name="genre">
+                  <option value="">Select a genre</option>
+                  <option value="fiction">Fiction</option>
+                  <option value="science">Science</option>
+                  <option value="history">History</option>
+                  <option value="poetry">Poetry</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="demo" id="button">
+            <h4>5.1.4 &lt;button&gt;</h4>
+            <p>
+              A button can submit a form or perform another action when
+              connected to suitable behavior.
+            </p>
+            <div class="output button-row">
+              <button type="button">Explore Books</button>
+              <button type="button" style="background: #8b5e3c">
+                Save for Later
+              </button>
+            </div>
+            <p class="note">
+              These buttons are demonstrations. No JavaScript is used in this
+              chapter.
+            </p>
+          </div>
+          <div class="demo" id="fieldset-legend">
+            <h4>5.1.5 &lt;fieldset&gt; and &lt;legend&gt;</h4>
+            <p>
+              Fieldset groups related controls, while legend gives the group a
+              title.
+            </p>
+            <div class="output">
+              <fieldset>
+                <legend>Preferred Reading Format</legend>
+                <div class="choice-row">
+                  <label
+                    ><input
+                      type="radio"
+                      name="reading-format"
+                      value="paperback"
+                    />
+                    Paperback</label
+                  >
+                  <label
+                    ><input type="radio" name="reading-format" value="ebook" />
+                    E-book</label
+                  >
+                  <label
+                    ><input type="radio" name="reading-format" value="audio" />
+                    Audiobook</label
+                  >
+                </div>
+              </fieldset>
+            </div>
+          </div>
+          <div class="demo" id="datalist">
+            <h4>5.1.6 &lt;datalist&gt;</h4>
+            <p>
+              Datalist suggests choices while still allowing a visitor to type
+              another value.
+            </p>
+            <div class="output">
+              <div class="form-row">
+                <label for="favorite-author">Favorite Author</label>
+                <input
+                  type="text"
+                  id="favorite-author"
+                  name="favoriteAuthor"
+                  list="authors"
+                  placeholder="Start typing an author"
+                />
+                <datalist id="authors">
+                  <option value="Jane Austen"></option>
+                  <option value="Rabindranath Tagore"></option>
+                  <option value="Jules Verne"></option>
+                  <option value="Humayun Ahmed"></option>
+                </datalist>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="topic" id="input-types">
+          <h3>5.2 HTML Input Types</h3>
+          <p>
+            The <em>type</em> attribute changes how an input looks and behaves.
+          </p>
+          <div class="demo" id="buttons">
+            <h4>5.2.1 Buttons</h4>
+            <div class="type-grid">
+              <div class="type-card">
+                <h4>5.2.1.1 button</h4>
+                <button type="button">Click Me</button>
+                <p class="note">
+                  A button that does not submit a form by default.
+                </p>
+              </div>
+              <div class="type-card">
+                <h4>5.2.1.2 submit</h4>
+                <form action="#buttons" method="get">
+                  <input
+                    class="sample-button"
+                    type="submit"
+                    value="Submit Sample"
+                  />
+                </form>
+                <p class="note">Submits the form's values.</p>
+              </div>
+              <div class="type-card">
+                <h4>5.2.1.3 reset</h4>
+                <form class="sample-form">
+                  <input
+                    type="text"
+                    aria-label="Sample text to reset"
+                    value="Sample book title"
+                  />
+                  <input
+                    class="sample-button"
+                    type="reset"
+                    value="Reset Field"
+                  />
+                </form>
+                <p class="note">Restores controls to their initial values.</p>
+              </div>
+              <div class="type-card">
+                <h4>5.2.1.4 image</h4>
+                <form action="#buttons" method="get">
+                  <input
+                    type="image"
+                    width="110"
+                    height="42"
+                    alt="Search books"
+                    src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000 svg' width='110' height='42'%3E%3Crect width='110' height='42' rx='5' fill='%23243b63'/%3E%3Ctext x='55' y='26' font-family='Arial' font-size='14' text-anchor='middle' fill='white'%3ESearch%3C/text%3E%3C/svg%3E"
+                  />
+                </form>
+                <p class="note">An image input acts as a submit button.</p>
+              </div>
+            </div>
+          </div>
+          <div class="demo" id="texts">
+            <h4>5.2.2 Texts</h4>
+            <div class="type-grid">
+              <div class="type-card">
+                <h4>5.2.2.1 text</h4>
+                <label for="type-text">Book Title</label>
+                <input type="text" id="type-text" placeholder="Book title" />
+              </div>
+              <div class="type-card">
+                <h4>5.2.2.2 password</h4>
+                <label for="type-password">Password</label>
+                <input
+                  type="password"
+                  id="type-password"
+                  placeholder="Enter password"
+                />
+              </div>
+              <div class="type-card">
+                <h4>5.2.2.3 email</h4>
+                <label for="type-email">Email</label>
+                <input
+                  type="email"
+                  id="type-email"
+                  placeholder="reader@example.com"
+                />
+              </div>
+              <div class="type-card">
+                <h4>5.2.2.4 url</h4>
+                <label for="type-url">Website</label>
+                <input
+                  type="url"
+                  id="type-url"
+                  placeholder="https://example.com"
+                />
+              </div>
+              <div class="type-card">
+                <h4>5.2.2.5 hidden</h4>
+                <p>The hidden input is not displayed on the page.</p>
+                <input type="hidden" name="bookId" value="BN-105" />
+                <p class="note">
+                  A hidden book ID can be included when a form is submitted.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="demo" id="numbers">
+            <h4>5.2.3 Numbers</h4>
+            <div class="type-grid">
+              <div class="type-card">
+                <h4>5.2.3.1 number</h4>
+                <label for="quantity">Book Quantity</label>
+                <input
+                  type="number"
+                  id="quantity"
+                  name="quantity"
+                  min="1"
+                  max="10"
+                  value="1"
+                />
+              </div>
+              <div class="type-card">
+                <h4>5.2.3.2 range</h4>
+                <label for="price-range">Maximum Price (৳100–৳1,000)</label>
+                <input
+                  type="range"
+                  id="price-range"
+                  name="price"
+                  min="100"
+                  max="1000"
+                  step="50"
+                  value="500"
+                />
+                <p class="note">Move the slider to change the value.</p>
+              </div>
+            </div>
+          </div>
+          <div class="demo" id="options">
+            <h4>5.2.4 Options</h4>
+            <div class="type-grid">
+              <div class="type-card">
+                <h4>5.2.4.1 checkbox</h4>
+                <p>Choose any number of interests.</p>
+                <label
+                  ><input type="checkbox" name="interest" value="fiction" />
+                  Fiction</label
+                ><br />
+                <label
+                  ><input type="checkbox" name="interest" value="science" />
+                  Science</label
+                ><br />
+                <label
+                  ><input type="checkbox" name="interest" value="history" />
+                  History</label
+                >
+              </div>
+              <div class="type-card">
+                <h4>5.2.4.2 radio</h4>
+                <p>Choose only one delivery option.</p>
+                <label
+                  ><input type="radio" name="delivery" value="standard" />
+                  Standard</label
+                ><br />
+                <label
+                  ><input type="radio" name="delivery" value="express" />
+                  Express</label
+                >
+              </div>
+            </div>
+          </div>
+          <div class="demo" id="files">
+            <h4>5.2.5 Files</h4>
+            <p>A file input lets a visitor select a file from their device.</p>
+            <div class="output">
+              <div class="form-row">
+                <label for="cover-upload">Choose a Book Cover Image</label>
+                <input
+                  type="file"
+                  id="cover-upload"
+                  name="cover"
+                  accept="image/*"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="demo" id="date-time">
+            <h4>5.2.6 Date and Time</h4>
+            <div class="type-grid">
+              <div class="type-card">
+                <h4>5.2.6.1 date</h4>
+                <label for="order-date">Preferred Delivery Date</label>
+                <input type="date" id="order-date" name="orderDate" />
+              </div>
+              <div class="type-card">
+                <h4>5.2.6.2 time</h4>
+                <label for="delivery-time">Preferred Time</label>
+                <input type="time" id="delivery-time" name="deliveryTime" />
+              </div>
+              <div class="type-card">
+                <h4>5.2.6.3 datetime-local</h4>
+                <label for="pickup-datetime">Pickup Date and Time</label>
+                <input
+                  type="datetime-local"
+                  id="pickup-datetime"
+                  name="pickupDateTime"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="demo" id="colors">
+            <h4>5.2.7 Colors</h4>
+            <p>A color input opens a color picker.</p>
+            <div class="output">
+              <div class="form-row">
+                <label for="theme-color">Choose a Reading Theme Color</label>
+                <input
+                  type="color"
+                  id="theme-color"
+                  name="themeColor"
+                  value="#243b63"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="topic" id="input-attributes">
+          <h3>5.3 HTML Input Attributes</h3>
+          <p>
+            Attributes adjust the default value, behavior and rules of form
+            controls.
+          </p>
+          <div class="demo" id="name">
+            <h4>5.3.1 name</h4>
+            <p>The name identifies a field when form data is submitted.</p>
+            <div class="output">
+              <form action="#name" method="get" class="sample-form">
+                <div class="form-row">
+                  <label for="name-attr">Reader Name</label>
+                  <input
+                    type="text"
+                    id="name-attr"
+                    name="reader_name"
+                    value="Mina"
+                  />
+                </div>
+                <button type="submit">Submit Named Field</button>
+              </form>
+            </div>
+          </div>
+          <div class="demo" id="value">
+            <h4>5.3.2 value</h4>
+            <p>The value attribute sets a control's initial value.</p>
+            <div class="output">
+              <div class="form-row">
+                <label for="value-attr">Book Title</label>
+                <input
+                  type="text"
+                  id="value-attr"
+                  name="bookTitle"
+                  value="The Blue Umbrella"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="demo" id="placeholder">
+            <h4>5.3.3 placeholder</h4>
+            <p>Placeholder shows a short hint inside an empty field.</p>
+            <div class="output">
+              <div class="form-row">
+                <label for="placeholder-attr">Email Address</label>
+                <input
+                  type="email"
+                  id="placeholder-attr"
+                  placeholder="reader@example.com"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="demo" id="readonly">
+            <h4>5.3.4 readonly</h4>
+            <p>A readonly field can be viewed and selected, but not edited.</p>
+            <div class="output">
+              <div class="form-row">
+                <label for="readonly-attr">Membership ID</label>
+                <input
+                  type="text"
+                  id="readonly-attr"
+                  value="BIB-204"
+                  readonly
+                />
+              </div>
+            </div>
+          </div>
+          <div class="demo" id="disabled">
+            <h4>5.3.5 disabled</h4>
+            <p>A disabled field cannot be edited or submitted with the form.</p>
+            <div class="output">
+              <div class="form-row">
+                <label for="disabled-attr">Currently Unavailable</label>
+                <input
+                  type="text"
+                  id="disabled-attr"
+                  value="Out of stock"
+                  disabled
+                />
+              </div>
+            </div>
+          </div>
+          <div class="demo" id="size">
+            <h4>5.3.6 size</h4>
+            <p>
+              The size attribute sets the visible width of a text input in
+              characters.
+            </p>
+            <div class="output">
+              <label for="size-attr">Short Code</label>
+              <input type="text" id="size-attr" size="10" value="BIB-105" />
+            </div>
+          </div>
+          <div class="demo" id="multiple">
+            <h4>5.3.7 multiple</h4>
+            <p>
+              The multiple attribute allows more than one file or email address
+              to be selected or entered.
+            </p>
+            <div class="output">
+              <div class="form-row">
+                <label for="multiple-attr">Choose Multiple Files</label>
+                <input type="file" id="multiple-attr" name="files" multiple />
+              </div>
+            </div>
+          </div>
+          <div class="demo" id="step">
+            <h4>5.3.8 step</h4>
+            <p>
+              The step attribute sets the allowed intervals for a number input.
+            </p>
+            <div class="output">
+              <div class="form-row">
+                <label for="step-attr">Quantity (steps of 2)</label>
+                <input
+                  type="number"
+                  id="step-attr"
+                  min="0"
+                  max="20"
+                  step="2"
+                  value="4"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="demo" id="width-height">
+            <h4>5.3.9 width and height</h4>
+            <p>
+              For an image input, width and height set the image's displayed
+              dimensions.
+            </p>
+            <div class="output">
+              <form action="#width-height" method="get">
+                <input
+                  type="image"
+                  width="110"
+                  height="42"
+                  alt="Search"
+                  src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='110' height='42'%3E%3Crect width='110' height='42' rx='5' fill='%23243b63'/%3E%3Ctext x='55' y='26' font-family='Arial' font-size='14' text-anchor='middle' fill='white'%3ESearch%3C/text%3E%3C/svg%3E"
+                />
+              </form>
+            </div>
+          </div>
+          <div class="demo" id="autofocus">
+            <h4>5.3.10 autofocus</h4>
+            <p>
+              The autofocus attribute places the cursor in a field when the page
+              loads. It is not used in this demo to avoid moving the visitor's
+              cursor unexpectedly.
+            </p>
+            <div class="output">
+              <label for="autofocus-attr">Search for a Book</label>
+              <input
+                type="search"
+                id="autofocus-attr"
+                placeholder="Enter a book title"
+              />
+            </div>
+          </div>
+          <div class="demo" id="autocomplete">
+            <h4>5.3.11 autocomplete</h4>
+            <p>
+              Autocomplete lets the browser suggest previously entered
+              information.
+            </p>
+            <div class="output">
+              <form autocomplete="on" class="sample-form">
+                <div class="form-row">
+                  <label for="autocomplete-attr">Your Name</label>
+                  <input
+                    type="text"
+                    id="autocomplete-attr"
+                    name="name"
+                    autocomplete="name"
+                    placeholder="Enter your name"
+                  />
+                </div>
+              </form>
+            </div>
+          </div>
+        </section>
+        <section class="topic" id="validation">
+          <h3>5.4 Form Validation</h3>
+          <p>
+            HTML validation attributes help the browser check input before a
+            form is submitted.
+          </p>
+          <div class="demo" id="minlength">
+            <h4>5.4.1 minlength</h4>
+            <p>Minlength sets the minimum number of characters allowed.</p>
+            <div class="output">
+              <form class="sample-form" action="#minlength" method="get">
+                <div class="form-row">
+                  <label for="minlength-attr"
+                    >Username (at least 4 characters)</label
+                  >
+                  <input
+                    type="text"
+                    id="minlength-attr"
+                    name="username"
+                    minlength="4"
+                    required
+                    placeholder="Type 4 or more characters"
+                  />
+                </div>
+                <button type="submit">Check Username</button>
+              </form>
+            </div>
+          </div>
+          <div class="demo" id="maxlength">
+            <h4>5.4.2 maxlength</h4>
+            <p>Maxlength sets the maximum number of characters allowed.</p>
+            <div class="output">
+              <div class="form-row">
+                <label for="maxlength-attr"
+                  >Short Review (maximum 30 characters)</label
+                >
+                <input
+                  type="text"
+                  id="maxlength-attr"
+                  maxlength="30"
+                  placeholder="Write a short review"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="demo" id="min-max">
+            <h4>5.4.3 min and max</h4>
+            <p>Min and max set the lowest and highest permitted values.</p>
+            <div class="output">
+              <form class="sample-form" action="#min-max" method="get">
+                <div class="form-row">
+                  <label for="min-max-attr">Number of Books (1 to 10)</label>
+                  <input
+                    type="number"
+                    id="min-max-attr"
+                    name="quantity"
+                    min="1"
+                    max="10"
+                    value="2"
+                    required
+                  />
+                </div>
+                <button type="submit">Check Quantity</button>
+              </form>
+            </div>
+          </div>
+          <div class="demo" id="required">
+            <h4>5.4.4 required</h4>
+            <p>
+              Required means the field must be filled in before the form can be
+              submitted.
+            </p>
+            <div class="output">
+              <form class="sample-form" action="#required" method="get">
+                <div class="form-row">
+                  <label for="required-attr">Email Address</label>
+                  <input
+                    type="email"
+                    id="required-attr"
+                    name="email"
+                    required
+                    placeholder="reader@example.com"
+                  />
+                </div>
+                <button type="submit">Submit Email</button>
+              </form>
+            </div>
+          </div>
+          <div class="demo" id="pattern">
+            <h4>5.4.5 pattern</h4>
+            <p>
+              Pattern checks whether the entered text matches a specified
+              format.
+            </p>
+            <div class="output">
+              <form class="sample-form" action="#pattern" method="get">
+                <div class="form-row">
+                  <label for="pattern-attr"
+                    >Book Code (3 capital letters and 3 digits)</label
+                  >
+                  <input
+                    type="text"
+                    id="pattern-attr"
+                    name="bookCode"
+                    pattern="[A-Z]{3}[0-9]{3}"
+                    title="Enter three capital letters followed by three digits, such as ABC123."
+                    placeholder="ABC123"
+                    required
+                  />
+                </div>
+                <button type="submit">Check Book Code</button>
+              </form>
+            </div>
+          </div>
+          <div class="demo" id="invalid-styles">
+            <h4>5.4.6 Styles for the Invalid Inputs</h4>
+            <p>
+              The :invalid pseudo-class can style a field when its value does
+              not meet the input rules. Try entering an invalid email address.
+            </p>
+            <div class="output invalid-demo">
+              <form class="sample-form" action="#invalid-styles" method="get">
+                <div class="form-row">
+                  <label for="invalid-email">Email Address</label>
+                  <input
+                    type="email"
+                    id="invalid-email"
+                    name="invalidEmail"
+                    required
+                    placeholder="Enter a valid email"
+                  />
+                </div>
+                <button type="submit">Validate Email</button>
+              </form>
+              <p class="note">
+                A valid email field turns green; an invalid or empty required
+                field turns red.
+              </p>
+            </div>
+          </div>
+        </section>
+      </article>
+    </main>
+    <footer>
+      <p>BIBLUNE | HTML &amp; CSS Project</p>
+    </footer>
+  </body>
+</html>

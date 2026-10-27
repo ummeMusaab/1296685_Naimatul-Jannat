@@ -1,0 +1,579 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chapter_10</title>
+    <style>
+      .logo {
+        font-family: cursive;
+        font-size: 35px;
+        font-style: italic;
+        background-color: hsl(287, 93%, 65%);
+        font-weight: bold;
+        color: #000000;
+        text-decoration: none;
+        letter-spacing: 2px;
+      }
+
+      .menu {
+        width: 100%;
+        background-color: hsl(287, 93%, 65%);
+        display: flow-root;
+        overflow: visible;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      .menu ul {
+        list-style: none;
+        margin-right: 30px;
+      }
+
+      .menu ul li {
+        font-family:
+          "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+        float: left;
+      }
+
+      .menu ul li a {
+        display: block;
+        padding: 14px 18px;
+        color: rgb(8, 8, 8);
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .menu ul li a:hover {
+        background-color: #520172;
+        color: rgb(251, 249, 249);
+      }
+
+      .dropdown {
+        position: relative;
+      }
+
+      .dropdown details summary {
+        display: block;
+        padding: 14px 18px;
+        color: black;
+        font-weight: bold;
+        cursor: pointer;
+        list-style: none;
+      }
+
+      .dropdown details summary:hover {
+        background-color: #520172;
+        color: #ffff;
+      }
+
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        min-width: 160px;
+        max-height: 300px;
+        overflow-y: auto;
+        background-color: hsl(287, 93%, 65%);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        opacity: 80%;
+        z-index: 1000;
+      }
+
+      .dropdown details[open] .dropdown-content {
+        display: block;
+      }
+
+      .dropdown-content a {
+        display: block;
+        padding: 10px 15px;
+        color: white;
+        text-decoration: none;
+        white-space: nowrap;
+      }
+
+      .dropdown-content a:hover {
+        background-color: #520172;
+        color: #ffffff;
+      }
+
+      footer p {
+        font-family:
+          "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+          "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+        text-align: center;
+        background-color: hsl(287, 93%, 65%);
+        color: #000;
+        padding: 12px;
+        margin-top: 40px;
+      }
+
+      .chapter-heading {
+        padding: 30px 20px;
+        text-align: center;
+        background: #ffffff;
+        border-bottom: 1px solid #dce1e8;
+      }
+
+      .chapter-heading .eyebrow {
+        color: #8b5e3c;
+        font-size: 13px;
+        font-weight: bold;
+        letter-spacing: 3px;
+      }
+
+      .chapter-heading h1 {
+        margin: 8px 0;
+        color: #243b63;
+        font-size: clamp(27px, 4vw, 38px);
+      }
+
+      .chapter-heading p {
+        color: #657187;
+      }
+
+      .container {
+        display: flex;
+        gap: 25px;
+        padding: 25px;
+        align-items: flex-start;
+      }
+
+      .toc {
+        width: 240px;
+        min-width: 200px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 12px;
+        position: sticky;
+        top: 100px;
+      }
+
+      .toc h2 {
+        color: #6b3fa0;
+        font-size: 20px;
+      }
+
+      .toc a {
+        display: block;
+        color: #333;
+        text-decoration: none;
+        padding: 8px 0;
+      }
+
+      .toc a:hover {
+        color: #8a2be2;
+      }
+
+      main {
+        flex: 1;
+        min-width: 0;
+      }
+
+      section {
+        background-color: white;
+        padding: 25px;
+        margin-bottom: 25px;
+        border-radius: 12px;
+        box-shadow: 0 3px 10px #ddd;
+      }
+
+      h2,
+      h3 {
+        color: #6b3fa0;
+      }
+
+      .demo {
+        background-color: #f4f0fa;
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 15px;
+      }
+
+      button {
+        background-color: #8a2be2;
+        color: white;
+        border: none;
+        padding: 10px 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        margin: 5px;
+      }
+
+      button:hover {
+        background-color: #6b21a8;
+      }
+
+      .drag-item {
+        display: inline-block;
+        background-color: #f9e986;
+        padding: 15px;
+        margin: 10px;
+        cursor: grab;
+        border-radius: 8px;
+      }
+
+      .drop-zone {
+        border: 2px dashed #8a2be2;
+        padding: 30px;
+        text-align: center;
+        border-radius: 10px;
+        min-height: 60px;
+      }
+
+      .storage-box {
+        background-color: white;
+        border: 1px solid #ddd;
+        padding: 12px;
+        margin: 10px 0;
+        border-radius: 6px;
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          flex-direction: column;
+          padding: 12px;
+        }
+
+        .toc {
+          position: static;
+          width: auto;
+        }
+
+        nav a {
+          display: inline-block;
+          margin: 6px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="menu">
+      <a href="HomePage.html" class="logo">BIBLUNE</a>
+      <ul>
+        <li><a href="HomePage.html">Home</a></li>
+        <li><a href="#">Books</a></li>
+        <li><a href="#">Categories</a></li>
+        <li class="dropdown">
+          <details>
+            <summary>Chapter ▾</summary>
+            <div class="dropdown-content">
+              <a href="chapter_01.html">01. Getting to Know HTML</a>
+              <a href="chapter_02.html">02. HTML Elements</a>
+              <a href="chapter_03.html">03. HTML Styles</a>
+              <a href="chapter_04.html">04. Semantic HTML</a>
+              <a href="chapter_05.html">05. Web Forms</a>
+              <a href="chapter_06.html">06. HTML Multimedia</a>
+              <a href="chapter_07.html">07. HTML Graphics</a>
+              <a href="chapter_08.html">08. HTML Advanced</a>
+              <a href="chapter_09.html">09. HTML Events</a>
+              <a href="chapter_10.html">10. HTML APIs</a>
+              <a href="chapter_11.html">11. Getting to Know CSS</a>
+              <a href="chapter_12.html">12. CSS Selectors</a>
+              <a href="chapter_13.html">13. CSS Cascading</a>
+              <a href="chapter_14.html">14. CSS Box Model</a>
+              <a href="chapter_15.html">15. CSS Colors</a>
+              <a href="chapter_16.html">16. CSS Text</a>
+              <a href="chapter_17.html">17. CSS Backgrounds</a>
+              <a href="chapter_18.html">18. CSS Display</a>
+              <a href="chapter_19.html">19. CSS Layout</a>
+              <a href="chapter_20.html">20. CSS Transitions and Animations</a>
+              <a href="chapter_21.html">21. Advanced CSS</a>
+              <a href="chapter_22.html">22. Responsive CSS</a>
+            </div>
+          </details>
+        </li>
+        <li><a href="#info">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <section class="chapter-heading">
+      <p class="eyebrow">CHAPTER 10</p>
+      <h1>HTML APIs</h1>
+    </section>
+    <div class="container">
+      <aside class="toc">
+        <h2>Table of Contents</h2>
+        <a href="#drag-drop">10.1 Drag and Drop</a>
+        <a href="#geolocation">10.2 Geolocation</a>
+        <a href="#web-storage">10.3 Web Storage</a>
+        <a href="#local-storage">10.3.1 localStorage</a>
+        <a href="#session-storage">10.3.2 sessionStorage</a>
+        <a href="#web-workers">10.4 Web Workers</a>
+        <a href="#worker-file">10.4.1 Web Worker File</a>
+        <a href="#worker-object">10.4.2 Web Worker Object</a>
+        <a href="#worker-dom">10.4.3 Web Workers and the DOM</a>
+      </aside>
+
+      <main>
+        <section id="drag-drop">
+          <h2>10.1 Drag and Drop</h2>
+          <p>
+            Drag and Drop allows users to move an element from one location to
+            another using the mouse.
+          </p>
+          <div class="demo">
+            <div class="drag-item" draggable="true" id="dragBook">
+              Drag This Book
+            </div>
+            <div class="drop-zone" id="dropZone">Drop the book here</div>
+          </div>
+        </section>
+        <section id="geolocation">
+          <h2>10.2 Geolocation</h2>
+          <p>
+            The Geolocation API can provide the geographical position of a user,
+            with the user's permission.
+          </p>
+          <div class="demo">
+            <button onclick="getLocation()">Find My Location</button>
+            <p id="locationResult">Your location will appear here.</p>
+          </div>
+        </section>
+        <section id="web-storage">
+          <h2>10.3 Web Storage</h2>
+          <p>
+            Web Storage allows websites to store data in the user's browser.
+          </p>
+          <p>
+            The two main storage objects are localStorage and sessionStorage.
+          </p>
+        </section>
+        <section id="local-storage">
+          <h2>10.3.1 The localStorage Object</h2>
+          <p>
+            localStorage stores data without an expiration time. The data
+            remains available until it is removed.
+          </p>
+          <div class="demo">
+            <label for="localName"> Enter your favorite book: </label>
+            <input type="text" id="localName" placeholder="Book name" />
+            <button onclick="saveLocal()">Save</button>
+
+            <button onclick="showLocal()">Show Saved Book</button>
+
+            <button onclick="clearLocal()">Clear</button>
+
+            <div class="storage-box" id="localResult">
+              Saved book will appear here.
+            </div>
+          </div>
+        </section>
+        <section id="session-storage">
+          <h2>10.3.2 The sessionStorage Object</h2>
+
+          <p>
+            sessionStorage stores data for the duration of the current browser
+            tab session.
+          </p>
+
+          <div class="demo">
+            <label for="sessionName"> Enter a reading note: </label>
+
+            <input type="text" id="sessionName" placeholder="Your note" />
+
+            <button onclick="saveSession()">Save Note</button>
+
+            <button onclick="showSession()">Show Note</button>
+
+            <button onclick="clearSession()">Clear</button>
+
+            <div class="storage-box" id="sessionResult">
+              Your session note will appear here.
+            </div>
+          </div>
+        </section>
+        <section id="web-workers">
+          <h2>10.4 Web Workers</h2>
+          <p>
+            Web Workers allow JavaScript to run in the background, separately
+            from the main page.
+          </p>
+
+          <p>
+            They are useful for performing complex tasks without blocking the
+            page's user interface.
+          </p>
+        </section>
+        <section id="worker-file">
+          <h2>10.4.1 Web Worker File</h2>
+
+          <p>
+            A Web Worker file contains the JavaScript code that runs in the
+            background.
+          </p>
+
+          <div class="demo">
+            <p>
+              Example worker file:
+              <strong>worker.js</strong>
+            </p>
+
+            <p>
+              The worker can perform calculations and send results back to the
+              main page.
+            </p>
+          </div>
+        </section>
+        <section id="worker-object">
+          <h2>10.4.2 Web Worker Object</h2>
+
+          <p>
+            The Worker object allows a webpage to create and communicate with a
+            Web Worker.
+          </p>
+
+          <div class="demo">
+            <button onclick="startWorker()">Start Worker</button>
+
+            <button onclick="stopWorker()">Stop Worker</button>
+
+            <p id="workerResult">Worker output will appear here.</p>
+          </div>
+        </section>
+        <section id="worker-dom">
+          <h2>10.4.3 Web Workers and the DOM</h2>
+
+          <p>
+            Web Workers cannot directly access the DOM. They communicate with
+            the main page using messages.
+          </p>
+
+          <div class="demo">
+            <p>
+              The main page receives the worker's message and updates the DOM.
+            </p>
+
+            <div class="storage-box">
+              <strong>Worker Communication:</strong>
+              <p>Worker → Message → Main Page → DOM Update</p>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+    <footer>
+      <p>BIBLUNE | HTML &amp; CSS Project</p>
+    </footer>
+
+    <script>
+      const dragBook = document.getElementById("dragBook");
+      const dropZone = document.getElementById("dropZone");
+
+      dragBook.addEventListener("dragstart", function (event) {
+        event.dataTransfer.setData("text", event.target.id);
+      });
+
+      dropZone.addEventListener("dragover", function (event) {
+        event.preventDefault();
+      });
+
+      dropZone.addEventListener("drop", function (event) {
+        event.preventDefault();
+        const data = event.dataTransfer.getData("text");
+        const draggedElement = document.getElementById(data);
+        dropZone.appendChild(draggedElement);
+        dropZone.textContent = "";
+        dropZone.appendChild(draggedElement);
+      });
+
+      function getLocation() {
+        const result = document.getElementById("locationResult");
+
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            function (position) {
+              result.textContent =
+                "Latitude: " +
+                position.coords.latitude +
+                " | Longitude: " +
+                position.coords.longitude;
+            },
+            function () {
+              result.textContent = "Location access was denied or unavailable.";
+            },
+          );
+        } else {
+          result.textContent = "Geolocation is not supported by this browser.";
+        }
+      }
+
+      function saveLocal() {
+        const bookName = document.getElementById("localName").value;
+        localStorage.setItem("favoriteBook", bookName);
+        document.getElementById("localResult").textContent =
+          "Book saved successfully!";
+      }
+
+      function showLocal() {
+        const bookName = localStorage.getItem("favoriteBook");
+        document.getElementById("localResult").textContent = bookName
+          ? "Favorite Book: " + bookName
+          : "No book has been saved.";
+      }
+
+      function clearLocal() {
+        localStorage.removeItem("favoriteBook");
+        document.getElementById("localResult").textContent =
+          "Saved book has been removed.";
+      }
+
+      function saveSession() {
+        const note = document.getElementById("sessionName").value;
+        sessionStorage.setItem("readingNote", note);
+        document.getElementById("sessionResult").textContent =
+          "Note saved for this session!";
+      }
+
+      function showSession() {
+        const note = sessionStorage.getItem("readingNote");
+        document.getElementById("sessionResult").textContent = note
+          ? "Reading Note: " + note
+          : "No note has been saved.";
+      }
+
+      function clearSession() {
+        sessionStorage.removeItem("readingNote");
+
+        document.getElementById("sessionResult").textContent =
+          "Session note has been removed.";
+      }
+
+      let worker;
+
+      function startWorker() {
+        const result = document.getElementById("workerResult");
+
+        if (typeof Worker !== "undefined") {
+          if (worker) {
+            worker.terminate();
+          }
+
+          worker = new Worker("worker.js");
+
+          worker.onmessage = function (event) {
+            result.textContent = "Worker Message: " + event.data;
+          };
+
+          worker.onerror = function () {
+            result.textContent = "Worker file could not be loaded.";
+          };
+        } else {
+          result.textContent = "Web Workers are not supported by this browser.";
+        }
+      }
+
+      function stopWorker() {
+        if (worker) {
+          worker.terminate();
+          worker = undefined;
+
+          document.getElementById("workerResult").textContent =
+            "Worker stopped.";
+        }
+      }
+    </script>
+  </body>
+</html>

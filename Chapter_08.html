@@ -1,0 +1,599 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chapter_08</title>
+    <style>
+      .logo {
+        font-family: cursive;
+        font-size: 35px;
+        font-style: italic;
+        background-color: hsl(287, 93%, 65%);
+        font-weight: bold;
+        color: #000000;
+        text-decoration: none;
+        letter-spacing: 2px;
+      }
+
+      .menu {
+        width: 100%;
+        background-color: hsl(287, 93%, 65%);
+        display: flow-root;
+        overflow: visible;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      .menu ul {
+        list-style: none;
+        margin-right: 30px;
+      }
+
+      .menu ul li {
+        font-family:
+          "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+        float: left;
+      }
+
+      .menu ul li a {
+        display: block;
+        padding: 14px 18px;
+        color: rgb(8, 8, 8);
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .menu ul li a:hover {
+        background-color: #520172;
+        color: rgb(251, 249, 249);
+      }
+
+      .dropdown {
+        position: relative;
+      }
+
+      .dropdown details summary {
+        display: block;
+        padding: 14px 18px;
+        color: black;
+        font-weight: bold;
+        cursor: pointer;
+        list-style: none;
+      }
+
+      .dropdown details summary:hover {
+        background-color: #520172;
+        color: #ffff;
+      }
+
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        min-width: 160px;
+        max-height: 300px;
+        overflow-y: auto;
+        background-color: hsl(287, 93%, 65%);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        opacity: 80%;
+        z-index: 1000;
+      }
+
+      .dropdown details[open] .dropdown-content {
+        display: block;
+      }
+
+      .dropdown-content a {
+        display: block;
+        padding: 10px 15px;
+        color: white;
+        text-decoration: none;
+        white-space: nowrap;
+      }
+
+      .dropdown-content a:hover {
+        background-color: #520172;
+        color: #ffffff;
+      }
+
+      footer p {
+        font-family:
+          "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+          "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+        text-align: center;
+        background-color: hsl(287, 93%, 65%);
+        color: #000;
+        padding: 12px;
+        margin-top: 40px;
+      }
+
+      .page-layout {
+        display: grid;
+        grid-template-columns: 235px minmax(0, 1fr);
+        gap: 25px;
+        max-width: 1200px;
+        margin: 30px auto;
+        padding: 0 20px;
+        align-items: start;
+      }
+
+      .chapter-heading {
+        padding: 30px 20px;
+        text-align: center;
+        background: #ffffff;
+        border-bottom: 1px solid #dce1e8;
+      }
+
+      .chapter-heading .eyebrow {
+        color: #8b5e3c;
+        font-size: 13px;
+        font-weight: bold;
+        letter-spacing: 3px;
+      }
+
+      .chapter-heading h1 {
+        margin: 8px 0;
+        color: #243b63;
+        font-size: clamp(27px, 4vw, 38px);
+      }
+
+      .chapter-heading p {
+        color: #657187;
+      }
+
+      .toc,
+      .content-card {
+        background: white;
+        border-radius: 15px;
+        padding: 23px;
+        box-shadow: 0 5px 18px #29234412;
+      }
+
+      .toc {
+        position: sticky;
+        top: 100px;
+      }
+
+      .toc h2 {
+        font-size: 20px;
+        margin-top: 0;
+        color: #6840a0;
+      }
+
+      .toc a {
+        display: block;
+        color: #51466c;
+        text-decoration: none;
+        padding: 7px 0;
+        border-bottom: 1px solid #f0ebfa;
+      }
+
+      .toc a:hover {
+        color: #a34bd5;
+      }
+
+      h2,
+      h3 {
+        color: #6840a0;
+      }
+
+      .chapter-title {
+        margin-top: 0;
+        font-size: 30px;
+      }
+
+      .intro {
+        background: #f4edff;
+        border-left: 5px solid #a66bd4;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 25px;
+      }
+
+      .demo-section {
+        padding: 20px 0;
+        border-bottom: 1px solid #eee8f7;
+        scroll-margin-top: 20px;
+      }
+
+      .demo-section:last-child {
+        border-bottom: none;
+      }
+
+      .demo-box {
+        background: #fcfaff;
+        border: 1px solid #e7ddf5;
+        border-radius: 12px;
+        padding: 20px;
+        margin-top: 15px;
+      }
+
+      .demo-box.center {
+        text-align: center;
+      }
+
+      .note {
+        color: #655b78;
+        font-size: 14px;
+      }
+
+      .data-image {
+        width: 150px;
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 15px auto;
+      }
+
+      .data-uri-card {
+        background: white;
+        border: 1px solid #e7ddf5;
+        border-radius: 12px;
+        padding: 15px;
+        max-width: 280px;
+        margin: 15px auto;
+      }
+
+      .block-demo {
+        background: #eee5ff;
+        border: 2px solid #a98bdb;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 6px;
+      }
+
+      .block-demo.alt {
+        background: #fff2c7;
+        border-color: #e5c76d;
+      }
+
+      .block-demo.third {
+        background: #e2f5ec;
+        border-color: #8bc9a9;
+      }
+
+      .inline-demo {
+        color: #6840a0;
+        font-weight: bold;
+      }
+
+      .inline-highlight {
+        background: #f9e986;
+        padding: 2px 5px;
+        border-radius: 4px;
+      }
+
+      .inline-box {
+        background: #eee5ff;
+        border: 1px solid #a98bdb;
+        padding: 3px 7px;
+        border-radius: 4px;
+      }
+
+      .inline-block-item {
+        display: inline-block;
+        width: 125px;
+        min-height: 100px;
+        padding: 15px;
+        margin: 6px;
+        vertical-align: top;
+        text-align: center;
+        background: #eee5ff;
+        border: 2px solid #b49bdd;
+        border-radius: 10px;
+      }
+
+      .inline-block-item:nth-child(2) {
+        background: #fff2c7;
+        border-color: #e5c76d;
+      }
+
+      .inline-block-item:nth-child(3) {
+        background: #e2f5ec;
+        border-color: #8bc9a9;
+      }
+
+      .inline-block-button {
+        display: inline-block;
+        padding: 10px 18px;
+        margin: 5px;
+        border-radius: 8px;
+        background: #6840a0;
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .inline-block-button:hover {
+        background: #8b42c5;
+      }
+
+      @media (max-width: 780px) {
+        .page-layout {
+          grid-template-columns: 1fr;
+          margin: 15px auto;
+          padding: 0 12px;
+        }
+
+        .toc {
+          position: static;
+        }
+
+        header h1 {
+          font-size: 29px;
+        }
+
+        .content-card,
+        .toc {
+          padding: 18px;
+        }
+
+        nav {
+          gap: 12px;
+        }
+
+        .inline-block-item {
+          width: 110px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="menu">
+      <a href="HomePage.html" class="logo">BIBLUNE</a>
+      <ul>
+        <li><a href="HomePage.html">Home</a></li>
+        <li><a href="#">Books</a></li>
+        <li><a href="#">Categories</a></li>
+        <li class="dropdown">
+          <details>
+            <summary>Chapter ▾</summary>
+            <div class="dropdown-content">
+              <a href="chapter_01.html">01. Getting to Know HTML</a>
+              <a href="chapter_02.html">02. HTML Elements</a>
+              <a href="chapter_03.html">03. HTML Styles</a>
+              <a href="chapter_04.html">04. Semantic HTML</a>
+              <a href="chapter_05.html">05. Web Forms</a>
+              <a href="chapter_06.html">06. HTML Multimedia</a>
+              <a href="chapter_07.html">07. HTML Graphics</a>
+              <a href="chapter_08.html">08. HTML Advanced</a>
+              <a href="chapter_09.html">09. HTML Events</a>
+              <a href="chapter_10.html">10. HTML APIs</a>
+              <a href="chapter_11.html">11. Getting to Know CSS</a>
+              <a href="chapter_12.html">12. CSS Selectors</a>
+              <a href="chapter_13.html">13. CSS Cascading</a>
+              <a href="chapter_14.html">14. CSS Box Model</a>
+              <a href="chapter_15.html">15. CSS Colors</a>
+              <a href="chapter_16.html">16. CSS Text</a>
+              <a href="chapter_17.html">17. CSS Backgrounds</a>
+              <a href="chapter_18.html">18. CSS Display</a>
+              <a href="chapter_19.html">19. CSS Layout</a>
+              <a href="chapter_20.html">20. CSS Transitions and Animations</a>
+              <a href="chapter_21.html">21. Advanced CSS</a>
+              <a href="chapter_22.html">22. Responsive CSS</a>
+            </div>
+          </details>
+        </li>
+        <li><a href="#info">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <div class="page-layout">
+      <aside class="toc">
+        <h2>Chapter 8</h2>
+        <a href="#overview">Overview</a>
+        <a href="#data-uris">8.1 Data URIs</a>
+        <a href="#data-image">Data URI Image</a>
+        <a href="#block-elements">8.2 Block Elements</a>
+        <a href="#block-div">Block: Div</a>
+        <a href="#block-paragraph">Block: Paragraph</a>
+        <a href="#inline-elements">8.3 Inline Elements</a>
+        <a href="#inline-span">Inline: Span</a>
+        <a href="#inline-text">Inline Text Elements</a>
+        <a href="#inline-block">8.4 Inline-Block Elements</a>
+        <a href="#inline-block-cards">Inline-Block Cards</a>
+        <a href="#inline-block-buttons">Inline-Block Buttons</a>
+        <a href="#summary">Chapter Summary</a>
+      </aside>
+      <main class="content-card">
+        <section class="chapter-heading">
+            <p class="eyebrow">CHAPTER 08</p>
+            <h1>HTML Advanced</h1>
+            <p>Advanced HTML concepts, including Data URIs and the differences between block, inline, and inline-block elements.</p>
+        </section>
+        </section>
+        <section id="data-uris" class="demo-section">
+          <h2>8.1 Data URIs</h2>
+          <p>
+            A Data URI allows data to be included directly inside a webpage instead of loading it from a separate file.
+          </p>
+          <p>
+            It can be used for small images, icons, and other resources. The image data is written inside the source attribute.
+          </p>
+          <div class="demo-box center">
+            <h3>Image Using a Data URI</h3>
+            <img class="data-image" alt="Purple book illustration" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 120'%3E%3Crect width='160' height='120' rx='12' fill='%23f4edff'/%3E%3Crect x='35' y='25' width='90' height='75' rx='6' fill='%236840a0'/%3E%3Cpath d='M80 25 V100' stroke='%23ffffff' stroke-width='3'/%3E%3Cpath d='M45 40 H70 M45 50 H70 M90 40 H115 M90 50 H115' stroke='%23e2d8ff' stroke-width='3'/%3E%3C/svg%3E"/>
+            <p>A little book illustration embedded directly in the HTML.</p>
+            <span class="note">No separate image file is required for this illustration.</span>
+          </div>
+        </section>
+        <section id="data-image" class="demo-section">
+          <h3>Data URI Image Example</h3>
+          <p>
+            The following example shows how an embedded image can be placed inside a content card.
+          </p>
+          <div class="demo-box center">
+            <div class="data-uri-card">
+              <img class="data-image" alt="A simple purple book" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 120'%3E%3Crect width='160' height='120' rx='12' fill='%23eee5ff'/%3E%3Crect x='40' y='20' width='80' height='80' rx='5' fill='%23a66bd4'/%3E%3Crect x='48' y='28' width='64' height='64' rx='3' fill='%236840a0'/%3E%3Cpath d='M80 28 V92' stroke='%23ffffff' stroke-width='3'/%3E%3C/svg%3E"/>
+              <h3>Book of the Day</h3>
+              <p>Discover a little world of books with BIBLUNE.</p>
+            </div>
+          </div>
+        </section>
+        <section id="block-elements" class="demo-section">
+          <h2>8.2 Block Elements</h2>
+          <p>
+            Block elements usually begin on a new line. They take up the
+            available width of their parent container by default.
+          </p>
+          <p>
+            Common block elements include
+            <strong>div, p, h1, section,</strong>
+            and <strong>article.</strong>
+          </p>
+          <div class="demo-box">
+            <h3>Block Elements in Action</h3>
+            <div class="block-demo">First Block Element</div>
+            <div class="block-demo alt">Second Block Element</div>
+            <div class="block-demo third">Third Block Element</div>
+            <p class="note">Each block appears on a separate line and stretches across the available width.</p>
+          </div>
+        </section>
+        <section id="block-div" class="demo-section">
+          <h3>Block Element: Div</h3>
+          <p>
+            The div element is a generic container. It is commonly used to group content for styling and layout.
+          </p>
+          <div class="demo-box">
+            <div class="block-demo">Book Title</div>
+            <div class="block-demo alt">Book Author</div>
+            <div class="block-demo third">Book Description</div>
+          </div>
+        </section>
+        <section id="block-paragraph" class="demo-section">
+          <h3>Block Element: Paragraph</h3>
+          <p>The paragraph element is a block element used to organize text into paragraphs.</p>
+          <div class="demo-box">
+            <p class="block-demo">Reading opens the door to knowledge.</p>
+            <p class="block-demo alt">Books help us explore new ideas.</p>
+            <p class="block-demo third">Every page brings a new adventure.</p>
+          </div>
+        </section>
+        <section id="inline-elements" class="demo-section">
+          <h2>8.3 Inline Elements</h2>
+          <p>
+            Inline elements do not usually start on a new line. They occupy only the space required by their content.
+          </p>
+          <p>
+            Common inline elements include<strong>span, a, strong, em,</strong>and<strong>mark.</strong>
+          </p>
+          <div class="demo-box">
+            <h3>Inline Elements in Action</h3>
+            <p>Welcome to<span class="inline-box">BIBLUNE</span>, your little world of books.</p>
+            <p>
+              Read<span class="inline-box">Stories</span><span class="inline-box">Poetry</span>
+              <span class="inline-box">Novels</span>in one place.
+            </p>
+            <p class="note">
+              Inline elements remain within the same line when enough space is available.
+            </p>
+          </div>
+        </section>
+        <section id="inline-span" class="demo-section">
+          <h3>Inline Element: Span</h3>
+          <p>
+            The span element is an inline container. It is used to style a small part of text without creating a new line.
+          </p>
+          <div class="demo-box center">
+            <p>
+              Books are<span class="inline-highlight"> wonderful </span>companions.
+            </p>
+            <p>Reading is a<span class="inline-highlight"> beautiful </span>habit.</p>
+          </div>
+        </section>
+        <section id="inline-text" class="demo-section">
+          <h3>Inline Text Elements</h3>
+          <p>Inline elements can emphasize, highlight, or format specific parts of a sentence.</p>
+          <div class="demo-box">
+            <p>This is<strong class="inline-demo"> important text </strong>within a sentence.</p>
+            <p>This text is<em class="inline-demo">emphasized</em>without starting a new line.</p>
+            <p>
+              This is<mark class="inline-highlight"> highlighted text </mark>inside a paragraph.
+            </p>
+            <p>
+              Visit<a href="HomePage.html" class="inline-demo"> BIBLUNE Home</a>to explore more.
+            </p>
+          </div>
+        </section>
+        <section id="inline-block" class="demo-section">
+          <h2>8.4 Inline-Block Elements</h2>
+          <p>
+            Inline-block elements appear next to one another like inline
+            elements, but their width, height, padding, and margin can be
+            controlled like block elements.
+          </p>
+          <div class="demo-box">
+            <h3>Inline-Block Layout</h3>
+            <span class="inline-block-item"> Book One </span>
+            <span class="inline-block-item"> Book Two </span>
+            <span class="inline-block-item"> Book Three </span>
+            <p class="note">
+              These boxes stay side by side when enough space is available.
+            </p>
+          </div>
+        </section>
+        <section id="inline-block-cards" class="demo-section">
+          <h3>Inline-Block Cards</h3>
+          <p>
+            Inline-block is useful for displaying small cards in a row while
+            allowing each card to have its own dimensions.
+          </p>
+          <div class="demo-box center">
+            <div class="inline-block-item">
+              <strong>Fiction</strong>
+              <p class="note">Stories and imagination</p>
+            </div>
+            <div class="inline-block-item">
+              <strong>Poetry</strong>
+              <p class="note">Words and emotions</p>
+            </div>
+            <div class="inline-block-item">
+              <strong>Science</strong>
+              <p class="note">Knowledge and discovery</p>
+            </div>
+          </div>
+        </section>
+        <section id="inline-block-buttons" class="demo-section">
+          <h3>Inline-Block Buttons</h3>
+          <p>
+            Inline-block can also be used to create buttons that appear next to
+            one another.
+          </p>
+          <div class="demo-box center">
+            <a href="#data-uris" class="inline-block-button"> Data URIs </a>
+            <a href="#block-elements" class="inline-block-button">
+              Block Elements
+            </a>
+            <a href="#inline-elements" class="inline-block-button">
+              Inline Elements
+            </a>
+          </div>
+        </section>
+        <section id="summary" class="intro">
+          <h2>Chapter Summary</h2>
+          <p>
+            Data URIs allow resources to be embedded directly into a webpage.
+          </p>
+          <p>
+            Block elements usually start on a new line and occupy the available
+            width.
+          </p>
+          <p>
+            Inline elements remain within the text flow and use only the space
+            they need.
+          </p>
+          <p>
+            Inline-block elements appear beside one another while allowing width
+            and height to be specified.
+          </p>
+        </section>
+      </main>
+    </div>
+    <footer>
+      <p>BIBLUNE | HTML &amp; CSS Project</p>
+    </footer>
+  </body>
+</html>

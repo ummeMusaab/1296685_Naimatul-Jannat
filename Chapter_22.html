@@ -1,0 +1,872 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chapter_22</title>
+    <style>
+      body {
+        font-family:
+          "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+      }
+      .logo {
+        font-family: cursive;
+        font-size: 35px;
+        font-style: italic;
+        background-color: hsl(287, 93%, 65%);
+        font-weight: bold;
+        color: #000000;
+        text-decoration: none;
+        letter-spacing: 2px;
+      }
+
+      .menu {
+        width: 100%;
+        background-color: hsl(287, 93%, 65%);
+        display: flow-root;
+        overflow: visible;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      .menu ul {
+        list-style: none;
+        margin-right: 30px;
+      }
+
+      .menu ul li {
+        font-family:
+          "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+        float: left;
+      }
+
+      .menu ul li a {
+        display: block;
+        padding: 14px 18px;
+        color: rgb(8, 8, 8);
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .menu ul li a:hover {
+        background-color: #520172;
+        color: rgb(251, 249, 249);
+      }
+
+      .dropdown {
+        position: relative;
+      }
+
+      .dropdown details summary {
+        display: block;
+        padding: 14px 18px;
+        color: black;
+        font-weight: bold;
+        cursor: pointer;
+        list-style: none;
+      }
+
+      .dropdown details summary:hover {
+        background-color: #520172;
+        color: #ffff;
+      }
+
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        min-width: 160px;
+        max-height: 300px;
+        overflow-y: auto;
+        background-color: hsl(287, 93%, 65%);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        opacity: 80%;
+        z-index: 1000;
+      }
+
+      .dropdown details[open] .dropdown-content {
+        display: block;
+      }
+
+      .dropdown-content a {
+        display: block;
+        padding: 10px 15px;
+        color: white;
+        text-decoration: none;
+        white-space: nowrap;
+      }
+
+      .dropdown-content a:hover {
+        background-color: #520172;
+        color: #ffffff;
+      }
+
+      footer p {
+        font-family:
+          "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+          "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+        text-align: center;
+        background-color: hsl(287, 93%, 65%);
+        color: #000;
+        padding: 12px;
+        margin-top: 40px;
+      }
+
+      .chapter-heading {
+        text-align: center;
+        padding: 30px 20px;
+        background: #fff;
+        border-bottom: 1px solid #dce1e8;
+      }
+
+      .chapter-heading .eyebrow {
+        color: #8b5e3c;
+        font-size: 13px;
+        font-weight: bold;
+        letter-spacing: 3px;
+      }
+
+      .chapter-heading h1 {
+        margin: 8px 0;
+        color: #243b63;
+        font-size: clamp(27px, 4vw, 38px);
+      }
+
+      .chapter-heading p {
+        color: #657187;
+      }
+
+      .chapter-container {
+        display: grid;
+        grid-template-columns: 250px minmax(0, 1fr);
+        gap: 28px;
+        max-width: 1250px;
+        margin: 35px auto;
+        padding: 0 20px;
+        align-items: start;
+      }
+
+      .chapter-sidebar {
+        position: sticky;
+        top: 100px;
+        max-height: 85vh;
+        overflow-y: auto;
+        background: #fff;
+        border: 1px solid #e1e5ed;
+        border-radius: 12px;
+        padding: 20px;
+      }
+
+      .chapter-sidebar h2 {
+        color: #243b63;
+        font-size: 19px;
+        margin-top: 0;
+      }
+
+      .chapter-toc {
+        padding-left: 20px;
+        margin-bottom: 0;
+      }
+
+      .chapter-toc li {
+        margin: 10px 0;
+        color: #657187;
+      }
+
+      .chapter-toc a {
+        color: #465675;
+        text-decoration: none;
+        font-size: 13px;
+      }
+
+      .chapter-toc a:hover {
+        color: #8b5e3c;
+        text-decoration: underline;
+      }
+
+      .chapter-content {
+        min-width: 0;
+      }
+
+      .chapter-section {
+        background: #fff;
+        border: 1px solid #e1e5ed;
+        border-radius: 12px;
+        padding: 25px;
+        margin-bottom: 25px;
+        scroll-margin-top: 20px;
+      }
+
+      .chapter-section h2 {
+        color: #243b63;
+        font-size: 23px;
+        margin-top: 0;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #e7eaf0;
+      }
+
+      .chapter-section h3 {
+        color: #8b5e3c;
+        font-size: 18px;
+        margin-top: 25px;
+      }
+
+      .chapter-section p {
+        color: #58657b;
+        line-height: 1.7;
+      }
+
+      .responsive-demo {
+        padding: 20px;
+        border: 1px solid #e1e5ed;
+        border-radius: 12px;
+        background: #fff;
+        margin: 18px 0;
+      }
+
+      .demo-label {
+        display: inline-block;
+        padding: 6px 12px;
+        border-radius: 20px;
+        background: #f0eaff;
+        color: #6741a5;
+        font-size: 12px;
+        font-weight: bold;
+        margin-bottom: 14px;
+      }
+
+      .responsive-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 14px;
+      }
+
+      .responsive-card {
+        padding: 20px 12px;
+        text-align: center;
+        border-radius: 10px;
+        background: #f5efff;
+        color: #49366f;
+        border: 1px solid #e5d9ff;
+      }
+
+      .responsive-card .book-icon {
+        font-size: 30px;
+        margin-bottom: 8px;
+      }
+
+      .viewport-demo {
+        border: 3px solid #243b63;
+        border-radius: 12px;
+        overflow: hidden;
+        background: #f7f8fc;
+      }
+
+      .viewport-top {
+        background: #243b63;
+        color: white;
+        padding: 10px 14px;
+        font-size: 13px;
+      }
+
+      .viewport-content {
+        padding: 18px;
+        text-align: center;
+      }
+
+      .viewport-content h3 {
+        color: #243b63;
+        margin: 0 0 8px;
+        font-size: clamp(20px, 4vw, 32px);
+      }
+
+      .viewport-content p {
+        color: #657187;
+        margin: 0;
+      }
+
+      .media-type-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 14px;
+      }
+
+      .media-type-card {
+        border: 1px solid #e1e5ed;
+        border-radius: 10px;
+        padding: 18px;
+        background: #fafbff;
+      }
+
+      .media-type-card h3 {
+        color: #243b63;
+        margin-top: 0;
+      }
+
+      .media-type-card p {
+        color: #657187;
+        font-size: 14px;
+        margin-bottom: 0;
+      }
+
+      .media-query-demo {
+        background: #f0eaff;
+        border: 2px solid #cbb7ff;
+        color: #49366f;
+        border-radius: 10px;
+        padding: 18px;
+        text-align: center;
+        font-weight: bold;
+      }
+
+      .media-query-demo::after {
+        content: " — Default view";
+      }
+
+      .grid-view-demo {
+        display: grid;
+        grid-template-columns: 1fr 2fr 1fr;
+        gap: 10px;
+        margin-top: 14px;
+      }
+
+      .grid-view-demo div {
+        background: #e9e3ff;
+        color: #49366f;
+        text-align: center;
+        padding: 18px 8px;
+        border-radius: 8px;
+        font-size: 13px;
+      }
+
+      .grid-view-demo .main-column {
+        background: #d7c8ff;
+        font-weight: bold;
+      }
+
+      .approach-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+        margin-top: 18px;
+      }
+
+      .approach-card {
+        padding: 20px;
+        border-radius: 12px;
+        border: 1px solid #e1e5ed;
+        background: #fff;
+      }
+
+      .approach-card h3 {
+        color: #243b63;
+        margin-top: 0;
+      }
+
+      .approach-card.mobile {
+        border-top: 4px solid #8c6bd9;
+      }
+
+      .approach-card.desktop {
+        border-top: 4px solid #d9a441;
+      }
+
+      .device-row {
+        display: flex;
+        justify-content: center;
+        align-items: end;
+        gap: 14px;
+        margin: 20px 0;
+      }
+
+      .device {
+        border: 3px solid #243b63;
+        border-radius: 8px;
+        background: #f4efff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #49366f;
+        font-size: 12px;
+        font-weight: bold;
+      }
+
+      .device.phone {
+        width: 52px;
+        height: 90px;
+      }
+
+      .device.tablet {
+        width: 90px;
+        height: 70px;
+      }
+
+      .device.desktop {
+        width: 130px;
+        height: 76px;
+      }
+
+      .note-box {
+        padding: 15px 18px;
+        margin: 18px 0;
+        border-left: 4px solid #8b5e3c;
+        border-radius: 6px;
+        background: #fff8ed;
+        color: #684a32;
+      }
+
+      .breakpoint-note {
+        font-size: 13px;
+        color: #657187;
+        margin-top: 12px;
+      }
+
+      @media screen and (max-width: 600px) {
+        .grid-view-demo {
+          grid-template-columns: 1fr;
+        }
+
+        .grid-view-demo div {
+          padding: 12px;
+        }
+
+        .approach-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .responsive-demo {
+          padding: 14px;
+        }
+
+        .media-query-demo {
+          background: #e3f6e9;
+          border-color: #8dd4a5;
+          color: #246b3b;
+        }
+
+        .media-query-demo::after {
+          content: " — Mobile view";
+        }
+      }
+
+      @media screen and (min-width: 601px) {
+        .media-query-demo {
+          background: #e5f0ff;
+          border-color: #a7caff;
+          color: #244d83;
+        }
+
+        .media-query-demo::after {
+          content: " — Tablet or desktop view";
+        }
+      }
+
+      @media print {
+        .media-query-demo {
+          background: white;
+          color: black;
+          border: 1px solid black;
+        }
+
+        .media-query-demo::after {
+          content: " — Print view";
+        }
+      }
+
+      .mobile-first-card {
+        width: 100%;
+        padding: 16px;
+        border-radius: 10px;
+        background: #eee7ff;
+        color: #49366f;
+        text-align: center;
+        box-sizing: border-box;
+      }
+
+      @media screen and (min-width: 700px) {
+        .mobile-first-card {
+          width: 48%;
+          padding: 24px;
+        }
+      }
+
+      .desktop-first-card {
+        width: 48%;
+        padding: 24px;
+        border-radius: 10px;
+        background: #fff1d6;
+        color: #795316;
+        text-align: center;
+        box-sizing: border-box;
+      }
+
+      @media screen and (max-width: 699px) {
+        .desktop-first-card {
+          width: 100%;
+          padding: 16px;
+        }
+      }
+
+      .width-demo-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: stretch;
+      }
+
+      @media (max-width: 800px) {
+        .chapter-container {
+          grid-template-columns: 1fr;
+        }
+
+        .chapter-sidebar {
+          position: static;
+          max-height: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="menu">
+      <a href="HomePage.html" class="logo">BIBLUNE</a>
+      <ul>
+        <li><a href="HomePage.html">Home</a></li>
+        <li><a href="#">Books</a></li>
+        <li><a href="#">Categories</a></li>
+        <li class="dropdown">
+          <details>
+            <summary>Chapter ▾</summary>
+            <div class="dropdown-content">
+              <a href="chapter_01.html">01. Getting to Know HTML</a>
+              <a href="chapter_02.html">02. HTML Elements</a>
+              <a href="chapter_03.html">03. HTML Styles</a>
+              <a href="chapter_04.html">04. Semantic HTML</a>
+              <a href="chapter_05.html">05. Web Forms</a>
+              <a href="chapter_06.html">06. HTML Multimedia</a>
+              <a href="chapter_07.html">07. HTML Graphics</a>
+              <a href="chapter_08.html">08. HTML Advanced</a>
+              <a href="chapter_11.html">09. HTML Events</a>
+              <a href="chapter_12.html">10. HTML APIs</a>
+              <a href="chapter_12.html">11. Getting to Know CSS</a>
+              <a href="chapter_12.html">12. CSS Selectors</a>
+              <a href="chapter_13.html">13. CSS Cascading</a>
+              <a href="chapter_14.html">14. CSS Box Model</a>
+              <a href="chapter_15.html">15. CSS Colors</a>
+              <a href="chapter_16.html">16. CSS Text</a>
+              <a href="chapter_17.html">17. CSS Backgrounds</a>
+              <a href="chapter_18.html">18. CSS Display</a>
+              <a href="chapter_19.html">19. CSS Layout</a>
+              <a href="chapter_20.html">20. CSS Transitions and Animations</a>
+              <a href="chapter_21.html">21. Advanced CSS</a>
+              <a href="chapter_22.html">22. Responsive CSS</a>
+            </div>
+          </details>
+        </li>
+        <li><a href="#info">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <section class="chapter-heading">
+      <span class="eyebrow">BIBLUNE LEARNING SERIES</span>
+      <h1>Chapter 22: Responsive CSS</h1>
+      <p>Designing beautiful websites for every screen size.</p>
+    </section>
+
+    <main class="chapter-container">
+      <aside class="chapter-sidebar">
+        <h2>Table of Contents</h2>
+
+        <ul class="chapter-toc">
+          <li><a href="#responsive-design">22.1 Responsive Web Design</a></li>
+          <li><a href="#viewport">22.2 RWD Viewport</a></li>
+          <li>
+            <a href="#css-media">22.3 CSS Media</a>
+            <ul>
+              <li><a href="#media-types">22.3.1 Media Types</a></li>
+              <li><a href="#media-queries">22.3.2 Media Queries</a></li>
+            </ul>
+          </li>
+          <li><a href="#grid-view">22.4 RWD Grid View</a></li>
+          <li>
+            <a href="#design-approaches">22.5 Mobile-First vs. Desktop-First</a>
+            <ul>
+              <li><a href="#mobile-first">22.5.1 Mobile-First</a></li>
+              <li><a href="#desktop-first">22.5.2 Desktop-First</a></li>
+            </ul>
+          </li>
+        </ul>
+      </aside>
+
+      <div class="chapter-content">
+        <section class="chapter-section" id="responsive-design">
+          <h2>22.1 Responsive Web Design</h2>
+
+          <p>
+            Responsive Web Design (RWD) allows a website to adapt to different
+            screen sizes, including mobile phones, tablets, laptops, and desktop
+            computers.
+          </p>
+
+          <div class="responsive-demo">
+            <span class="demo-label">Responsive Layout</span>
+
+            <div class="responsive-cards">
+              <div class="responsive-card">
+                <div class="book-icon">📱</div>
+                <strong>Mobile</strong>
+                <p>Small screen</p>
+              </div>
+
+              <div class="responsive-card">
+                <div class="book-icon">📖</div>
+                <strong>Tablet</strong>
+                <p>Medium screen</p>
+              </div>
+
+              <div class="responsive-card">
+                <div class="book-icon">💻</div>
+                <strong>Desktop</strong>
+                <p>Large screen</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="note-box">
+            <strong>Key idea:</strong>
+            A responsive website adjusts its layout and content to provide a
+            comfortable experience on different devices.
+          </div>
+        </section>
+
+        <section class="chapter-section" id="viewport">
+          <h2>22.2 RWD Viewport</h2>
+
+          <p>
+            The viewport is the visible area of a web page. The viewport meta
+            setting helps mobile browsers display a page at the device's actual
+            width.
+          </p>
+
+          <div class="responsive-demo">
+            <span class="demo-label">Viewport Preview</span>
+
+            <div class="viewport-demo">
+              <div class="viewport-top">BIBLUNE · Reading Space</div>
+
+              <div class="viewport-content">
+                <h3>A Little World of Books</h3>
+                <p>A flexible page that fits your screen.</p>
+              </div>
+            </div>
+
+            <p class="breakpoint-note">
+              Resize your browser window to see the heading adjust its size.
+            </p>
+          </div>
+
+          <div class="note-box">
+            <strong>Remember:</strong>
+            The viewport meta element belongs inside the HTML head. This chapter
+            already includes it.
+          </div>
+        </section>
+
+        <section class="chapter-section" id="css-media">
+          <h2>22.3 CSS Media</h2>
+
+          <p>
+            CSS media rules apply styles depending on the device, screen
+            characteristics, or output type.
+          </p>
+
+          <div id="media-types">
+            <h3>22.3.1 Media Types</h3>
+
+            <div class="media-type-grid">
+              <div class="media-type-card">
+                <h3>Screen</h3>
+                <p>
+                  For displays such as phones, tablets, laptops, and monitors.
+                </p>
+              </div>
+
+              <div class="media-type-card">
+                <h3>Print</h3>
+                <p>For printed pages and print previews.</p>
+              </div>
+
+              <div class="media-type-card">
+                <h3>All</h3>
+                <p>Applies styles to all media types.</p>
+              </div>
+            </div>
+          </div>
+
+          <div id="media-queries">
+            <h3>22.3.2 Media Queries</h3>
+
+            <p>
+              Media queries let a page use different styles when the viewport
+              crosses a chosen breakpoint.
+            </p>
+
+            <div class="responsive-demo">
+              <span class="demo-label">Resize This Window</span>
+
+              <div class="media-query-demo">Current layout</div>
+
+              <p class="breakpoint-note">
+                Below 600px, the demo becomes green. At 601px and above, it
+                becomes blue. Print preview uses a separate style.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section class="chapter-section" id="grid-view">
+          <h2>22.4 RWD Grid View</h2>
+
+          <p>
+            A grid view divides a page into columns. Responsive grids can change
+            the number and size of columns to fit the available screen space.
+          </p>
+
+          <div class="responsive-demo">
+            <span class="demo-label">Three-Column Grid</span>
+
+            <div class="grid-view-demo">
+              <div>Sidebar</div>
+              <div class="main-column">Main Content</div>
+              <div>Related Books</div>
+            </div>
+
+            <p class="breakpoint-note">
+              Resize the browser below 600px. The three columns will stack
+              vertically.
+            </p>
+          </div>
+
+          <div class="responsive-demo">
+            <span class="demo-label">Flexible Book Grid</span>
+
+            <div class="responsive-cards">
+              <div class="responsive-card">
+                <div class="book-icon">📘</div>
+                <strong>Fiction</strong>
+              </div>
+
+              <div class="responsive-card">
+                <div class="book-icon">📕</div>
+                <strong>Adventure</strong>
+              </div>
+
+              <div class="responsive-card">
+                <div class="book-icon">📗</div>
+                <strong>Science</strong>
+              </div>
+
+              <div class="responsive-card">
+                <div class="book-icon">📙</div>
+                <strong>Poetry</strong>
+              </div>
+            </div>
+
+            <p class="breakpoint-note">
+              The cards automatically fit the available width.
+            </p>
+          </div>
+        </section>
+
+        <section class="chapter-section" id="design-approaches">
+          <h2>22.5 Mobile-First vs. Desktop-First</h2>
+
+          <p>
+            Mobile-first and desktop-first are two approaches to building
+            responsive layouts. They differ in which screen size is designed for
+            first.
+          </p>
+
+          <div class="approach-grid">
+            <div class="approach-card mobile" id="mobile-first">
+              <h3>22.5.1 Mobile-First</h3>
+
+              <div class="device-row">
+                <div class="device phone">Phone</div>
+                <div class="device tablet">Tablet</div>
+                <div class="device desktop">Desktop</div>
+              </div>
+
+              <p>
+                Start with a simple layout for small screens. Add or adjust
+                styles as the screen gets wider.
+              </p>
+
+              <div class="width-demo-row">
+                <div class="mobile-first-card">Mobile-first card</div>
+              </div>
+            </div>
+
+            <div class="approach-card desktop" id="desktop-first">
+              <h3>22.5.2 Desktop-First</h3>
+
+              <div class="device-row">
+                <div class="device desktop">Desktop</div>
+                <div class="device tablet">Tablet</div>
+                <div class="device phone">Phone</div>
+              </div>
+
+              <p>
+                Start with a layout for large screens. Use media queries to
+                adjust it for smaller screens.
+              </p>
+
+              <div class="width-demo-row">
+                <div class="desktop-first-card">Desktop-first card</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="note-box">
+            <strong>Quick comparison:</strong>
+            Mobile-first commonly adds styles with
+            <em>min-width</em> media queries. Desktop-first commonly adjusts
+            styles with <em>max-width</em>
+            media queries.
+          </div>
+        </section>
+        <section class="chapter-section">
+          <h2>Chapter Summary</h2>
+
+          <div class="responsive-demo">
+            <div class="responsive-cards">
+              <div class="responsive-card">
+                <strong>Responsive Design</strong>
+                <p>Adapts to different screens.</p>
+              </div>
+
+              <div class="responsive-card">
+                <strong>Viewport</strong>
+                <p>Defines the visible page area.</p>
+              </div>
+
+              <div class="responsive-card">
+                <strong>Media Queries</strong>
+                <p>Apply styles at chosen conditions.</p>
+              </div>
+
+              <div class="responsive-card">
+                <strong>Grid View</strong>
+                <p>Arranges content into flexible columns.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+    <footer>
+      <p>BIBLUNE | HTML &amp; CSS Project</p>
+    </footer>
+  </body>
+</html>

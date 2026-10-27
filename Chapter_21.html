@@ -1,0 +1,959 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chapter_21</title>
+    <style>
+      body {
+        font-family:
+          "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+      }
+      .logo {
+        font-family: cursive;
+        font-size: 35px;
+        font-style: italic;
+        background-color: hsl(287, 93%, 65%);
+        font-weight: bold;
+        color: #000000;
+        text-decoration: none;
+        letter-spacing: 2px;
+      }
+
+      .menu {
+        width: 100%;
+        background-color: hsl(287, 93%, 65%);
+        display: flow-root;
+        overflow: visible;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      .menu ul {
+        list-style: none;
+        margin-right: 30px;
+      }
+
+      .menu ul li {
+        font-family:
+          "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+        float: left;
+      }
+
+      .menu ul li a {
+        display: block;
+        padding: 14px 18px;
+        color: rgb(8, 8, 8);
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .menu ul li a:hover {
+        background-color: #520172;
+        color: rgb(251, 249, 249);
+      }
+
+      .dropdown {
+        position: relative;
+      }
+
+      .dropdown details summary {
+        display: block;
+        padding: 14px 18px;
+        color: black;
+        font-weight: bold;
+        cursor: pointer;
+        list-style: none;
+      }
+
+      .dropdown details summary:hover {
+        background-color: #520172;
+        color: #ffff;
+      }
+
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        min-width: 160px;
+        max-height: 300px;
+        overflow-y: auto;
+        background-color: hsl(287, 93%, 65%);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        opacity: 80%;
+        z-index: 1000;
+      }
+
+      .dropdown details[open] .dropdown-content {
+        display: block;
+      }
+
+      .dropdown-content a {
+        display: block;
+        padding: 10px 15px;
+        color: white;
+        text-decoration: none;
+        white-space: nowrap;
+      }
+
+      .dropdown-content a:hover {
+        background-color: #520172;
+        color: #ffffff;
+      }
+
+      footer p {
+        font-family:
+          "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+          "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+        text-align: center;
+        background-color: hsl(287, 93%, 65%);
+        color: #000;
+        padding: 12px;
+        margin-top: 40px;
+      }
+
+      .chapter-heading {
+        text-align: center;
+        padding: 30px 20px;
+        background: #fff;
+        border-bottom: 1px solid #dce1e8;
+      }
+
+      .chapter-heading .eyebrow {
+        color: #8b5e3c;
+        font-size: 13px;
+        font-weight: bold;
+        letter-spacing: 3px;
+      }
+
+      .chapter-heading h1 {
+        margin: 8px 0;
+        color: #243b63;
+        font-size: clamp(27px, 4vw, 38px);
+      }
+
+      .chapter-heading p {
+        color: #657187;
+      }
+
+      .chapter-container {
+        display: grid;
+        grid-template-columns: 250px minmax(0, 1fr);
+        gap: 28px;
+        max-width: 1250px;
+        margin: 35px auto;
+        padding: 0 20px;
+        align-items: start;
+      }
+
+      .chapter-sidebar {
+        position: sticky;
+        top: 100px;
+        max-height: 85vh;
+        overflow-y: auto;
+        background: #fff;
+        border: 1px solid #e1e5ed;
+        border-radius: 12px;
+        padding: 20px;
+      }
+
+      .chapter-sidebar h2 {
+        color: #243b63;
+        font-size: 19px;
+        margin-top: 0;
+      }
+
+      .chapter-toc {
+        padding-left: 20px;
+        margin-bottom: 0;
+      }
+
+      .chapter-toc li {
+        margin: 10px 0;
+        color: #657187;
+      }
+
+      .chapter-toc a {
+        color: #465675;
+        text-decoration: none;
+        font-size: 13px;
+      }
+
+      .chapter-toc a:hover {
+        color: #8b5e3c;
+        text-decoration: underline;
+      }
+
+      .chapter-content {
+        min-width: 0;
+      }
+
+      .chapter-section {
+        background: #fff;
+        border: 1px solid #e1e5ed;
+        border-radius: 12px;
+        padding: 25px;
+        margin-bottom: 25px;
+        scroll-margin-top: 20px;
+      }
+
+      .chapter-section h2 {
+        color: #243b63;
+        font-size: 23px;
+        margin-top: 0;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #e7eaf0;
+      }
+
+      .chapter-section h3 {
+        color: #8b5e3c;
+        font-size: 18px;
+        margin-top: 25px;
+      }
+
+      .chapter-section p {
+        color: #58657b;
+        line-height: 1.7;
+      }
+
+      .demo-box {
+        background: #f7f8fc;
+        border: 1px solid #e0e5ef;
+        border-radius: 9px;
+        padding: 18px;
+        margin: 15px 0;
+        min-width: 0;
+      }
+
+      .demo-label {
+        color: #657187;
+        font-size: 12px;
+        font-weight: bold;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+      }
+
+      .demo-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+        gap: 15px;
+      }
+
+      .demo-card {
+        background: #fff;
+        border: 1px solid #e1e5ed;
+        border-radius: 9px;
+        padding: 16px;
+        min-width: 0;
+      }
+
+      .demo-card h4 {
+        color: #243b63;
+        margin: 0 0 10px;
+        font-size: 15px;
+      }
+
+      .demo-card p {
+        font-size: 13px;
+        margin-bottom: 0;
+      }
+
+      .note-box {
+        background: #fff8ec;
+        border-left: 4px solid #d9a441;
+        border-radius: 5px;
+        padding: 12px 15px;
+        margin-top: 15px;
+        color: #6f5934;
+        line-height: 1.7;
+      }
+
+      :root {
+        --demo-primary: #6556a8;
+        --demo-secondary: #e9eafa;
+        --demo-accent: #8b5e3c;
+        --demo-text: #243b63;
+        --demo-radius: 12px;
+        --demo-space: 16px;
+      }
+
+      .variable-panel {
+        padding: var(--demo-space);
+        background: var(--demo-secondary);
+        border: 2px solid var(--demo-primary);
+        border-radius: var(--demo-radius);
+        color: var(--demo-text);
+      }
+
+      .variable-panel h4 {
+        margin: 0 0 8px;
+        color: var(--demo-primary);
+      }
+
+      .variable-button {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 7px;
+        background: var(--demo-primary);
+        color: #fff;
+        font-weight: bold;
+      }
+
+      .variable-theme-green {
+        --demo-primary: #287a58;
+        --demo-secondary: #e0f4e9;
+        --demo-text: #1d513c;
+      }
+
+      .variable-theme-orange {
+        --demo-primary: #a75b24;
+        --demo-secondary: #fff0df;
+        --demo-text: #713c1d;
+      }
+
+      .variable-theme-purple {
+        --demo-primary: #6556a8;
+        --demo-secondary: #e9eafa;
+        --demo-text: #393064;
+      }
+
+      .variable-swatch {
+        width: 100%;
+        height: 48px;
+        border-radius: 7px;
+        background: var(--demo-primary);
+        margin-bottom: 10px;
+      }
+
+      .calc-stage {
+        background: #fff;
+        border: 1px dashed #c7ccda;
+        border-radius: 8px;
+        padding: 12px;
+        overflow: hidden;
+      }
+
+      .calc-box {
+        width: calc(100% - 30px);
+        margin: 0 auto;
+        padding: 15px;
+        background: #e9eafa;
+        border: 2px solid #6556a8;
+        border-radius: 8px;
+        color: #393064;
+        text-align: center;
+        box-sizing: border-box;
+      }
+
+      .calc-columns {
+        display: flex;
+        gap: 12px;
+      }
+
+      .calc-column {
+        flex: 0 0 calc((100% - 12px) / 2);
+        box-sizing: border-box;
+        padding: 15px 8px;
+        text-align: center;
+        border-radius: 8px;
+        background: #dff3e8;
+        color: #1d513c;
+        min-width: 0;
+      }
+
+      .calc-fluid {
+        width: calc(100% - 40px);
+        max-width: 360px;
+        margin: 0 auto;
+        padding: 15px;
+        box-sizing: border-box;
+        background: #fff0df;
+        border: 1px solid #e3b98c;
+        border-radius: 8px;
+        color: #713c1d;
+        text-align: center;
+      }
+
+      .calc-measure {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      .calc-measure span {
+        color: #657187;
+        font-size: 12px;
+        white-space: nowrap;
+      }
+
+      .calc-measure-bar {
+        flex: 1;
+        height: 12px;
+        background: #e1e5ed;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+
+      .calc-measure-fill {
+        width: calc(100% - 25%);
+        height: 100%;
+        background: #6556a8;
+      }
+
+      .counter-book-list {
+        counter-reset: book-counter;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .counter-book-list li {
+        counter-increment: book-counter;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 14px;
+        margin-bottom: 10px;
+        background: #fff;
+        border: 1px solid #e1e5ed;
+        border-radius: 9px;
+        color: #465675;
+      }
+
+      .counter-book-list li::before {
+        content: counter(book-counter, decimal-leading-zero);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        width: 40px;
+        height: 40px;
+        background: #e9eafa;
+        color: #393064;
+        border-radius: 50%;
+        font-weight: bold;
+      }
+
+      .counter-book-list strong {
+        display: block;
+        color: #243b63;
+        margin-bottom: 4px;
+      }
+
+      .counter-book-list small {
+        color: #657187;
+      }
+
+      .counter-chapter-list {
+        counter-reset: chapter-counter;
+        list-style: none;
+        padding-left: 0;
+      }
+
+      .counter-chapter-list > li {
+        counter-increment: chapter-counter;
+        counter-reset: section-counter;
+        padding: 12px;
+        margin-bottom: 12px;
+        background: #f7f8fc;
+        border-radius: 8px;
+        color: #243b63;
+        font-weight: bold;
+      }
+
+      .counter-chapter-list > li::before {
+        content: "Chapter " counter(chapter-counter) ": ";
+        color: #8b5e3c;
+      }
+
+      .counter-chapter-list ol {
+        list-style: none;
+        padding-left: 15px;
+        margin-top: 10px;
+      }
+
+      .counter-chapter-list ol li {
+        counter-increment: section-counter;
+        padding: 7px 0;
+        color: #58657b;
+        font-size: 14px;
+        font-weight: normal;
+      }
+
+      .counter-chapter-list ol li::before {
+        content: counter(chapter-counter) "." counter(section-counter) " ";
+        color: #6556a8;
+        font-weight: bold;
+      }
+
+      .counter-card-list {
+        counter-reset: card-counter;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+        gap: 12px;
+      }
+
+      .counter-card {
+        counter-increment: card-counter;
+        position: relative;
+        padding: 35px 12px 15px;
+        background: #fff;
+        border: 1px solid #e1e5ed;
+        border-radius: 9px;
+        text-align: center;
+        color: #465675;
+      }
+
+      .counter-card::before {
+        content: "Item " counter(card-counter);
+        position: absolute;
+        top: 9px;
+        left: 9px;
+        font-size: 11px;
+        font-weight: bold;
+        color: #8b5e3c;
+      }
+
+      .counter-card span {
+        display: block;
+        font-size: 30px;
+        margin-bottom: 8px;
+      }
+
+      @media (max-width: 800px) {
+        .chapter-container {
+          grid-template-columns: 1fr;
+          gap: 20px;
+          margin-top: 20px;
+          padding: 0 14px;
+        }
+
+        .chapter-sidebar {
+          position: static;
+          max-height: 350px;
+        }
+
+        .chapter-section {
+          padding: 18px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .chapter-section h2 {
+          font-size: 20px;
+        }
+
+        .demo-box {
+          padding: 12px;
+        }
+
+        .demo-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .calc-columns {
+          gap: 8px;
+        }
+
+        .calc-column {
+          flex-basis: calc((100% - 8px) / 2);
+          font-size: 13px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="menu">
+      <a href="HomePage.html" class="logo">BIBLUNE</a>
+      <ul>
+        <li><a href="HomePage.html">Home</a></li>
+        <li><a href="#">Books</a></li>
+        <li><a href="#">Categories</a></li>
+        <li class="dropdown">
+          <details>
+            <summary>Chapter ▾</summary>
+            <div class="dropdown-content">
+              <a href="chapter_01.html">01. Getting to Know HTML</a>
+              <a href="chapter_02.html">02. HTML Elements</a>
+              <a href="chapter_03.html">03. HTML Styles</a>
+              <a href="chapter_04.html">04. Semantic HTML</a>
+              <a href="chapter_05.html">05. Web Forms</a>
+              <a href="chapter_06.html">06. HTML Multimedia</a>
+              <a href="chapter_07.html">07. HTML Graphics</a>
+              <a href="chapter_08.html">08. HTML Advanced</a>
+              <a href="chapter_09.html">09. HTML Events</a>
+              <a href="chapter_10.html">10. HTML APIs</a>
+              <a href="chapter_11.html">11. Getting to Know CSS</a>
+              <a href="chapter_12.html">12. CSS Selectors</a>
+              <a href="chapter_13.html">13. CSS Cascading</a>
+              <a href="chapter_14.html">14. CSS Box Model</a>
+              <a href="chapter_15.html">15. CSS Colors</a>
+              <a href="chapter_16.html">16. CSS Text</a>
+              <a href="chapter_17.html">17. CSS Backgrounds</a>
+              <a href="chapter_18.html">18. CSS Display</a>
+              <a href="chapter_19.html">19. CSS Layout</a>
+              <a href="chapter_20.html">20. CSS Transitions and Animations</a>
+              <a href="chapter_21.html">21. Advanced CSS</a>
+              <a href="chapter_22.html">22. Responsive CSS</a>
+            </div>
+          </details>
+        </li>
+        <li><a href="#info">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <section class="chapter-heading">
+      <p class="eyebrow">CHAPTER 21</p>
+      <h1>ADVANCED CSS</h1>
+      <p>
+        Discover reusable values, flexible calculations, and automatic numbering
+        with CSS.
+      </p>
+    </section>
+
+    <div class="chapter-container">
+      <aside class="chapter-sidebar">
+        <h2>On This Page</h2>
+
+        <ol class="chapter-toc">
+          <li><a href="#variables">CSS Variables</a></li>
+          <li><a href="#calculation">CSS Calculation</a></li>
+          <li><a href="#counters">CSS Counters</a></li>
+        </ol>
+      </aside>
+
+      <main class="chapter-content">
+        <section class="chapter-section" id="variables">
+          <h2>21.1 CSS Variables</h2>
+
+          <p>
+            CSS variables store reusable values such as colors, spacing, and
+            border radius. A variable can be reused in different parts of a
+            stylesheet and updated from one place.
+          </p>
+
+          <h3>Reusable Design Values</h3>
+
+          <p>
+            These book cards share a common design system. Their colors,
+            spacing, and rounded corners are controlled by reusable CSS custom
+            properties.
+          </p>
+
+          <div class="demo-box">
+            <div class="demo-label">Shared CSS Variables</div>
+
+            <div class="demo-grid">
+              <div class="variable-panel variable-theme-purple">
+                <h4>Classic Reads</h4>
+                <p>A calm purple theme for timeless stories.</p>
+                <button class="variable-button" type="button">Explore</button>
+              </div>
+
+              <div class="variable-panel variable-theme-green">
+                <h4>Nature Stories</h4>
+                <p>A fresh green theme for nature lovers.</p>
+                <button class="variable-button" type="button">Explore</button>
+              </div>
+
+              <div class="variable-panel variable-theme-orange">
+                <h4>Golden Pages</h4>
+                <p>A warm orange theme for cozy reading.</p>
+                <button class="variable-button" type="button">Explore</button>
+              </div>
+            </div>
+          </div>
+
+          <p>
+            Each card uses the same variable names, but some cards override
+            their values to create different themes.
+          </p>
+
+          <h3>Using Variables for Consistent Colors</h3>
+
+          <div class="demo-box">
+            <div class="demo-label">One variable, repeated use</div>
+
+            <div class="demo-grid">
+              <div class="demo-card">
+                <div class="variable-swatch variable-theme-purple"></div>
+                <h4>Primary Color</h4>
+                <p>Used for buttons and highlights.</p>
+              </div>
+
+              <div class="demo-card">
+                <div class="variable-swatch variable-theme-green"></div>
+                <h4>Theme Color</h4>
+                <p>Changed by overriding the variable.</p>
+              </div>
+
+              <div class="demo-card">
+                <div class="variable-swatch variable-theme-orange"></div>
+                <h4>Accent Color</h4>
+                <p>Creates a different visual theme.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="note-box">
+            <strong>Remember:</strong> CSS custom properties are commonly
+            declared with names beginning with two hyphens, such as
+            <strong>--primary-color</strong>. The <strong>var()</strong>
+            function uses their values.
+          </div>
+        </section>
+        <section class="chapter-section" id="calculation">
+          <h2>21.2 CSS Calculation</h2>
+
+          <p>
+            The CSS <strong>calc()</strong> function lets you calculate property
+            values using arithmetic operations. It is useful when a layout needs
+            to combine percentages with fixed sizes.
+          </p>
+
+          <h3>Flexible Width</h3>
+
+          <p>
+            The box below uses a width calculated from the available space,
+            leaving room around its sides.
+          </p>
+
+          <div class="demo-box">
+            <div class="demo-label">Calculated width</div>
+
+            <div class="calc-stage">
+              <div class="calc-box">Flexible Book Display</div>
+            </div>
+          </div>
+
+          <h3>Two Equal Columns</h3>
+
+          <p>
+            Each column takes up half of the available width after accounting
+            for the gap between them.
+          </p>
+
+          <div class="demo-box">
+            <div class="demo-label">Calculated column sizes</div>
+
+            <div class="calc-stage">
+              <div class="calc-columns">
+                <div class="calc-column">Fiction</div>
+
+                <div class="calc-column">Nonfiction</div>
+              </div>
+            </div>
+          </div>
+
+          <h3>Combining Width and Maximum Width</h3>
+
+          <p>
+            A calculated width can work together with max-width to prevent a
+            content box from becoming too wide.
+          </p>
+
+          <div class="demo-box">
+            <div class="demo-label">Responsive content</div>
+
+            <div class="calc-stage">
+              <div class="calc-fluid">A comfortable space for reading.</div>
+            </div>
+          </div>
+
+          <h3>Calculated Measurement</h3>
+
+          <p>
+            Calculations can also be used for sizes inside other layout
+            components.
+          </p>
+
+          <div class="demo-box">
+            <div class="demo-label">Visual measurement</div>
+
+            <div class="calc-measure">
+              <span>Available width</span>
+
+              <div class="calc-measure-bar">
+                <div class="calc-measure-fill"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="note-box">
+            <strong>Remember:</strong> The <strong>calc()</strong>
+            function supports addition, subtraction, multiplication, and
+            division. When adding or subtracting lengths and percentages,
+            include spaces around the + and - operators.
+          </div>
+        </section>
+
+        <section class="chapter-section" id="counters">
+          <h2>21.3 CSS Counters</h2>
+
+          <p>
+            CSS counters let a stylesheet automatically number elements. They
+            are useful for numbered lists, chapter headings, sections, and other
+            structured content.
+          </p>
+
+          <h3>Automatic Numbering</h3>
+
+          <p>
+            The following book list receives its numbers automatically through
+            CSS instead of displaying manually typed numbers.
+          </p>
+
+          <div class="demo-box">
+            <div class="demo-label">Book collection</div>
+
+            <ol class="counter-book-list">
+              <li>
+                <div>
+                  <strong>The Secret Garden</strong>
+                  <small>A classic story of discovery.</small>
+                </div>
+              </li>
+
+              <li>
+                <div>
+                  <strong>Little Women</strong>
+                  <small>A beloved story of family and growth.</small>
+                </div>
+              </li>
+
+              <li>
+                <div>
+                  <strong>Treasure Island</strong>
+                  <small>An adventure full of mystery.</small>
+                </div>
+              </li>
+
+              <li>
+                <div>
+                  <strong>Anne of Green Gables</strong>
+                  <small>A charming story of imagination.</small>
+                </div>
+              </li>
+            </ol>
+          </div>
+
+          <h3>Nested Counters</h3>
+
+          <p>
+            Counters can also number nested sections, creating a
+            chapter-and-section numbering style automatically.
+          </p>
+
+          <div class="demo-box">
+            <div class="demo-label">Chapter structure</div>
+
+            <ol class="counter-chapter-list">
+              <li>
+                Introduction to Reading
+
+                <ol>
+                  <li>Choosing a Book</li>
+                  <li>Building a Reading Habit</li>
+                  <li>Keeping Reading Notes</li>
+                </ol>
+              </li>
+
+              <li>
+                Exploring Literature
+
+                <ol>
+                  <li>Understanding Characters</li>
+                  <li>Discovering Themes</li>
+                  <li>Comparing Stories</li>
+                </ol>
+              </li>
+
+              <li>
+                Becoming a Book Lover
+
+                <ol>
+                  <li>Finding New Authors</li>
+                  <li>Joining a Book Club</li>
+                </ol>
+              </li>
+            </ol>
+          </div>
+
+          <h3>Numbered Cards</h3>
+
+          <p>
+            The same idea can be used to label cards automatically without
+            writing a separate number in each card.
+          </p>
+
+          <div class="demo-box">
+            <div class="demo-label">Reading goals</div>
+
+            <div class="counter-card-list">
+              <div class="counter-card">
+                <span>📖</span>
+                Daily Reading
+              </div>
+
+              <div class="counter-card">
+                <span>✍️</span>
+                Write Notes
+              </div>
+
+              <div class="counter-card">
+                <span>🌱</span>
+                Learn Something
+              </div>
+            </div>
+          </div>
+
+          <div class="note-box">
+            <strong>Remember:</strong> CSS counters commonly use
+            <strong>counter-reset</strong> to initialize a counter,
+            <strong>counter-increment</strong> to increase its value, and
+            <strong>counter()</strong> to display that value. They are often
+            shown with the <strong>::before</strong> or
+            <strong>::after</strong> pseudo-elements.
+          </div>
+        </section>
+
+        <!-- Chapter Summary -->
+        <section class="chapter-section">
+          <h2>Chapter Summary</h2>
+
+          <div class="demo-grid">
+            <div class="demo-card">
+              <h4>CSS Variables</h4>
+              <p>Reuse values and maintain consistent styling.</p>
+            </div>
+
+            <div class="demo-card">
+              <h4>CSS Calculation</h4>
+              <p>Calculate flexible widths and sizes with calc().</p>
+            </div>
+
+            <div class="demo-card">
+              <h4>CSS Counters</h4>
+              <p>Generate automatic numbering for elements.</p>
+            </div>
+          </div>
+
+          <div class="note-box">
+            <strong>Chapter Complete!</strong>
+            You've explored CSS variables, calculated layout values, and
+            automatic numbering using CSS counters.
+          </div>
+        </section>
+      </main>
+    </div>
+    <footer>
+      <p>BIBLUNE | HTML &amp; CSS Project</p>
+    </footer>
+  </body>
+</html>

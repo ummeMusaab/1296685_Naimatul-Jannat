@@ -1,0 +1,683 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chapter_16</title>
+    <style>
+      body {
+        font-family:
+          "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+      }
+      .logo {
+        font-family: cursive;
+        font-size: 35px;
+        font-style: italic;
+        background-color: hsl(287, 93%, 65%);
+        font-weight: bold;
+        color: #000000;
+        text-decoration: none;
+        letter-spacing: 2px;
+      }
+
+      .menu {
+        width: 100%;
+        background-color: hsl(287, 93%, 65%);
+        display: flow-root;
+        overflow: visible;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      .menu ul {
+        list-style: none;
+        margin-right: 30px;
+      }
+
+      .menu ul li {
+        font-family:
+          "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+        float: left;
+      }
+
+      .menu ul li a {
+        display: block;
+        padding: 14px 18px;
+        color: rgb(8, 8, 8);
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .menu ul li a:hover {
+        background-color: #520172;
+        color: rgb(251, 249, 249);
+      }
+
+      .dropdown {
+        position: relative;
+      }
+
+      .dropdown details summary {
+        display: block;
+        padding: 14px 18px;
+        color: black;
+        font-weight: bold;
+        cursor: pointer;
+        list-style: none;
+      }
+
+      .dropdown details summary:hover {
+        background-color: #520172;
+        color: #ffff;
+      }
+
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        min-width: 160px;
+        max-height: 300px;
+        overflow-y: auto;
+        background-color: hsl(287, 93%, 65%);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        opacity: 80%;
+        z-index: 1000;
+      }
+
+      .dropdown details[open] .dropdown-content {
+        display: block;
+      }
+
+      .dropdown-content a {
+        display: block;
+        padding: 10px 15px;
+        color: white;
+        text-decoration: none;
+        white-space: nowrap;
+      }
+
+      .dropdown-content a:hover {
+        background-color: #520172;
+        color: #ffffff;
+      }
+
+      footer p {
+        font-family:
+          "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+          "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+        text-align: center;
+        background-color: hsl(287, 93%, 65%);
+        color: #000;
+        padding: 12px;
+        margin-top: 40px;
+      }
+
+      .chapter-heading {
+        text-align: center;
+        padding: 30px 20px;
+        background: #fff;
+        border-bottom: 1px solid #dce1e8;
+      }
+
+      .chapter-heading .eyebrow {
+        color: #8b5e3c;
+        font-size: 13px;
+        font-weight: bold;
+        letter-spacing: 3px;
+      }
+
+      .chapter-heading h1 {
+        margin: 8px 0;
+        color: #243b63;
+        font-size: clamp(27px, 4vw, 38px);
+      }
+
+      .chapter-heading p {
+        color: #657187;
+      }
+
+      .chapter-container {
+        display: grid;
+        grid-template-columns: 260px minmax(0, 1fr);
+        gap: 26px;
+        max-width: 1200px;
+        margin: 30px auto;
+        padding: 0 20px;
+        align-items: start;
+      }
+
+      .chapter-sidebar {
+        position: sticky;
+        top: 100px;
+      }
+
+      .chapter-toc {
+        background: #fff;
+        border: 1px solid #dce1e8;
+        border-radius: 12px;
+        padding: 20px;
+      }
+
+      .chapter-toc h2 {
+        color: #243b63;
+        font-size: 19px;
+        margin: 0 0 14px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #e5e7eb;
+      }
+
+      .chapter-toc ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .chapter-toc li {
+        margin: 5px 0;
+      }
+
+      .chapter-toc a {
+        display: block;
+        color: #52627a;
+        text-decoration: none;
+        padding: 8px 10px;
+        border-radius: 7px;
+        font-size: 14px;
+        transition: 0.3s;
+      }
+
+      .chapter-toc a:hover {
+        color: #243b63;
+        background: #f0edff;
+        padding-left: 15px;
+      }
+
+      .chapter-toc .toc-sub {
+        padding-left: 13px;
+      }
+
+      .chapter-content {
+        min-width: 0;
+      }
+
+      .chapter-section {
+        background: #fff;
+        border: 1px solid #dce1e8;
+        border-radius: 12px;
+        padding: 24px;
+        margin-bottom: 24px;
+        scroll-margin-top: 20px;
+      }
+
+      .chapter-section h2 {
+        color: #243b63;
+        margin-top: 0;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #e5e7eb;
+      }
+
+      .chapter-section h3 {
+        color: #344b70;
+        margin-top: 25px;
+      }
+
+      .chapter-section p {
+        color: #4f5f75;
+        line-height: 1.7;
+      }
+
+      .demo-box {
+        border: 1px solid #e1e6ef;
+        border-radius: 10px;
+        padding: 18px;
+        margin: 14px 0;
+        background: #fbfcff;
+        overflow-wrap: anywhere;
+      }
+
+      .demo-label {
+        display: block;
+        color: #8b5e3c;
+        font-size: 12px;
+        font-weight: bold;
+        letter-spacing: 1px;
+        margin-bottom: 10px;
+      }
+
+      .demo-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 12px;
+      }
+
+      .demo-tile {
+        border: 1px solid #e1e6ef;
+        border-radius: 8px;
+        padding: 14px;
+        background: #fff;
+        min-width: 0;
+      }
+
+      .note-box {
+        border-left: 4px solid #8b5e3c;
+        background: #fff8f2;
+        padding: 12px 15px;
+        border-radius: 0 8px 8px 0;
+        margin-top: 16px;
+        line-height: 1.6;
+      }
+
+      .chapter-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 12px 0;
+      }
+
+      .chapter-table th,
+      .chapter-table td {
+        border: 1px solid #dce1e8;
+        padding: 11px 12px;
+        text-align: left;
+        color: #4f5f75;
+      }
+
+      .chapter-table th {
+        background: #f2f4fa;
+        color: #243b63;
+      }
+
+      @media (max-width: 800px) {
+        .chapter-container {
+          grid-template-columns: 1fr;
+          gap: 18px;
+          margin-top: 20px;
+        }
+        .chapter-sidebar {
+          position: static;
+        }
+        .chapter-section {
+          padding: 18px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="menu">
+      <a href="HomePage.html" class="logo">BIBLUNE</a>
+      <ul>
+        <li><a href="HomePage.html">Home</a></li>
+        <li><a href="#">Books</a></li>
+        <li><a href="#">Categories</a></li>
+        <li class="dropdown">
+          <details>
+            <summary>Chapter ▾</summary>
+            <div class="dropdown-content">
+              <a href="chapter_01.html">01. Getting to Know HTML</a>
+              <a href="chapter_02.html">02. HTML Elements</a>
+              <a href="chapter_03.html">03. HTML Styles</a>
+              <a href="chapter_04.html">04. Semantic HTML</a>
+              <a href="chapter_05.html">05. Web Forms</a>
+              <a href="chapter_06.html">06. HTML Multimedia</a>
+              <a href="chapter_07.html">07. HTML Graphics</a>
+              <a href="chapter_08.html">08. HTML Advanced</a>
+              <a href="chapter_09.html">09. HTML Events</a>
+              <a href="chapter_10.html">10. HTML APIs</a>
+              <a href="chapter_11.html">11. Getting to Know CSS</a>
+              <a href="chapter_12.html">12. CSS Selectors</a>
+              <a href="chapter_13.html">13. CSS Cascading</a>
+              <a href="chapter_14.html">14. CSS Box Model</a>
+              <a href="chapter_15.html">15. CSS Colors</a>
+              <a href="chapter_16.html">16. CSS Text</a>
+              <a href="chapter_17.html">17. CSS Backgrounds</a>
+              <a href="chapter_18.html">18. CSS Display</a>
+              <a href="chapter_19.html">19. CSS Layout</a>
+              <a href="chapter_20.html">20. CSS Transitions and Animations</a>
+              <a href="chapter_21.html">21. Advanced CSS</a>
+              <a href="chapter_22.html">22. Responsive CSS</a>
+            </div>
+          </details>
+        </li>
+        <li><a href="#info">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <section class="chapter-heading">
+      <p class="eyebrow">CHAPTER 16</p>
+      <h1>CSS TEXT</h1>
+      <p>
+        Explore text rendering, spacing, positioning, and font properties
+        through practical bookshop examples.
+      </p>
+    </section>
+    <div class="chapter-container">
+      <aside class="chapter-sidebar">
+        <nav class="chapter-toc">
+          <h2>Chapter Contents</h2>
+          <ul>
+            <li><a href="#text-rendering">16.1 Text Rendering</a></li>
+            <li class="toc-sub"><a href="#text-color">Text Color</a></li>
+            <li class="toc-sub">
+              <a href="#text-decoration">Text Decoration</a>
+            </li>
+            <li class="toc-sub">
+              <a href="#text-transform">Text Transform</a>
+            </li>
+            <li class="toc-sub"><a href="#white-space">White Space</a></li>
+            <li class="toc-sub"><a href="#text-overflow">Text Overflow</a></li>
+            <li class="toc-sub">
+              <a href="#word-wrap-break">Word Wrap and Word Break</a>
+            </li>
+
+            <li><a href="#text-spacing">16.2 Text Spacing</a></li>
+            <li class="toc-sub">
+              <a href="#letter-spacing">Letter Spacing</a>
+            </li>
+            <li class="toc-sub"><a href="#word-spacing">Word Spacing</a></li>
+            <li class="toc-sub"><a href="#line-height">Line Height</a></li>
+            <li><a href="#text-position">16.3 Text Position</a></li>
+            <li class="toc-sub"><a href="#text-align">Text Alignment</a></li>
+            <li class="toc-sub"><a href="#text-indent">Text Indentation</a></li>
+            <li><a href="#text-fonts">16.4 Text Fonts</a></li>
+            <li class="toc-sub"><a href="#font-family">Font Family</a></li>
+            <li class="toc-sub"><a href="#font-size">Font Size</a></li>
+            <li class="toc-sub"><a href="#font-weight">Font Weight</a></li>
+            <li class="toc-sub"><a href="#font-style">Font Style</a></li>
+            <li class="toc-sub"><a href="#font-variant">Font Variant</a></li>
+            <li class="toc-sub"><a href="#font-face">@font-face</a></li>
+          </ul>
+        </nav>
+      </aside>
+      <main class="chapter-content">
+        <section class="chapter-section" id="text-rendering">
+          <h2>16.1 Text Rendering</h2>
+
+          <p>
+            Text rendering properties control the appearance and display of
+            text.
+          </p>
+
+          <h3 id="text-color">Text Color</h3>
+          <div class="demo-box">
+            <span class="demo-label">Live Output</span>
+            <p style="color: #8b3d79">
+              A little world of books — color gives text personality.
+            </p>
+          </div>
+
+          <h3 id="text-decoration">Text Decoration</h3>
+          <div class="demo-box">
+            <span class="demo-label">Live Output</span>
+            <p
+              style="
+                text-decoration: underline wavy #8b5e3c;
+                text-underline-offset: 5px;
+              "
+            >
+              Discover stories worth remembering.
+            </p>
+          </div>
+
+          <h3 id="text-transform">Text Transform</h3>
+          <div class="demo-grid">
+            <div class="demo-tile">
+              <span class="demo-label">Uppercase</span>
+              <p style="text-transform: uppercase">a little world of books</p>
+            </div>
+
+            <div class="demo-tile">
+              <span class="demo-label">Capitalize</span>
+              <p style="text-transform: capitalize">a little world of books</p>
+            </div>
+          </div>
+
+          <h3 id="white-space">White Space</h3>
+          <div class="demo-box">
+            <span class="demo-label">Pre-line Output</span>
+            <p
+              style="white-space: pre-line; background: #f0edff; padding: 10px"
+            >
+              Every story begins somewhere. Find your next favorite here.
+            </p>
+          </div>
+
+          <h3 id="text-overflow">Text Overflow</h3>
+          <div class="demo-box">
+            <span class="demo-label">Ellipsis Output</span>
+            <div
+              style="
+                width: 220px;
+                max-width: 100%;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                border: 1px solid #b9c3d4;
+                padding: 8px;
+              "
+            >
+              A wonderful collection of books for every curious reader
+            </div>
+          </div>
+
+          <h3 id="word-wrap-break">Word Wrap and Word Break</h3>
+          <div class="demo-grid">
+            <div class="demo-tile">
+              <span class="demo-label">Overflow Wrap</span>
+              <div
+                style="
+                  width: 100%;
+                  overflow-wrap: anywhere;
+                  border: 1px dashed #8b5e3c;
+                  padding: 10px;
+                "
+              >
+                An extraordinarilylongwordthatneedswrapping
+              </div>
+            </div>
+
+            <div class="demo-tile">
+              <span class="demo-label">Word Break</span>
+              <div
+                style="
+                  width: 100%;
+                  word-break: break-all;
+                  border: 1px dashed #8b5e3c;
+                  padding: 10px;
+                "
+              >
+                An extraordinarilylongwordthatcanbreakanywhere
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="chapter-section" id="text-spacing">
+          <h2>16.2 Text Spacing</h2>
+          <p>
+            Text spacing properties control gaps between letters, words and
+            lines.
+          </p>
+          <h3 id="letter-spacing">Letter Spacing</h3>
+          <div class="demo-box">
+            <span class="demo-label">Live Output</span>
+            <p style="letter-spacing: 4px">BIBLUNE BOOKS</p>
+          </div>
+
+          <h3 id="word-spacing">Word Spacing</h3>
+          <div class="demo-box">
+            <span class="demo-label">Live Output</span>
+            <p style="word-spacing: 12px">Read discover imagine</p>
+          </div>
+
+          <h3 id="line-height">Line Height</h3>
+          <div class="demo-box">
+            <span class="demo-label">Live Output</span>
+            <p style="line-height: 2">
+              A good book can open a new door.<br />
+              Every page can lead to another world.<br />
+              Enjoy the journey.
+            </p>
+          </div>
+        </section>
+
+        <section class="chapter-section" id="text-position">
+          <h2>16.3 Text Position</h2>
+
+          <p>
+            Alignment and indentation help organize paragraphs and improve
+            readability.
+          </p>
+
+          <h3 id="text-align">Text Alignment</h3>
+          <div class="demo-grid">
+            <div class="demo-tile">
+              <span class="demo-label">Left</span>
+              <p style="text-align: left">Stories connect us.</p>
+            </div>
+
+            <div class="demo-tile">
+              <span class="demo-label">Center</span>
+              <p style="text-align: center">Stories connect us.</p>
+            </div>
+
+            <div class="demo-tile">
+              <span class="demo-label">Right</span>
+              <p style="text-align: right">Stories connect us.</p>
+            </div>
+          </div>
+
+          <h3 id="text-indent">Text Indentation</h3>
+          <div class="demo-box">
+            <span class="demo-label">Live Output</span>
+            <p style="text-indent: 35px">
+              A quiet corner and a good book can turn an ordinary afternoon into
+              a memorable adventure.
+            </p>
+          </div>
+        </section>
+
+        <section class="chapter-section" id="text-fonts">
+          <h2>16.4 Text Fonts</h2>
+
+          <p>
+            Font properties control the typeface, size, weight, style and
+            variant of text.
+          </p>
+
+          <div class="demo-grid">
+            <div class="demo-tile" id="font-family">
+              <span class="demo-label">Font Family</span>
+              <p style="font-family: Georgia, serif">
+                A classic bookish typeface.
+              </p>
+            </div>
+
+            <div class="demo-tile" id="font-size">
+              <span class="demo-label">Font Size</span>
+              <p style="font-size: 24px">Read more.</p>
+            </div>
+
+            <div class="demo-tile" id="font-weight">
+              <span class="demo-label">Font Weight</span>
+              <p style="font-weight: 800">Bold and confident.</p>
+            </div>
+
+            <div class="demo-tile" id="font-style">
+              <span class="demo-label">Font Style</span>
+              <p style="font-style: italic">A gentle italic style.</p>
+            </div>
+
+            <div class="demo-tile" id="font-variant">
+              <span class="demo-label">Font Variant</span>
+              <p style="font-variant: small-caps">little world of books</p>
+            </div>
+
+            <div class="demo-tile" id="font-face">
+              <span class="demo-label">@font-face</span>
+              <p
+                style="
+                  font-family: &quot;Trebuchet MS&quot;, sans-serif;
+                  font-weight: bold;
+                  color: #243b63;
+                "
+              >
+                Custom fonts give a website its own identity.
+              </p>
+            </div>
+          </div>
+
+          <div class="note-box">
+            <strong>Remember:</strong> The @font-face rule allows a website to
+            load a custom font file. This visual sample uses an available font
+            and does not require an external font file.
+          </div>
+
+          <table class="chapter-table">
+            <thead>
+              <tr>
+                <th>Property</th>
+                <th>Purpose</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>color</td>
+                <td>Changes text color.</td>
+              </tr>
+              <tr>
+                <td>text-decoration</td>
+                <td>Adds or removes text decoration.</td>
+              </tr>
+              <tr>
+                <td>text-transform</td>
+                <td>Changes letter case presentation.</td>
+              </tr>
+              <tr>
+                <td>white-space</td>
+                <td>Controls spaces and line breaks.</td>
+              </tr>
+              <tr>
+                <td>text-overflow</td>
+                <td>Controls how clipped text is indicated.</td>
+              </tr>
+              <tr>
+                <td>overflow-wrap / word-break</td>
+                <td>Controls how long words wrap or break.</td>
+              </tr>
+              <tr>
+                <td>letter-spacing / word-spacing / line-height</td>
+                <td>Controls text spacing.</td>
+              </tr>
+              <tr>
+                <td>text-align / text-indent</td>
+                <td>Controls alignment and indentation.</td>
+              </tr>
+              <tr>
+                <td>Font properties</td>
+                <td>Control typography.</td>
+              </tr>
+              <tr>
+                <td>@font-face</td>
+                <td>Defines a custom font.</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="chapter-section">
+          <h2>Chapter Summary</h2>
+          <p>
+            CSS text properties help make content readable, consistent and
+            visually engaging. Choose clear fonts, comfortable spacing and
+            appropriate alignment.
+          </p>
+        </section>
+      </main>
+    </div>
+    <footer>
+      <p>BIBLUNE | HTML &amp; CSS Project</p>
+    </footer>
+  </body>
+</html>

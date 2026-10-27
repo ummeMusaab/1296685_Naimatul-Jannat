@@ -1,0 +1,1200 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chapter_12</title>
+    <style>
+      .logo {
+        font-family: cursive;
+        font-size: 35px;
+        font-style: italic;
+        background-color: hsl(287, 93%, 65%);
+        font-weight: bold;
+        color: #000000;
+        text-decoration: none;
+        letter-spacing: 2px;
+      }
+
+      .menu {
+        width: 100%;
+        background-color: hsl(287, 93%, 65%);
+        display: flow-root;
+        overflow: visible;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      .menu ul {
+        list-style: none;
+        margin-right: 30px;
+      }
+
+      .menu ul li {
+        font-family:
+          "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+        float: left;
+      }
+
+      .menu ul li a {
+        display: block;
+        padding: 14px 18px;
+        color: rgb(8, 8, 8);
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .menu ul li a:hover {
+        background-color: #520172;
+        color: rgb(251, 249, 249);
+      }
+
+      .dropdown {
+        position: relative;
+      }
+
+      .dropdown details summary {
+        display: block;
+        padding: 14px 18px;
+        color: black;
+        font-weight: bold;
+        cursor: pointer;
+        list-style: none;
+      }
+
+      .dropdown details summary:hover {
+        background-color: #520172;
+        color: #ffff;
+      }
+
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        min-width: 160px;
+        max-height: 300px;
+        overflow-y: auto;
+        background-color: hsl(287, 93%, 65%);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        opacity: 80%;
+        z-index: 1000;
+      }
+
+      .dropdown details[open] .dropdown-content {
+        display: block;
+      }
+
+      .dropdown-content a {
+        display: block;
+        padding: 10px 15px;
+        color: white;
+        text-decoration: none;
+        white-space: nowrap;
+      }
+
+      .dropdown-content a:hover {
+        background-color: #520172;
+        color: #ffffff;
+      }
+
+      footer p {
+        font-family:
+          "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+          "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+        text-align: center;
+        background-color: hsl(287, 93%, 65%);
+        color: #000;
+        padding: 12px;
+        margin-top: 40px;
+      }
+
+      .chapter-heading {
+        padding: 30px 20px;
+        text-align: center;
+        background: #ffffff;
+        border-bottom: 1px solid #dce1e8;
+      }
+
+      .chapter-heading .eyebrow {
+        color: #8b5e3c;
+        font-size: 13px;
+        font-weight: bold;
+        letter-spacing: 3px;
+      }
+
+      .chapter-heading h1 {
+        margin: 8px 0;
+        color: #243b63;
+        font-size: clamp(27px, 4vw, 38px);
+      }
+
+      .chapter-heading p {
+        color: #657187;
+      }
+
+      .container {
+        display: flex;
+        gap: 25px;
+        padding: 25px;
+        align-items: flex-start;
+      }
+
+      .toc {
+        width: 270px;
+        min-width: 210px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 12px;
+        position: sticky;
+        top: 100px;
+        max-height: 85vh;
+        overflow-y: auto;
+      }
+
+      .toc h2 {
+        color: #6b3fa0;
+        font-size: 20px;
+      }
+
+      .toc a {
+        display: block;
+        color: #333;
+        text-decoration: none;
+        padding: 7px 0;
+        font-size: 14px;
+      }
+
+      .toc a:hover {
+        color: #8a2be2;
+      }
+
+      main {
+        flex: 1;
+        min-width: 0;
+      }
+
+      section {
+        background-color: white;
+        padding: 25px;
+        margin-bottom: 25px;
+        border-radius: 12px;
+        box-shadow: 0 3px 10px #ddd;
+      }
+
+      h2,
+      h3 {
+        color: #6b3fa0;
+      }
+
+      .demo {
+        background-color: #f4f0fa;
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 15px;
+      }
+
+      .demo-card {
+        background-color: white;
+        border: 1px solid #ddd;
+        padding: 15px;
+        margin: 12px 0;
+        border-radius: 8px;
+      }
+
+      .sample-list {
+        padding-left: 25px;
+      }
+
+      .sample-list li {
+        padding: 5px;
+      }
+
+      button {
+        background-color: #8a2be2;
+        color: white;
+        border: none;
+        padding: 10px 16px;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+
+      input,
+      select,
+      textarea {
+        padding: 9px;
+        border: 1px solid #aaa;
+        border-radius: 5px;
+        margin: 5px;
+      }
+
+      footer {
+        text-align: center;
+        background-color: #24213e;
+        color: white;
+        padding: 15px;
+      }
+
+      #universal-demo * {
+        outline: 1px dashed #8a2be2;
+      }
+
+      #type-demo p {
+        color: #287a55;
+      }
+
+      #id-demo #special-book {
+        color: #8a2be2;
+        font-weight: bold;
+        background-color: #f9e986;
+        padding: 8px;
+      }
+
+      #class-demo .featured {
+        color: #b05b20;
+        font-weight: bold;
+      }
+
+      #multiple-class-demo .book.featured {
+        background-color: #e8ddf7;
+        border: 2px solid #8a2be2;
+        padding: 10px;
+      }
+
+      #link-demo a:link {
+        color: #287a55;
+      }
+
+      #link-demo a:visited {
+        color: #8a2be2;
+      }
+
+      #focus-demo input:focus {
+        outline: 3px solid #8a2be2;
+        background-color: #f4f0fa;
+      }
+
+      #hover-demo button:hover {
+        background-color: #f9e986;
+        color: #24213e;
+      }
+
+      #active-demo button:active {
+        background-color: #287a55;
+        transform: scale(0.95);
+      }
+
+      #enabled-demo input:enabled {
+        background-color: #e6f5e9;
+      }
+
+      #disabled-demo input:disabled {
+        background-color: #ddd;
+        cursor: not-allowed;
+      }
+
+      #checked-demo input:checked + label {
+        color: #287a55;
+        font-weight: bold;
+      }
+
+      #invalid-demo input:invalid {
+        border: 2px solid #d62828;
+      }
+
+      #required-demo input:required {
+        background-color: #fff6d5;
+      }
+
+      #out-of-range-demo input:out-of-range {
+        border: 2px solid #d62828;
+        background-color: #ffe5e5;
+      }
+
+      #first-child-demo li:first-child {
+        color: #8a2be2;
+        font-weight: bold;
+      }
+
+      #last-child-demo li:last-child {
+        color: #b05b20;
+        font-weight: bold;
+      }
+
+      #nth-child-demo li:nth-child(2) {
+        background-color: #f9e986;
+      }
+
+      #nth-last-child-demo li:nth-last-child(2) {
+        background-color: #e8ddf7;
+      }
+
+      #only-child-demo p:only-child {
+        color: #287a55;
+        font-weight: bold;
+      }
+
+      #first-of-type-demo p:first-of-type {
+        color: #8a2be2;
+        font-weight: bold;
+      }
+
+      #last-of-type-demo p:last-of-type {
+        color: #b05b20;
+        font-weight: bold;
+      }
+
+      #nth-of-type-demo p:nth-of-type(2) {
+        background-color: #f9e986;
+      }
+
+      #nth-last-of-type-demo p:nth-last-of-type(2) {
+        background-color: #e8ddf7;
+      }
+
+      #only-of-type-demo p:only-of-type {
+        color: #287a55;
+        font-weight: bold;
+      }
+
+      :root {
+        --chapter-color: #6b3fa0;
+      }
+
+      #root-demo {
+        border-left: 5px solid var(--chapter-color);
+        padding-left: 12px;
+      }
+
+      #empty-demo .empty-box:empty {
+        height: 30px;
+        background-color: #f9e986;
+        border: 2px dashed #8a2be2;
+      }
+
+      #target-demo p:target {
+        background-color: #f9e986;
+        border: 2px solid #8a2be2;
+        padding: 10px;
+      }
+
+      #not-demo p:not(.special) {
+        color: #b05b20;
+      }
+
+      #chain-demo a:hover:active {
+        color: #287a55;
+        font-weight: bold;
+      }
+
+      #first-letter-demo p::first-letter {
+        color: #8a2be2;
+        font-size: 35px;
+        font-weight: bold;
+      }
+
+      #first-line-demo p::first-line {
+        color: #287a55;
+        font-weight: bold;
+      }
+
+      #before-demo p::before {
+        content: "📚 ";
+      }
+
+      #after-demo p::after {
+        content: " ✨";
+      }
+
+      #selection-demo p::selection {
+        background-color: #f9e986;
+        color: #24213e;
+      }
+
+      #descendant-demo div p {
+        color: #8a2be2;
+      }
+
+      #child-demo > p {
+        color: #287a55;
+        font-weight: bold;
+      }
+
+      #adjacent-demo h3 + p {
+        background-color: #f9e986;
+        padding: 8px;
+      }
+
+      #general-sibling-demo h3 ~ p {
+        color: #b05b20;
+      }
+
+      #attribute-exists-demo input[placeholder] {
+        border: 2px solid #8a2be2;
+      }
+
+      #attribute-value-demo input[type="email"] {
+        background-color: #e8ddf7;
+      }
+
+      #attribute-hyphen-demo [lang|="en"] {
+        color: #287a55;
+        font-weight: bold;
+      }
+
+      #attribute-word-demo [class~="featured"] {
+        background-color: #f9e986;
+        padding: 8px;
+      }
+
+      #attribute-start-demo a[href^="https"] {
+        color: #287a55;
+      }
+
+      #attribute-end-demo a[href$=".pdf"] {
+        color: #b05b20;
+        font-weight: bold;
+      }
+
+      #attribute-contains-demo a[href*="book"] {
+        background-color: #e8ddf7;
+        padding: 5px;
+      }
+
+      #grouping-demo h3,
+      #grouping-demo p,
+      #grouping-demo span {
+        color: #8a2be2;
+        font-weight: bold;
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          flex-direction: column;
+          padding: 12px;
+        }
+
+        .toc {
+          position: static;
+          width: auto;
+          max-height: none;
+        }
+
+        nav a {
+          display: inline-block;
+          margin: 6px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="menu">
+      <a href="HomePage.html" class="logo">BIBLUNE</a>
+      <ul>
+        <li><a href="HomePage.html">Home</a></li>
+        <li><a href="#">Books</a></li>
+        <li><a href="#">Categories</a></li>
+        <li class="dropdown">
+          <details>
+            <summary>Chapter ▾</summary>
+            <div class="dropdown-content">
+              <a href="chapter_01.html">01. Getting to Know HTML</a>
+              <a href="chapter_02.html">02. HTML Elements</a>
+              <a href="chapter_03.html">03. HTML Styles</a>
+              <a href="chapter_04.html">04. Semantic HTML</a>
+              <a href="chapter_05.html">05. Web Forms</a>
+              <a href="chapter_06.html">06. HTML Multimedia</a>
+              <a href="chapter_07.html">07. HTML Graphics</a>
+              <a href="chapter_08.html">08. HTML Advanced</a>
+              <a href="chapter_09.html">09. HTML Events</a>
+              <a href="chapter_10.html">10. HTML APIs</a>
+              <a href="chapter_11.html">11. Getting to Know CSS</a>
+              <a href="chapter_12.html">12. CSS Selectors</a>
+              <a href="chapter_13.html">13. CSS Cascading</a>
+              <a href="chapter_14.html">14. CSS Box Model</a>
+              <a href="chapter_15.html">15. CSS Colors</a>
+              <a href="chapter_16.html">16. CSS Text</a>
+              <a href="chapter_17.html">17. CSS Backgrounds</a>
+              <a href="chapter_18.html">18. CSS Display</a>
+              <a href="chapter_19.html">19. CSS Layout</a>
+              <a href="chapter_20.html">20. CSS Transitions and Animations</a>
+              <a href="chapter_21.html">21. Advanced CSS</a>
+              <a href="chapter_22.html">22. Responsive CSS</a>
+            </div>
+          </details>
+        </li>
+        <li><a href="#info">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <section class="chapter-heading">
+      <p class="eyebrow">CHAPTER 12</p>
+      <h1>CSS Selectors</h1>
+    </section>
+    <div class="container">
+      <aside class="toc">
+        <h2>Table of Contents</h2>
+        <a href="#universal">12.1 Universal Selector</a>
+        <a href="#type">12.2 Type Selector</a>
+        <a href="#id">12.3 ID Selector</a>
+        <a href="#class">12.4 Class Selector</a>
+        <a href="#multiple-class">12.5 Multiple-Class Selector</a>
+        <a href="#pseudo-class">12.6 CSS Pseudo-Class</a>
+        <a href="#link-status">12.6.1 Status of Links</a>
+        <a href="#link">12.6.1.1 :link</a>
+        <a href="#visited">12.6.1.2 :visited</a>
+        <a href="#cursor-interaction">12.6.2 Cursor Interaction</a>
+        <a href="#focus">12.6.2.1 :focus</a>
+        <a href="#hover">12.6.2.2 :hover</a>
+        <a href="#active">12.6.2.3 :active</a>
+        <a href="#element-status">12.6.3 Status of Elements</a>
+        <a href="#enabled">12.6.3.1 :enabled</a>
+        <a href="#disabled">12.6.3.2 :disabled</a>
+        <a href="#checked">12.6.3.3 :checked</a>
+        <a href="#form-validation">12.6.4 Form Validation</a>
+        <a href="#invalid">12.6.4.1 :invalid</a>
+        <a href="#required">12.6.4.2 :required</a>
+        <a href="#out-of-range">12.6.4.3 :out-of-range</a>
+        <a href="#child-elements">12.6.5 Child Elements</a>
+        <a href="#first-child">12.6.5.1 :first-child</a>
+        <a href="#last-child">12.6.5.2 :last-child</a>
+        <a href="#nth-child">12.6.5.3 :nth-child(N)</a>
+        <a href="#nth-last-child">12.6.5.4 :nth-last-child(N)</a>
+        <a href="#only-child">12.6.5.5 :only-child</a>
+        <a href="#type-elements">12.6.6 Type of Elements</a>
+        <a href="#first-of-type">12.6.6.1 :first-of-type</a>
+        <a href="#last-of-type">12.6.6.2 :last-of-type</a>
+        <a href="#nth-of-type">12.6.6.3 :nth-of-type(N)</a>
+        <a href="#nth-last-of-type">12.6.6.4 :nth-last-of-type(N)</a>
+        <a href="#only-of-type">12.6.6.5 :only-of-type</a>
+        <a href="#others">12.6.7 Other Pseudo-classes</a>
+        <a href="#root">12.6.7.1 :root</a>
+        <a href="#empty">12.6.7.2 :empty</a>
+        <a href="#target">12.6.7.3 :target</a>
+        <a href="#not">12.6.7.4 :not(selector)</a>
+        <a href="#chain">12.6.8 Pseudo-class Chain</a>
+        <a href="#pseudo-element">12.7 CSS Pseudo-Element</a>
+        <a href="#first-letter">12.7.1 ::first-letter</a>
+        <a href="#first-line">12.7.2 ::first-line</a>
+        <a href="#before">12.7.3 ::before</a>
+        <a href="#after">12.7.4 ::after</a>
+        <a href="#selection">12.7.5 ::selection</a>
+        <a href="#combined">12.8 CSS Combined Selector</a>
+        <a href="#descendant">12.8.1 Descendant Selector</a>
+        <a href="#child">12.8.2 Child Selector</a>
+        <a href="#adjacent">12.8.3 Adjacent Sibling Selector</a>
+        <a href="#general-sibling">12.8.4 General Sibling Selector</a>
+        <a href="#attribute">12.9 CSS Attribute Selector</a>
+        <a href="#attribute-exists">12.9.1 [attribute]</a>
+        <a href="#attribute-value">12.9.2 [attribute="value"]</a>
+        <a href="#attribute-hyphen">12.9.3 [attribute|="value"]</a>
+        <a href="#attribute-word">12.9.4 [attribute~="value"]</a>
+        <a href="#attribute-start">12.9.5 [attribute^="value"]</a>
+        <a href="#attribute-end">12.9.6 [attribute$="value"]</a>
+        <a href="#attribute-contains">12.9.7 [attribute*="value"]</a>
+        <a href="#grouping">12.10 Selector Grouping</a>
+      </aside>
+      <main>
+        <section id="universal">
+          <h2>12.1 Universal Selector</h2>
+          <p>The universal selector selects all elements on a webpage.</p>
+          <div class="demo" id="universal-demo">
+            <h3>Book Collection</h3>
+            <p>Every element in this box is outlined.</p>
+            <span>Universal Selector Demo</span>
+          </div>
+        </section>
+        <section id="type">
+          <h2>12.2 Type Selector</h2>
+          <p>A type selector selects all elements of a specified HTML tag.</p>
+          <div class="demo" id="type-demo">
+            <p>Paragraph One</p>
+            <p>Paragraph Two</p>
+            <h3>Heading Elements Are Not Selected</h3>
+          </div>
+        </section>
+        <section id="id">
+          <h2>12.3 ID Selector</h2>
+          <p>An ID selector selects an element with a specific ID.</p>
+          <div class="demo" id="id-demo">
+            <p id="special-book">The Secret Garden</p>
+            <p>Pride and Prejudice</p>
+          </div>
+        </section>
+        <section id="class">
+          <h2>12.4 Class Selector</h2>
+          <p>A class selector selects elements with a specified class name.</p>
+          <div class="demo" id="class-demo">
+            <p class="featured">Featured Book</p>
+            <p class="featured">Editor's Choice</p>
+            <p>Regular Book</p>
+          </div>
+        </section>
+        <section id="multiple-class">
+          <h2>12.5 Multiple-Class Selector</h2>
+          <p>
+            A multiple-class selector selects an element that has more than one
+            specified class.
+          </p>
+          <div class="demo" id="multiple-class-demo">
+            <p class="book featured">Book with Both Classes</p>
+            <p class="book">Book with One Class</p>
+            <p class="featured">Featured Item</p>
+          </div>
+        </section>
+        <section id="pseudo-class">
+          <h2>12.6 CSS Pseudo-Class</h2>
+          <p>
+            A pseudo-class selects an element based on its state or position.
+          </p>
+          <div class="demo">
+            <p>
+              Pseudo-classes can respond to user interaction, form status, and
+              element position.
+            </p>
+          </div>
+        </section>
+        <section id="link-status">
+          <h2>12.6.1 Status of Links</h2>
+          <p>
+            Link pseudo-classes style hyperlinks based on their browsing status.
+          </p>
+        </section>
+        <section id="link">
+          <h2>12.6.1.1 :link</h2>
+          <p>
+            The :link pseudo-class selects links that have not been visited.
+          </p>
+          <div class="demo" id="link-demo">
+            <a href="https://www.alkawsar.com/bn/"> Visit Example Website </a>
+          </div>
+        </section>
+        <section id="visited">
+          <h2>12.6.1.2 :visited</h2>
+          <p>
+            The :visited pseudo-class selects links that the browser recognizes
+            as visited.
+          </p>
+          <div class="demo" id="link-demo">
+            <a href="https://www.wikipedia.org"> Visit Wikipedia </a>
+            <p>The link color may change after visiting it.</p>
+          </div>
+        </section>
+        <section id="cursor-interaction">
+          <h2>12.6.2 Cursor Interaction</h2>
+          <p>
+            These pseudo-classes respond to the user's interaction with
+            elements.
+          </p>
+        </section>
+        <section id="focus">
+          <h2>12.6.2.1 :focus</h2>
+          <p>
+            The :focus pseudo-class selects an element when it receives focus.
+          </p>
+          <div class="demo" id="focus-demo">
+            <input type="text" placeholder="Click or tab into this field" />
+          </div>
+        </section>
+        <section id="hover">
+          <h2>12.6.2.2 :hover</h2>
+          <p>
+            The :hover pseudo-class selects an element when the pointer moves
+            over it.
+          </p>
+          <div class="demo" id="hover-demo">
+            <button>Move Your Pointer Here</button>
+          </div>
+        </section>
+        <section id="active">
+          <h2>12.6.2.3 :active</h2>
+          <p>
+            The :active pseudo-class selects an element while it is being
+            activated.
+          </p>
+          <div class="demo" id="active-demo">
+            <button>Press and Hold</button>
+          </div>
+        </section>
+        <section id="element-status">
+          <h2>12.6.3 Status of Elements</h2>
+
+          <p>
+            These pseudo-classes select form controls based on their current
+            state.
+          </p>
+        </section>
+        <section id="enabled">
+          <h2>12.6.3.1 :enabled</h2>
+          <p>The :enabled pseudo-class selects enabled form controls.</p>
+          <div class="demo" id="enabled-demo">
+            <input type="text" value="Enabled Input" />
+          </div>
+        </section>
+        <section id="disabled">
+          <h2>12.6.3.2 :disabled</h2>
+          <p>The :disabled pseudo-class selects disabled form controls.</p>
+          <div class="demo" id="disabled-demo">
+            <input type="text" value="Disabled Input" disabled />
+          </div>
+        </section>
+        <section id="checked">
+          <h2>12.6.3.3 :checked</h2>
+          <p>
+            The :checked pseudo-class selects checked radio buttons and
+            checkboxes.
+          </p>
+          <div class="demo" id="checked-demo">
+            <input type="checkbox" id="reading" checked />
+            <label for="reading"> I love reading books. </label>
+          </div>
+        </section>
+        <section id="form-validation">
+          <h2>12.6.4 Form Validation</h2>
+          <p>
+            Form validation pseudo-classes select inputs based on their validity
+            and constraints.
+          </p>
+        </section>
+        <section id="invalid">
+          <h2>12.6.4.1 :invalid</h2>
+          <p>
+            The :invalid pseudo-class selects form elements that do not satisfy
+            their rules.
+          </p>
+          <div class="demo" id="invalid-demo">
+            <input
+              type="email"
+              value="not-an-email"
+              aria-label="Invalid email example"
+            />
+            <p>This email field contains an invalid value.</p>
+          </div>
+        </section>
+        <section id="required">
+          <h2>12.6.4.2 :required</h2>
+          <p>
+            The :required pseudo-class selects form elements that have the
+            required attribute.
+          </p>
+          <div class="demo" id="required-demo">
+            <input type="text" required placeholder="Required field" />
+            <input type="text" placeholder="Optional field" />
+          </div>
+        </section>
+        <section id="out-of-range">
+          <h2>12.6.4.3 :out-of-range</h2>
+          <p>
+            The :out-of-range pseudo-class selects number inputs whose value is
+            outside the range.
+          </p>
+          <div class="demo" id="out-of-range-demo">
+            <label for="rating"> Book Rating (1–5): </label>
+            <input type="number" id="rating" min="1" max="5" value="8" />
+          </div>
+        </section>
+        <section id="child-elements">
+          <h2>12.6.5 Child Elements</h2>
+          <p>
+            Child pseudo-classes select elements according to their position
+            among siblings.
+          </p>
+        </section>
+        <section id="first-child">
+          <h2>12.6.5.1 :first-child</h2>
+          <div class="demo" id="first-child-demo">
+            <ul class="sample-list">
+              <li>First Book</li>
+              <li>Second Book</li>
+              <li>Third Book</li>
+            </ul>
+          </div>
+        </section>
+        <section id="last-child">
+          <h2>12.6.5.2 :last-child</h2>
+          <div class="demo" id="last-child-demo">
+            <ul class="sample-list">
+              <li>First Book</li>
+              <li>Second Book</li>
+              <li>Last Book</li>
+            </ul>
+          </div>
+        </section>
+        <section id="nth-child">
+          <h2>12.6.5.3 :nth-child(N)</h2>
+          <p>
+            The :nth-child(N) pseudo-class selects an element according to its
+            sibling position.
+          </p>
+          <div class="demo" id="nth-child-demo">
+            <ul class="sample-list">
+              <li>Book One</li>
+              <li>Book Two</li>
+              <li>Book Three</li>
+              <li>Book Four</li>
+            </ul>
+          </div>
+        </section>
+        <section id="nth-last-child">
+          <h2>12.6.5.4 :nth-last-child(N)</h2>
+          <p>
+            The :nth-last-child(N) pseudo-class counts from the last sibling.
+          </p>
+          <div class="demo" id="nth-last-child-demo">
+            <ul class="sample-list">
+              <li>Book One</li>
+              <li>Book Two</li>
+              <li>Book Three</li>
+              <li>Book Four</li>
+            </ul>
+          </div>
+        </section>
+        <section id="only-child">
+          <h2>12.6.5.5 :only-child</h2>
+          <p>
+            The :only-child pseudo-class selects an element that has no sibling
+            elements.
+          </p>
+          <div class="demo" id="only-child-demo">
+            <div class="demo-card">
+              <p>This paragraph is the only child.</p>
+            </div>
+            <div class="demo-card">
+              <p>First Paragraph</p>
+              <p>Second Paragraph</p>
+            </div>
+          </div>
+        </section>
+        <section id="type-elements">
+          <h2>12.6.6 Type of Elements</h2>
+          <p>
+            These pseudo-classes select elements according to their position
+            among elements of the same type.
+          </p>
+        </section>
+        <section id="first-of-type">
+          <h2>12.6.6.1 :first-of-type</h2>
+          <div class="demo" id="first-of-type-demo">
+            <div class="demo-card">
+              <h3>Book Shelf</h3>
+              <p>First Paragraph</p>
+              <p>Second Paragraph</p>
+              <span>A Book Label</span>
+            </div>
+          </div>
+        </section>
+        <section id="last-of-type">
+          <h2>12.6.6.2 :last-of-type</h2>
+          <div class="demo" id="last-of-type-demo">
+            <div class="demo-card">
+              <p>First Paragraph</p>
+              <span>Book Label</span>
+              <p>Last Paragraph</p>
+            </div>
+          </div>
+        </section>
+        <section id="nth-of-type">
+          <h2>12.6.6.3 :nth-of-type(N)</h2>
+          <div class="demo" id="nth-of-type-demo">
+            <div class="demo-card">
+              <h3>Reading List</h3>
+              <p>First Paragraph</p>
+              <span>Book Label</span>
+              <p>Second Paragraph</p>
+              <p>Third Paragraph</p>
+            </div>
+          </div>
+        </section>
+        <section id="nth-last-of-type">
+          <h2>12.6.6.4 :nth-last-of-type(N)</h2>
+          <div class="demo" id="nth-last-of-type-demo">
+            <div class="demo-card">
+              <p>First Paragraph</p>
+              <p>Second Paragraph</p>
+              <span>Book Label</span>
+              <p>Third Paragraph</p>
+            </div>
+          </div>
+        </section>
+        <section id="only-of-type">
+          <h2>12.6.6.5 :only-of-type</h2>
+          <div class="demo" id="only-of-type-demo">
+            <div class="demo-card">
+              <p>This is the only paragraph.</p>
+              <span>Book Label</span>
+            </div>
+            <div class="demo-card">
+              <p>First Paragraph</p>
+              <p>Second Paragraph</p>
+            </div>
+          </div>
+        </section>
+        <section id="others">
+          <h2>12.6.7 Other Pseudo-classes</h2>
+
+          <p>
+            Other pseudo-classes can select the root element, empty elements,
+            targeted elements, or elements that do not match a selector.
+          </p>
+        </section>
+        <section id="root">
+          <h2>12.6.7.1 :root</h2>
+          <p>
+            The :root pseudo-class selects the root element of the document.
+          </p>
+          <div class="demo" id="root-demo">
+            <p>This box uses a CSS custom property defined on :root.</p>
+          </div>
+        </section>
+        <section id="empty">
+          <h2>12.6.7.2 :empty</h2>
+          <p>The :empty pseudo-class selects elements that have no children.</p>
+          <div class="demo" id="empty-demo">
+            <div class="empty-box"></div>
+            <p>The yellow box above is empty.</p>
+            <div class="empty-box">This box is not empty.</div>
+          </div>
+        </section>
+        <section id="target">
+          <h2>12.6.7.3 :target</h2>
+          <p>
+            The :target pseudo-class selects the element whose ID matches the
+            URL fragment.
+          </p>
+          <div class="demo" id="target-demo">
+            <a href="#target-book"> Go to Target Book </a>
+            <p id="target-book">The Secret Garden</p>
+          </div>
+        </section>
+        <section id="not">
+          <h2>12.6.7.4 :not(selector)</h2>
+          <p>
+            The :not() pseudo-class selects elements that do not match the
+            specified selector.
+          </p>
+          <div class="demo" id="not-demo">
+            <p>Regular Book</p>
+            <p class="special">Special Book</p>
+            <p>Another Regular Book</p>
+          </div>
+        </section>
+        <section id="chain">
+          <h2>12.6.8 Pseudo-class Chain</h2>
+          <p>
+            Multiple pseudo-classes can be combined to select an element in more
+            than one state.
+          </p>
+          <div class="demo" id="chain-demo">
+            <a href="https://example.com"> Hover and Press This Link </a>
+          </div>
+        </section>
+        <section id="pseudo-element">
+          <h2>12.7 CSS Pseudo-Element</h2>
+          <p>A pseudo-element styles a specific part of an element.</p>
+        </section>
+        <section id="first-letter">
+          <h2>12.7.1 ::first-letter</h2>
+          <div class="demo" id="first-letter-demo">
+            <p>Reading opens the door to imagination and knowledge.</p>
+          </div>
+        </section>
+        <section id="first-line">
+          <h2>12.7.2 ::first-line</h2>
+          <div class="demo" id="first-line-demo">
+            <p>
+              Books are wonderful companions. They help us explore new worlds,
+              learn new ideas, and discover exciting adventures.
+            </p>
+          </div>
+        </section>
+        <section id="before">
+          <h2>12.7.3 ::before</h2>
+          <p>
+            The ::before pseudo-element inserts generated content before an
+            element's content.
+          </p>
+          <div class="demo" id="before-demo">
+            <p>Explore the Book Collection</p>
+          </div>
+        </section>
+        <section id="after">
+          <h2>12.7.4 ::after</h2>
+          <p>
+            The ::after pseudo-element inserts generated content after an
+            element's content.
+          </p>
+          <div class="demo" id="after-demo">
+            <p>Happy Reading</p>
+          </div>
+        </section>
+        <section id="selection">
+          <h2>12.7.5 ::selection</h2>
+          <p>
+            The ::selection pseudo-element styles the part of text selected by
+            the user.
+          </p>
+          <div class="demo" id="selection-demo">
+            <p>Select this text to see the custom selection color.</p>
+          </div>
+        </section>
+        <section id="combined">
+          <h2>12.8 CSS Combined Selector</h2>
+          <p>
+            Combined selectors select elements based on relationships between
+            elements.
+          </p>
+        </section>
+        <section id="descendant">
+          <h2>12.8.1 Descendant Selector</h2>
+          <p>
+            The descendant selector selects elements inside another element at
+            any level.
+          </p>
+          <div class="demo" id="descendant-demo">
+            <div>
+              <p>Direct Descendant Paragraph</p>
+              <div>
+                <p>Nested Descendant Paragraph</p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section id="child">
+          <h2>12.8.2 Child Selector</h2>
+          <p>The child selector selects only direct children of an element.</p>
+          <div class="demo" id="child-demo">
+            <p>Direct Child Paragraph</p>
+            <div>
+              <p>Nested Paragraph</p>
+            </div>
+          </div>
+        </section>
+        <section id="adjacent">
+          <h2>12.8.3 Adjacent Sibling Selector</h2>
+          <p>
+            The adjacent sibling selector selects the first element immediately
+            after another.
+          </p>
+          <div class="demo" id="adjacent-demo">
+            <h3>Book Title</h3>
+            <p>This paragraph is immediately after the heading.</p>
+            <p>This paragraph is not immediately after the heading.</p>
+          </div>
+        </section>
+        <section id="general-sibling">
+          <h2>12.8.4 General Sibling Selector</h2>
+          <p>
+            The general sibling selector selects all matching siblings after an
+            element.
+          </p>
+          <div class="demo" id="general-sibling-demo">
+            <h3>Book Title</h3>
+            <p>First Paragraph after the heading</p>
+            <div>A different element</div>
+            <p>Another Paragraph after the heading</p>
+          </div>
+        </section>
+        <section id="attribute">
+          <h2>12.9 CSS Attribute Selector</h2>
+          <p>
+            Attribute selectors select HTML elements according to their
+            attributes and values.
+          </p>
+        </section>
+        <section id="attribute-exists">
+          <h2>12.9.1 [attribute]</h2>
+          <p>Selects elements that have a specified attribute.</p>
+          <div class="demo" id="attribute-exists-demo">
+            <input type="text" placeholder="This input has a placeholder" />
+            <input type="text" aria-label="Input without placeholder" />
+          </div>
+        </section>
+        <section id="attribute-value">
+          <h2>12.9.2 [attribute="value"]</h2>
+          <p>
+            Selects elements whose attribute exactly matches a specified value.
+          </p>
+          <div class="demo" id="attribute-value-demo">
+            <input type="email" placeholder="Email input" />
+
+            <input type="text" placeholder="Text input" />
+          </div>
+        </section>
+        <section id="attribute-hyphen">
+          <h2>12.9.3 [attribute|="value"]</h2>
+          <p>
+            Selects an attribute value that is exactly the given word or begins
+            with that word followed by a hyphen.
+          </p>
+          <div class="demo" id="attribute-hyphen-demo">
+            <p lang="en">English Text</p>
+            <p lang="en-US">American English</p>
+            <p lang="fr">French Text</p>
+          </div>
+        </section>
+        <section id="attribute-word">
+          <h2>12.9.4 [attribute~="value"]</h2>
+          <p>
+            Selects an element whose attribute contains a specified word in a
+            space-separated list.
+          </p>
+          <div class="demo" id="attribute-word-demo">
+            <p class="book featured">Featured Book</p>
+            <p class="book popular">Popular Book</p>
+            <p class="featured">Featured Item</p>
+          </div>
+        </section>
+        <section id="attribute-start">
+          <h2>12.9.5 [attribute^="value"]</h2>
+          <p>
+            Selects elements whose attribute value begins with a specified
+            string.
+          </p>
+          <div class="demo" id="attribute-start-demo">
+            <a href="https://example.com"> Secure Website </a>
+            <br /><br />
+            <a href="http://example.com"> Non-secure Website </a>
+          </div>
+        </section>
+        <section id="attribute-end">
+          <h2>12.9.6 [attribute$="value"]</h2>
+          <p>
+            Selects elements whose attribute value ends with a specified string.
+          </p>
+          <div class="demo" id="attribute-end-demo">
+            <a href="book-guide.pdf"> Download Book Guide (PDF) </a>
+            <br /><br />
+            <a href="book-cover.jpg"> View Book Cover (JPG) </a>
+          </div>
+        </section>
+        <section id="attribute-contains">
+          <h2>12.9.7 [attribute*="value"]</h2>
+          <p>
+            Selects elements whose attribute value contains a specified
+            substring.
+          </p>
+          <div class="demo" id="attribute-contains-demo">
+            <a href="book-list.html"> Book List </a>
+            <br /><br />
+            <a href="author-list.html"> Author List </a>
+          </div>
+        </section>
+        <section id="grouping">
+          <h2>12.10 Selector Grouping</h2>
+          <p>
+            Selector grouping applies the same styles to multiple selectors.
+          </p>
+          <div class="demo" id="grouping-demo">
+            <h3>Grouped Heading</h3>
+            <p>Grouped Paragraph</p>
+            <span>Grouped Text</span>
+          </div>
+        </section>
+      </main>
+    </div>
+    <footer>
+      <p>BIBLUNE | HTML &amp; CSS Project</p>
+    </footer>
+  </body>
+</html>

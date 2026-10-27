@@ -1,0 +1,751 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chapter_15</title>
+    <style>
+      .logo {
+        font-family: cursive;
+        font-size: 35px;
+        font-style: italic;
+        background-color: hsl(287, 93%, 65%);
+        font-weight: bold;
+        color: #000000;
+        text-decoration: none;
+        letter-spacing: 2px;
+      }
+
+      .menu {
+        width: 100%;
+        background-color: hsl(287, 93%, 65%);
+        display: flow-root;
+        overflow: visible;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      .menu ul {
+        list-style: none;
+        margin-right: 30px;
+      }
+
+      .menu ul li {
+        font-family:
+          "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+        float: left;
+      }
+
+      .menu ul li a {
+        display: block;
+        padding: 14px 18px;
+        color: rgb(8, 8, 8);
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .menu ul li a:hover {
+        background-color: #520172;
+        color: rgb(251, 249, 249);
+      }
+
+      .dropdown {
+        position: relative;
+      }
+
+      .dropdown details summary {
+        display: block;
+        padding: 14px 18px;
+        color: black;
+        font-weight: bold;
+        cursor: pointer;
+        list-style: none;
+      }
+
+      .dropdown details summary:hover {
+        background-color: #520172;
+        color: #ffff;
+      }
+
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        min-width: 160px;
+        max-height: 300px;
+        overflow-y: auto;
+        background-color: hsl(287, 93%, 65%);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        opacity: 80%;
+        z-index: 1000;
+      }
+
+      .dropdown details[open] .dropdown-content {
+        display: block;
+      }
+
+      .dropdown-content a {
+        display: block;
+        padding: 10px 15px;
+        color: white;
+        text-decoration: none;
+        white-space: nowrap;
+      }
+
+      .dropdown-content a:hover {
+        background-color: #520172;
+        color: #ffffff;
+      }
+
+      footer p {
+        font-family:
+          "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+          "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+        text-align: center;
+        background-color: hsl(287, 93%, 65%);
+        color: #000;
+        padding: 12px;
+        margin-top: 40px;
+      }
+
+      .chapter-heading {
+        padding: 30px 20px;
+        text-align: center;
+        background: #ffffff;
+        border-bottom: 1px solid #dce1e8;
+      }
+
+      .chapter-heading .eyebrow {
+        color: #8b5e3c;
+        font-size: 13px;
+        font-weight: bold;
+        letter-spacing: 3px;
+      }
+
+      .chapter-heading h1 {
+        margin: 8px 0;
+        color: #243b63;
+        font-size: clamp(27px, 4vw, 38px);
+      }
+
+      .chapter-heading p {
+        color: #657187;
+      }
+
+      .chapter-container {
+        display: grid;
+        grid-template-columns: 260px minmax(0, 1fr);
+        gap: 26px;
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 0 20px;
+        align-items: start;
+      }
+
+      .chapter-sidebar {
+        position: sticky;
+        top: 100px;
+      }
+
+      .chapter-toc {
+        background: #fff;
+        border: 1px solid #dce1e8;
+        border-radius: 12px;
+        padding: 20px;
+      }
+
+      .chapter-toc h2 {
+        color: #243b63;
+        font-size: 19px;
+        margin: 0 0 14px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #e5e7eb;
+      }
+
+      .chapter-toc ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .chapter-toc li {
+        margin: 5px 0;
+      }
+
+      .chapter-toc a {
+        display: block;
+        color: #52627a;
+        text-decoration: none;
+        padding: 8px 10px;
+        border-radius: 7px;
+        font-size: 14px;
+        transition: 0.3s;
+      }
+
+      .chapter-toc a:hover {
+        color: #243b63;
+        background: #f0edff;
+        padding-left: 15px;
+      }
+
+      .chapter-toc .toc-sub {
+        padding-left: 13px;
+      }
+
+      .color-demo {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin: 20px 0;
+      }
+
+      .color-box {
+        flex: 1 1 140px;
+        min-height: 110px;
+        padding: 20px;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        font-weight: bold;
+        border: 1px solid #ddd;
+      }
+
+      .color-box span {
+        margin-top: 8px;
+        font-size: 14px;
+        font-weight: normal;
+      }
+
+      .light-text {
+        color: white;
+      }
+
+      .dark-text {
+        color: #222;
+      }
+
+      .color-note {
+        padding: 15px;
+        margin: 15px 0;
+        border-left: 4px solid #c3bcfc;
+        background-color: #f7f5ff;
+        border-radius: 5px;
+      }
+
+      .color-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .color-table th,
+      .color-table td {
+        padding: 12px;
+        border: 1px solid #ddd;
+        text-align: left;
+      }
+
+      .color-table th {
+        background-color: #f9e986;
+      }
+
+      .color-swatch {
+        display: inline-block;
+        width: 22px;
+        height: 22px;
+        border: 1px solid #aaa;
+        vertical-align: middle;
+        margin-right: 8px;
+        border-radius: 4px;
+      }
+
+      @media (max-width: 600px) {
+        .color-demo {
+          flex-direction: column;
+        }
+
+        .color-box {
+          min-height: 90px;
+        }
+
+        .color-table th,
+        .color-table td {
+          padding: 8px;
+          font-size: 14px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="menu">
+      <a href="HomePage.html" class="logo">BIBLUNE</a>
+      <ul>
+        <li><a href="HomePage.html">Home</a></li>
+        <li><a href="#">Books</a></li>
+        <li><a href="#">Categories</a></li>
+        <li class="dropdown">
+          <details>
+            <summary>Chapter ▾</summary>
+            <div class="dropdown-content">
+              <a href="chapter_01.html">01. Getting to Know HTML</a>
+              <a href="chapter_02.html">02. HTML Elements</a>
+              <a href="chapter_03.html">03. HTML Styles</a>
+              <a href="chapter_04.html">04. Semantic HTML</a>
+              <a href="chapter_05.html">05. Web Forms</a>
+              <a href="chapter_06.html">06. HTML Multimedia</a>
+              <a href="chapter_07.html">07. HTML Graphics</a>
+              <a href="chapter_08.html">08. HTML Advanced</a>
+              <a href="chapter_09.html">09. HTML Events</a>
+              <a href="chapter_10.html">10. HTML APIs</a>
+              <a href="chapter_11.html">11. Getting to Know CSS</a>
+              <a href="chapter_12.html">12. CSS Selectors</a>
+              <a href="chapter_13.html">13. CSS Cascading</a>
+              <a href="chapter_14.html">14. CSS Box Model</a>
+              <a href="chapter_15.html">15. CSS Colors</a>
+              <a href="chapter_16.html">16. CSS Text</a>
+              <a href="chapter_17.html">17. CSS Backgrounds</a>
+              <a href="chapter_18.html">18. CSS Display</a>
+              <a href="chapter_19.html">19. CSS Layout</a>
+              <a href="chapter_20.html">20. CSS Transitions and Animations</a>
+              <a href="chapter_21.html">21. Advanced CSS</a>
+              <a href="chapter_22.html">22. Responsive CSS</a>
+            </div>
+          </details>
+        </li>
+        <li><a href="#info">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <section class="chapter-heading">
+      <p class="eyebrow">CHAPTER 15</p>
+      <h1>CSS Colors</h1>
+    </section>
+    <div class="chapter-container">
+      <aside class="chapter-sidebar">
+        <nav class="chapter-toc">
+          <h2>Chapter 15</h2>
+          <ul>
+            <li><a href="#color-names">15.1 Color Names</a></li>
+            <li><a href="#hex-colors">15.2 HEX Colors</a></li>
+            <li><a href="#rgb-colors">15.3 RGB Colors</a></li>
+            <li><a href="#grey-colors">15.4 Grey Colors</a></li>
+          </ul>
+        </nav>
+      </aside>
+      <main class="chapter-content">
+        <section id="color-names">
+          <h2>15.1 Color Names</h2>
+          <p>
+            CSS supports many predefined color names. These names can be used
+            directly to apply colors to HTML elements.
+          </p>
+          <div class="color-demo">
+            <div class="color-box light-text" style="background-color: red">
+              Red
+              <span>red</span>
+            </div>
+            <div class="color-box light-text" style="background-color: blue">
+              Blue
+              <span>blue</span>
+            </div>
+            <div class="color-box dark-text" style="background-color: yellow">
+              Yellow
+              <span>yellow</span>
+            </div>
+            <div class="color-box light-text" style="background-color: green">
+              Green
+              <span>green</span>
+            </div>
+            <div class="color-box light-text" style="background-color: tomato">
+              Tomato
+              <span>tomato</span>
+            </div>
+            <div class="color-box dark-text" style="background-color: pink">
+              Pink
+              <span>pink</span>
+            </div>
+          </div>
+          <div class="color-note">
+            <strong>Note:</strong>
+            CSS color names are easy to remember and use. For example, the color
+            name "tomato" represents a reddish color.
+          </div>
+        </section>
+        <section id="hex-colors">
+          <h2>15.2 HEX Colors</h2>
+          <p>
+            HEX colors are written using a hexadecimal value that starts with a
+            hash symbol (#). A HEX color contains six digits or letters: two for
+            red, two for green, and two for blue.
+          </p>
+          <div class="color-demo">
+            <div class="color-box light-text" style="background-color: #ff0000">
+              Red
+              <span>#FF0000</span>
+            </div>
+            <div class="color-box light-text" style="background-color: #0000ff">
+              Blue
+              <span>#0000FF</span>
+            </div>
+            <div class="color-box dark-text" style="background-color: #00ff00">
+              Lime
+              <span>#00FF00</span>
+            </div>
+            <div class="color-box dark-text" style="background-color: #ffff00">
+              Yellow
+              <span>#FFFF00</span>
+            </div>
+            <div class="color-box light-text" style="background-color: #800080">
+              Purple
+              <span>#800080</span>
+            </div>
+            <div class="color-box dark-text" style="background-color: #ffa500">
+              Orange
+              <span>#FFA500</span>
+            </div>
+          </div>
+          <h3>HEX Color Structure</h3>
+          <table class="color-table">
+            <tr>
+              <th>HEX Value</th>
+              <th>Color</th>
+              <th>Description</th>
+            </tr>
+            <tr>
+              <td>#FF0000</td>
+              <td>
+                <span
+                  class="color-swatch"
+                  style="background-color: #ff0000"
+                ></span>
+                Red
+              </td>
+              <td>Maximum red, no green or blue</td>
+            </tr>
+            <tr>
+              <td>#00FF00</td>
+              <td>
+                <span
+                  class="color-swatch"
+                  style="background-color: #00ff00"
+                ></span>
+                Lime
+              </td>
+              <td>Maximum green, no red or blue</td>
+            </tr>
+            <tr>
+              <td>#0000FF</td>
+              <td>
+                <span
+                  class="color-swatch"
+                  style="background-color: #0000ff"
+                ></span>
+                Blue
+              </td>
+              <td>Maximum blue, no red or green</td>
+            </tr>
+            <tr>
+              <td>#000000</td>
+              <td>
+                <span
+                  class="color-swatch"
+                  style="background-color: #000000"
+                ></span>
+                Black
+              </td>
+              <td>No red, green, or blue</td>
+            </tr>
+            <tr>
+              <td>#FFFFFF</td>
+              <td>
+                <span
+                  class="color-swatch"
+                  style="background-color: #ffffff"
+                ></span>
+                White
+              </td>
+              <td>Maximum red, green, and blue</td>
+            </tr>
+          </table>
+          <div class="color-note">
+            <strong>Remember:</strong>
+            In a HEX color, the first two digits represent red, the next two
+            represent green, and the last two represent blue.
+          </div>
+        </section>
+        <section id="rgb-colors">
+          <h2>15.3 RGB Colors</h2>
+          <p>
+            RGB stands for Red, Green, and Blue. The RGB color function uses
+            three values to define a color.
+          </p>
+          <p>
+            Each value ranges from 0 to 255. A value of 0 means no intensity,
+            while 255 means maximum intensity.
+          </p>
+          <div class="color-demo">
+            <div
+              class="color-box light-text"
+              style="background-color: rgb(255, 0, 0)"
+            >
+              Red
+              <span>rgb(255, 0, 0)</span>
+            </div>
+            <div
+              class="color-box light-text"
+              style="background-color: rgb(0, 0, 255)"
+            >
+              Blue
+              <span>rgb(0, 0, 255)</span>
+            </div>
+            <div
+              class="color-box dark-text"
+              style="background-color: rgb(0, 255, 0)"
+            >
+              Green
+              <span>rgb(0, 255, 0)</span>
+            </div>
+            <div
+              class="color-box dark-text"
+              style="background-color: rgb(255, 255, 0)"
+            >
+              Yellow
+              <span>rgb(255, 255, 0)</span>
+            </div>
+            <div
+              class="color-box dark-text"
+              style="background-color: rgb(255, 165, 0)"
+            >
+              Orange
+              <span>rgb(255, 165, 0)</span>
+            </div>
+            <div
+              class="color-box light-text"
+              style="background-color: rgb(128, 0, 128)"
+            >
+              Purple
+              <span>rgb(128, 0, 128)</span>
+            </div>
+          </div>
+          <h3>RGB Color Values</h3>
+          <table class="color-table">
+            <tr>
+              <th>RGB Value</th>
+              <th>Color</th>
+              <th>Meaning</th>
+            </tr>
+            <tr>
+              <td>rgb(255, 0, 0)</td>
+              <td>
+                <span
+                  class="color-swatch"
+                  style="background-color: rgb(255, 0, 0)"
+                ></span>
+                Red
+              </td>
+              <td>Maximum red</td>
+            </tr>
+            <tr>
+              <td>rgb(0, 255, 0)</td>
+              <td>
+                <span
+                  class="color-swatch"
+                  style="background-color: rgb(0, 255, 0)"
+                ></span>
+                Green
+              </td>
+              <td>Maximum green</td>
+            </tr>
+            <tr>
+              <td>rgb(0, 0, 255)</td>
+              <td>
+                <span
+                  class="color-swatch"
+                  style="background-color: rgb(0, 0, 255)"
+                ></span>
+                Blue
+              </td>
+              <td>Maximum blue</td>
+            </tr>
+            <tr>
+              <td>rgb(0, 0, 0)</td>
+              <td>
+                <span
+                  class="color-swatch"
+                  style="background-color: rgb(0, 0, 0)"
+                ></span>
+                Black
+              </td>
+              <td>No color intensity</td>
+            </tr>
+            <tr>
+              <td>rgb(255, 255, 255)</td>
+              <td>
+                <span
+                  class="color-swatch"
+                  style="background-color: rgb(255, 255, 255)"
+                ></span>
+                White
+              </td>
+              <td>Maximum intensity of all colors</td>
+            </tr>
+          </table>
+          <div class="color-note">
+            <strong>Remember:</strong>
+            RGB colors are based on mixing red, green, and blue light.
+          </div>
+        </section>
+        <section id="grey-colors">
+          <h2>15.4 Grey Colors</h2>
+          <p>
+            Grey colors are created by using equal values of red, green, and
+            blue. Different values create different shades of grey.
+          </p>
+          <div class="color-demo">
+            <div class="color-box light-text" style="background-color: #000000">
+              Black
+              <span>#000000</span>
+            </div>
+            <div class="color-box light-text" style="background-color: #404040">
+              Dark Grey
+              <span>#404040</span>
+            </div>
+            <div class="color-box light-text" style="background-color: #808080">
+              Grey
+              <span>#808080</span>
+            </div>
+            <div class="color-box dark-text" style="background-color: #c0c0c0">
+              Silver
+              <span>#C0C0C0</span>
+            </div>
+            <div class="color-box dark-text" style="background-color: #d3d3d3">
+              Light Grey
+              <span>#D3D3D3</span>
+            </div>
+            <div class="color-box dark-text" style="background-color: #ffffff">
+              White
+              <span>#FFFFFF</span>
+            </div>
+          </div>
+          <h3>Different Shades of Grey</h3>
+          <table class="color-table">
+            <tr>
+              <th>Color Name</th>
+              <th>HEX Value</th>
+              <th>Color Preview</th>
+            </tr>
+            <tr>
+              <td>Black</td>
+              <td>#000000</td>
+              <td>
+                <span
+                  class="color-swatch"
+                  style="background-color: #000000"
+                ></span>
+              </td>
+            </tr>
+            <tr>
+              <td>Dim Grey</td>
+              <td>#696969</td>
+              <td>
+                <span
+                  class="color-swatch"
+                  style="background-color: #696969"
+                ></span>
+              </td>
+            </tr>
+            <tr>
+              <td>Grey</td>
+              <td>#808080</td>
+              <td>
+                <span
+                  class="color-swatch"
+                  style="background-color: #808080"
+                ></span>
+              </td>
+            </tr>
+            <tr>
+              <td>Dark Grey</td>
+              <td>#A9A9A9</td>
+              <td>
+                <span
+                  class="color-swatch"
+                  style="background-color: #a9a9a9"
+                ></span>
+              </td>
+            </tr>
+            <tr>
+              <td>Silver</td>
+              <td>#C0C0C0</td>
+              <td>
+                <span
+                  class="color-swatch"
+                  style="background-color: #c0c0c0"
+                ></span>
+              </td>
+            </tr>
+            <tr>
+              <td>Light Grey</td>
+              <td>#D3D3D3</td>
+              <td>
+                <span
+                  class="color-swatch"
+                  style="background-color: #d3d3d3"
+                ></span>
+              </td>
+            </tr>
+            <tr>
+              <td>Gainsboro</td>
+              <td>#DCDCDC</td>
+              <td>
+                <span
+                  class="color-swatch"
+                  style="background-color: #dcdcdc"
+                ></span>
+              </td>
+            </tr>
+            <tr>
+              <td>White Smoke</td>
+              <td>#F5F5F5</td>
+              <td>
+                <span
+                  class="color-swatch"
+                  style="background-color: #f5f5f5"
+                ></span>
+              </td>
+            </tr>
+            <tr>
+              <td>White</td>
+              <td>#FFFFFF</td>
+              <td>
+                <span
+                  class="color-swatch"
+                  style="background-color: #ffffff"
+                ></span>
+              </td>
+            </tr>
+          </table>
+          <div class="color-note">
+            <strong>Note:</strong>
+            Grey shades are formed by using the same intensity for red, green,
+            and blue. Lower values create darker grey shades, while higher
+            values create lighter shades.
+          </div>
+        </section>
+        <div class="chapter-navigation">
+          <a href="Chapter14.html"> ← Previous Chapter </a>
+          <a href="HomePage.html"> Back to Home </a>
+          <a href="#"> Next Chapter → </a>
+        </div>
+      </main>
+    </div>
+    <footer>
+      <p>BIBLUNE | HTML &amp; CSS Project</p>
+    </footer>
+  </body>
+</html>
