@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Books | BIBLUNE</title>
+    <style>
+      body {
+        font-family:
+          "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+      }
+      .logo {
+        font-family: cursive;
+        font-size: 35px;
+        font-style: italic;
+        background-color: #3d1748;
+        color: #fff8e8;
+        font-weight: bold;
+        text-decoration: none;
+        letter-spacing: 2px;
+      }
+
+      .menu {
+        width: 100%;
+        background-color: #3d1748;
+        display: flow-root;
+        overflow: visible;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      .menu ul {
+        list-style: none;
+        margin-right: 30px;
+      }
+
+      .menu ul li {
+        font-family:
+          "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+        float: left;
+      }
+
+      .menu ul li a {
+        display: block;
+        padding: 14px 18px;
+        color: #fff8e8;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .menu ul li a:hover {
+        background-color: #c9a66b;
+        color: #32183b;
+        border-radius: 10px;
+        transition: 0.5s;
+      }
+
+      .dropdown {
+        position: relative;
+      }
+
+      .dropdown details summary {
+        display: block;
+        padding: 14px 18px;
+        color: #fff8e8;
+        font-weight: bold;
+        cursor: pointer;
+        list-style: none;
+      }
+
+      .dropdown details summary:hover {
+        background-color: #c9a66b;
+        color: #32183b;
+        border-radius: 10px;
+        transition: 0.5s;
+      }
+
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        min-width: 160px;
+        max-height: 300px;
+        overflow-y: auto;
+        background-color: #3d1748;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        opacity: 80%;
+        z-index: 1000;
+      }
+
+      .dropdown details[open] .dropdown-content {
+        display: block;
+      }
+
+      .dropdown-content a {
+        display: block;
+        padding: 10px 15px;
+        color: #fff8e8;
+        text-decoration: none;
+        white-space: nowrap;
+      }
+
+      .dropdown-content a:hover {
+        background-color: #520172;
+        color: #ffffff;
+        border-radius: 10px;
+        transition: 0.5s;
+      }
+
+      .books-header {
+        text-align: center;
+        padding: 40px 15px 25px;
+        color: #b16502;
+        text-shadow: 1px 1px #000;
+      }
+
+      .books-header h1 {
+        font-family: Georgia, serif;
+        font-size: clamp(30px, 5vw, 45px);
+        margin-bottom: 12px;
+      }
+
+      .books-header p {
+        font-size: 19px;
+      }
+
+      .books-container {
+        width: 92%;
+        max-width: 1250px;
+        margin: 30px auto 50px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+        gap: 25px;
+        align-items: stretch;
+      }
+
+      .book-card {
+        overflow: hidden;
+        background: #fff8e8;
+        border: 1px solid #c9a66b;
+        border-radius: 10px;
+        text-align: center;
+        box-shadow: 0 4px rgba(0, 0, 0, 0.2);
+        transition: transform 0.2s ease;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+
+      .book-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .book-card img {
+        width: 100%;
+        height: 280px;
+        object-fit: contain;
+        padding: 12px;
+        box-sizing: border-box;
+        background: #f3ead8;
+      }
+
+      .book-details {
+        padding: 5px;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+      }
+
+      .book-details h2 {
+        color: #75502e;
+        font-size: 20px;
+        line-height: 1.4;
+        margin: 0 0 8px;
+        min-height: 2.8em;
+      }
+
+      .book-details .author {
+        font-size: 15px;
+      }
+
+      .book-details .price {
+        color: #7b2390;
+        font-size: 23px;
+        font-weight: bold;
+        margin: 12px 0;
+      }
+
+      .book-button {
+        display: inline-block;
+        margin-top: auto;
+        margin-bottom: 7px;
+        align-self: center;
+        padding: 10px 18px;
+        background-color: #c9a66b;
+        color: #32183b;
+        text-decoration: none;
+        font-weight: bold;
+        border-radius: 6px;
+        transition:
+          background-color 0.3s ease,
+          transform 0.3s ease;
+      }
+
+      .book-button:hover {
+        background-color: #520172;
+        color: #ffffff;
+        transition: .4s;
+      }
+
+      footer p {
+        font-family:
+          "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+          "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+        text-align: center;
+        background-color: #3d1748;
+        color: #fcfcfc;
+        padding: 12px;
+        margin-top: 40px;
+      }
+
+      @media (max-width: 800px) {
+        .books-container {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          width: 94%;
+          gap: 15px;
+        }
+
+        .book-card img {
+          height: 240px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .books-container {
+          grid-template-columns: 1fr;
+          max-width: 330px;
+        }
+        .book-card img {
+          height: 300px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="menu">
+      <a href="HomePage.html" class="logo">BIBLUNE</a>
+      <ul>
+        <li><a href="HomePage.html">Home</a></li>
+        <li><a href="Books.html">Books</a></li>
+        <li><a href="Categories.html">Categories</a></li>
+        <li class="dropdown">
+          <details>
+            <summary>Chapter ▾</summary>
+            <div class="dropdown-content">
+              <a href="chapter_01.html">01. Getting to Know HTML</a>
+              <a href="chapter_02.html">02. HTML Elements</a>
+              <a href="chapter_03.html">03. HTML Styles</a>
+              <a href="chapter_04.html">04. Semantic HTML</a>
+              <a href="chapter_05.html">05. Web Forms</a>
+              <a href="chapter_06.html">06. HTML Multimedia</a>
+              <a href="chapter_07.html">07. HTML Graphics</a>
+              <a href="chapter_08.html">08. HTML Advanced</a>
+              <a href="chapter_09.html">09. HTML Events</a>
+              <a href="chapter_10.html">10. HTML APIs</a>
+              <a href="chapter_11.html">11. Getting to Know CSS</a>
+              <a href="chapter_12.html">12. CSS Selectors</a>
+              <a href="chapter_13.html">13. CSS Cascading</a>
+              <a href="chapter_14.html">14. CSS Box Model</a>
+              <a href="chapter_15.html">15. CSS Colors</a>
+              <a href="chapter_16.html">16. CSS Text</a>
+              <a href="chapter_17.html">17. CSS Backgrounds</a>
+              <a href="chapter_18.html">18. CSS Display</a>
+              <a href="chapter_19.html">19. CSS Layout</a>
+              <a href="chapter_20.html">20. CSS Transitions and Animations</a>
+              <a href="chapter_21.html">21. Advanced CSS</a>
+              <a href="chapter_22.html">22. Responsive CSS</a>
+            </div>
+          </details>
+        </li>
+        <li><a href="#info">About</a></li>
+        <li><a href="Register.html">Registration</a></li>
+      </ul>
+    </div>
+    <header class="books-header">
+      <h1>Our Book Collection</h1>
+      <p>Discover a book, discover a new world.</p>
+    </header>
+
+    <main class="books-container">
+      <article class="book-card">
+        <img
+          src="Images/the-sord-250x390.jpg"
+          alt="The Sord of Allah book cover"
+        />
+        <div class="book-details">
+          <h2>The Sord of Allah</h2>
+          <p class="author">By Layutenant General A I Akram</p>
+          <p class="price">৳280</p>
+          <a href="#" class="book-button">View Details</a>
+        </div>
+      </article>
+
+      <article class="book-card">
+        <img
+          src="Images/tumi-sei-rani-250x381.jpg"
+          alt="Tumi Shei Rani book cover"
+        />
+        <div class="book-details">
+          <h2>Tumi Shei Rani</h2>
+          <p class="author">By Dr. Muhammad Bin Abdur Rahman</p>
+          <p class="price">৳250</p>
+          <a href="#" class="book-button">View Details</a>
+        </div>
+      </article>
+
+      <article class="book-card">
+        <img
+          src="Images/Itihasher Aynay.webp"
+          alt="Bortoman Bishaw Babostha book cover"
+        />
+        <div class="book-details">
+          <h2>Bortoman Bishaw Babostha</h2>
+          <p class="author">By Hedayetullah Mehmand</p>
+          <p class="price">৳344</p>
+          <a href="#" class="book-button">View Details</a>
+        </div>
+      </article>
+
+      <article class="book-card">
+        <img
+          src="Images/muslimder potone.webp"
+          alt="Muslimder Potone Bishaw ki Haralo book cover"
+        />
+        <div class="book-details">
+          <h2>Muslimder Potone Bishaw ki Haralo</h2>
+          <p class="author">By Sayed Abul Hasan Ali Nodovi</p>
+          <p class="price">৳400</p>
+          <a href="#" class="book-button">View Details</a>
+        </div>
+      </article>
+
+      <article class="book-card">
+        <img
+          src="Images/la-tahzan-1-250x386.webp"
+          alt="Laa Tahzan book cover"
+        />
+        <div class="book-details">
+          <h2>Laa Tahzan</h2>
+          <p class="author">By Dr. Ayedh AlQarni</p>
+          <p class="price">৳400</p>
+          <a href="#" class="book-button">View Details</a>
+        </div>
+      </article>
+
+      <article class="book-card">
+        <img src="Images/Amar amma.webp" alt="Amar amma book cover" />
+        <div class="book-details">
+          <h2>Amar amma</h2>
+          <p class="author">By Sayed Abul Hasan Ali Nodovi</p>
+          <p class="price">৳301</p>
+          <a href="#" class="book-button">View Details</a>
+        </div>
+      </article>
+
+      <article class="book-card">
+        <img
+          src="Images/nari jiboner shukh shongram.jfif"
+          alt="Nari Jiboner Shukh Shongram book cover"
+        />
+        <div class="book-details">
+          <h2>Nari Jiboner Shukh Shongram</h2>
+          <p class="author">By Dr. Abdullah Al Mu'ti & Huda Said Bahlul</p>
+          <p class="price">৳200</p>
+          <a href="#" class="book-button">View Details</a>
+        </div>
+      </article>
+
+      <article class="book-card">
+        <img
+          src="Images/nanga-toloyar-2173-250x375.jpeg"
+          alt="Nanga Tolowar book cover"
+        />
+        <div class="book-details">
+          <h2>Nanga Tolowar</h2>
+          <p class="author">By Enayetullah Altamash</p>
+          <p class="price">৳460</p>
+          <a href="#" class="book-button">View Details</a>
+        </div>
+      </article>
+
+      <article class="book-card">
+        <img
+          src="Images/islami-o-coloman-orth-banijjo-250x390.png"
+          alt="Islami o Choloman Ortho Banijjo book cover"
+        />
+        <div class="book-details">
+          <h2>Islami o Choloman Ortho Banijjo</h2>
+          <p class="author">By Mufti Taqi Usmani</p>
+          <p class="price">৳150</p>
+          <a href="#" class="book-button">View Details</a>
+        </div>
+      </article>
+
+      <article class="book-card">
+        <img
+          src="Images/Imandipto dastan.webp"
+          alt="Imandipto dastan book cover"
+        />
+        <div class="book-details">
+          <h2>Imandipto dastan</h2>
+          <p class="author">By Enayetullah Altamash</p>
+          <p class="price">৳150</p>
+          <a href="#" class="book-button">View Details</a>
+        </div>
+      </article>
+
+      <article class="book-card">
+        <img
+          src="Images/arab-konyar-artonad-250x374.webp"
+          alt="Arab-konyar-artonad book cover"
+        />
+        <div class="book-details">
+          <h2>Arab konyar artonad</h2>
+          <p class="author">By Enayetullah Altamash</p>
+          <p class="price">৳241</p>
+          <a href="#" class="book-button">View Details</a>
+        </div>
+      </article>
+
+      <article class="book-card">
+        <img src="Images/KalNagini-250x350.jpg" alt="KalNagini book cover" />
+        <div class="book-details">
+          <h2>KalNagini</h2>
+          <p class="author">By Enayetullah Altamash</p>
+          <p class="price">৳400</p>
+          <a href="#" class="book-button">View Details</a>
+        </div>
+      </article>
+    </main>
+
+    <footer>
+      <p>BIBLUNE | HTML &amp; CSS Project</p>
+    </footer>
+  </body>
+</html>

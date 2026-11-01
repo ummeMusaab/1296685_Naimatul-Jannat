@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Categories | BIBLUNE</title>
+    <style>
+      body {
+        font-family:
+          "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+      }
+
+      .logo {
+        font-family: cursive;
+        font-size: 35px;
+        font-style: italic;
+        background-color: #3d1748;
+        color: #fff8e8;
+        font-weight: bold;
+        text-decoration: none;
+        letter-spacing: 2px;
+      }
+
+      .menu {
+        width: 100%;
+        background-color: #3d1748;
+        display: flow-root;
+        overflow: visible;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      .menu ul {
+        list-style: none;
+        margin-right: 30px;
+      }
+
+      .menu ul li {
+        font-family:
+          "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+        float: left;
+      }
+
+      .menu ul li a {
+        display: block;
+        padding: 14px 18px;
+        color: #fff8e8;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .menu ul li a:hover {
+        background-color: #c9a66b;
+        color: #32183b;
+        border-radius: 10px;
+        transition: 0.5s;
+      }
+
+      .dropdown {
+        position: relative;
+      }
+
+      .dropdown details summary {
+        display: block;
+        padding: 14px 18px;
+        color: #fff8e8;
+        font-weight: bold;
+        cursor: pointer;
+        list-style: none;
+      }
+
+      .dropdown details summary:hover {
+        background-color: #c9a66b;
+        color: #32183b;
+        border-radius: 10px;
+        transition: 0.5s;
+      }
+
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        min-width: 160px;
+        max-height: 300px;
+        overflow-y: auto;
+        background-color: #3d1748;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        opacity: 80%;
+        z-index: 1000;
+      }
+
+      .dropdown details[open] .dropdown-content {
+        display: block;
+      }
+
+      .dropdown-content a {
+        display: block;
+        padding: 10px 15px;
+        color: #fff8e8;
+        text-decoration: none;
+        white-space: nowrap;
+      }
+
+      .dropdown-content a:hover {
+        background-color: #520172;
+        color: #ffffff;
+        border-radius: 10px;
+        transition: 0.5s;
+      }
+
+      footer p {
+        font-family:
+          "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+          "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+        text-align: center;
+        background-color: #3d1748;
+        color: #fcfcfc;
+        padding: 12px;
+        margin-top: 40px;
+      }
+
+      .category-header {
+        text-align: center;
+        padding: 45px 15px 30px;
+        color: #b16502;
+        text-shadow: 1px 1px #000;
+      }
+
+      .category-eyebrow {
+        color: #b16502;
+        font-size: 13px;
+        font-weight: bold;
+        letter-spacing: 3px;
+        margin-bottom: 12px;
+      }
+
+      .category-header h1 {
+        font-family: Georgia, serif;
+        font-size: clamp(30px, 5vw, 44px);
+        margin-bottom: 12px;
+      }
+
+      .category-header > p:last-child {
+        font-size: 19px;
+      }
+
+      .category-container {
+        width: 90%;
+        max-width: 1100px;
+        margin: 20px auto 45px;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 24px;
+      }
+
+      .category-card {
+        display: block;
+        overflow: hidden;
+        background: #fff8e8;
+        color: #30241b;
+        text-decoration: none;
+        border: 1px solid #c9a66b;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        transition: transform 0.2s ease;
+      }
+
+      .category-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .category-card img {
+        display: block;
+        width: 100%;
+        height: 190px;
+        object-fit: cover;
+      }
+
+      .category-details {
+        padding: 18px;
+        text-align: center;
+      }
+
+      .category-details h2 {
+        font-family: Georgia, serif;
+        font-size: 23px;
+        color: #75502e;
+        margin-bottom: 10px;
+      }
+
+      .category-details p {
+        font-size: 16px;
+        line-height: 1.5;
+      }
+
+      @media (max-width: 800px) {
+        .category-container {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 16px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .category-container {
+          grid-template-columns: 1fr;
+          max-width: 340px;
+        }
+
+        .category-card img {
+          height: 210px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="menu">
+      <a href="HomePage.html" class="logo">BIBLUNE</a>
+      <ul>
+        <li><a href="HomePage.html">Home</a></li>
+        <li><a href="Books.html">Books</a></li>
+        <li><a href="Categories.html">Categories</a></li>
+        <li class="dropdown">
+          <details>
+            <summary>Chapter ▾</summary>
+            <div class="dropdown-content">
+              <a href="chapter_01.html">01. Getting to Know HTML</a>
+              <a href="chapter_02.html">02. HTML Elements</a>
+              <a href="chapter_03.html">03. HTML Styles</a>
+              <a href="chapter_04.html">04. Semantic HTML</a>
+              <a href="chapter_05.html">05. Web Forms</a>
+              <a href="chapter_06.html">06. HTML Multimedia</a>
+              <a href="chapter_07.html">07. HTML Graphics</a>
+              <a href="chapter_08.html">08. HTML Advanced</a>
+              <a href="chapter_09.html">09. HTML Events</a>
+              <a href="chapter_10.html">10. HTML APIs</a>
+              <a href="chapter_11.html">11. Getting to Know CSS</a>
+              <a href="chapter_12.html">12. CSS Selectors</a>
+              <a href="chapter_13.html">13. CSS Cascading</a>
+              <a href="chapter_14.html">14. CSS Box Model</a>
+              <a href="chapter_15.html">15. CSS Colors</a>
+              <a href="chapter_16.html">16. CSS Text</a>
+              <a href="chapter_17.html">17. CSS Backgrounds</a>
+              <a href="chapter_18.html">18. CSS Display</a>
+              <a href="chapter_19.html">19. CSS Layout</a>
+              <a href="chapter_20.html">20. CSS Transitions and Animations</a>
+              <a href="chapter_21.html">21. Advanced CSS</a>
+              <a href="chapter_22.html">22. Responsive CSS</a>
+            </div>
+          </details>
+        </li>
+        <li><a href="#info">About</a></li>
+        <li><a href="Register.html">Registration</a></li>
+      </ul>
+    </div>
+
+    <header class="category-header">
+      <h1>Explore Categories</h1>
+      <p>Find your next favorite read.</p>
+    </header>
+
+    <main class="category-container">
+      <a href="Books.html#Islamic History & Biography" class="category-card">
+        <img src="Images/Islamic history & biography.png" alt="Islamic History & Biography books" />
+        <div class="category-details">
+          <h2>Islamic History & Biography</h2>
+          <p>
+            Books about Islamic history, Muslim leaders, historical events, and
+            Islamic civilization.
+          </p>
+        </div>
+      </a>
+
+      <a
+        href="Books.html#Islamic Knowledge & Spirituality"
+        class="category-card"
+      >
+        <img
+          src="Images/Islamic knowledge & spirituality.png"
+          alt="Islamic Knowledge & Spirituality books"
+        />
+        <div class="category-details">
+          <h2>Islamic Knowledge & Spirituality</h2>
+          <p>
+            Books focused on Islamic teachings, faith, personal development, and
+            spirituality.
+          </p>
+        </div>
+      </a>
+
+      <a
+        href="Books.html#Islamic Society & Contemporary Issues"
+        class="category-card"
+      >
+        <img
+          src="Images/Islamic society & contemporary issues.png"
+          alt="Islamic Society & Contemporary Issues books"
+        />
+        <div class="category-details">
+          <h2>Islamic Society & Contemporary Issues</h2>
+          <p>
+            Books discussing Muslim society, women's lives, social challenges,
+            and contemporary issues.
+          </p>
+        </div>
+      </a>
+
+      <a href="Books.html#Historical Fiction & Adventure" class="category-card">
+        <img
+          src="Images/Historical fiction & adventure.png"
+          alt="Historical Fiction & Adventure books"
+        />
+        <div class="category-details">
+          <h2>Historical Fiction & Adventure</h2>
+          <p>Historical stories, novels, and adventure-based narratives.</p>
+        </div>
+      </a>
+
+      <a
+        href="Books.html#Islamic Literature & Inspirational Stories"
+        class="category-card"
+      >
+        <img
+          src="Images/Islamic Literature and inspirational stories.png"
+          alt="Islamic Literature & Inspirational Stories books"
+        />
+        <div class="category-details">
+          <h2>Islamic Literature & Inspirational Stories</h2>
+          <p>Books containing religious, moral, and inspirational themes.</p>
+        </div>
+      </a>
+    </main>
+
+    <footer>
+      <p>BIBLUNE | HTML &amp; CSS Project</p>
+    </footer>
+  </body>
+</html>
